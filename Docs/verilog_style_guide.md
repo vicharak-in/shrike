@@ -19,7 +19,7 @@ The main attributes are
 
  3. (* iopad_external_pin *) -- This needs to be used for every signal that needs to be mapped to the gpio. This the yosys will know not to optimize it or change its name. Only use this for top level io's not in every module.
 
- A example of all of these used in a i2c top  
+ An example of all of these used in a i2c top  
 
  ```
 (* top *) module  i2c_blink #( parameter I2C_SLAVE_ADR = 7'h32
@@ -68,9 +68,9 @@ and we will need a third select signal for the mux to switch between input or ou
 
 ## clock enable 
 
-The fpga as a internal oscillator connected to the logic fabric and it gives out 50 Mhz clock.
+The fpga has a internal oscillator connected to the logic fabric and it gives out 50 Mhz clock.
 
-However top module of our design need ot have a clock_enable signal for enabling in general cases this signal will always be one. 
+However top module of our design need to have a clock_enable signal for enabling in general cases this signal will always be one. 
 Thus this is just a output signal assigned to one in the top module of the design.
 
 ![alt text](./images/clk.png)

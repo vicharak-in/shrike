@@ -25,13 +25,20 @@ Now we will here safely assume that you will be using our uf2.
 
 Congratulations you have successfully uploaded the uf2. 
 
-### 2. Get the bitstream(.bin) for led blink 
+### 2. Shrike Mass Storage Device 
 
-To programme a FPGA you will require  bitstream file this is much like a firmware for MCU's we will see how to generate these but for now we have uploaded the bitstream required for led_bin you can download them the corresponding to your board's version [here](https://github.com/vicharak-in/shrike-lite/tree/main/test/bitstreams). 
+Onces that you have copied the uf2 to the Shrike.  The board will disconnect momentary and so up as both a mass storage device and tty/ACM device now the mass storage is the part where you would need to save you bitstream (read step 3). 
+
+The default device ID for mass storage device is `5221-0000` this could be changed as per your choice. 
+For windows simply right click and rename for changing the name in linux read [this](https://superuser.com/questions/223527/renaming-a-fat16-volume). 
+
+### 3. Get the bitstream(.bin) for led blink 
+
+To program a FPGA you will require  bitstream file this is much like a firmware for MCU's we will see how to generate these but for now we have uploaded the bitstream required for led_bin you can download them the corresponding to your board's version [here](https://github.com/vicharak-in/shrike-lite/tree/main/test/bitstreams). 
 
 Now that you have both uf2 and bin file settled up lets move forward and upload the bitstream to board.
 
-### 3. Getting the Thonny IDE 
+### 4. Getting the Thonny IDE 
 
 The bitstream can be uploaded on the shrike using one of these two ways 
    1. Using a GUI Based-IDE (Thonny)
@@ -47,8 +54,13 @@ Open thonny and connect the board to the laptop (do not press boot button this t
    1. Connect the board from the bottom right corner of Thonny IDE.
    2. Go to file view mode in the thonny to see the rp2040 as a file system.
 
-### 4. Flashing the bitstream  
-Now you should see both the your pc and rp2040 file's on the left windows now we have to transfer the led_blink.bin file to the rp2040. To do so find the file on your system then right click and upload.
+### 5. Flashing the bitstream 
+
+The bitstream needs to be copied to the Shrike Mass storage part this is a simple copy process same way as copying a file to a USB drive.
+
+Or you can use this way -- 
+You should in thonny see both the your pc and rp2040 file's on the left windows now we have to transfer the led_blink.bin file to the rp2040. 
+To do so find the file on your system then right click and upload.
 
 Now we will have to flash this file to the fpga to do so we will use the function 
 

@@ -17,23 +17,7 @@ We will follow these steps
 
 Mpremote is a python package and we will have to use pip to install it thus we need to a py virtual env. (if you already have one use that).
 
-To get a python virtual env run this command in directory of your choice.
-
-```
-    python3 -m venv <environment_name>
-```
-you can omit the <environment_name> as well it will take the name of your directory. Onces the env is created activate it. To do run this 
-
-```
-    source <environment_name>\bin\activate 
-```
-if you have not given any name then run (and remember if you are any other directory then you have to give the relative path to the dir you created the env in)
-
-```
-    source bin\activate
-```
-
- * Note** - If you don't really care about what happing around you can download the mpremote system wide as well I won't tell you how to do so as i am afraid of developers around me(use pipx).
+Or to setup a python Env read [this](https://docs.python.org/3/library/venv.html) and then activate it . 
 
 Now that your v-env is activated we will get mpremote in the env. To do so run this command 
 

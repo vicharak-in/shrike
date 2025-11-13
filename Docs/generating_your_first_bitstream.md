@@ -2,7 +2,7 @@
 
 # Shrike FPGA Bitstream Generation Guide 
 
-Bitstream is a firmware that is used to programme the FPGA and map our design to it. Shrike uses a Renesas Forge FPGA SLGV SLG47910 1K Luts FPGA.The datasheet for which can be found [here](https://www.renesas.com/en/products/slg47910) .
+Bitstream is a firmware that is used to programme the FPGA and map our design to it. Shrike uses a Renesas Forge FPGA SLGV SLG47910 1K Luts FPGA.The datasheet fr which can be found [here](https://www.renesas.com/en/products/slg47910) .
 
 
 For generating the bitstream for shrike we will use these steps. 
@@ -86,9 +86,9 @@ endmodule
 
 Now every output requires a output enable for forge FPGA thus we will define a led_en pin as well and we will keep it high ( value = 1) by default so that led signal ( IO) is always a output from the board.
 
-We need to figure out a way to so how are we going to blink ( toggle ) this led , for convince lets assume we want to blink it every second . So this tell's us that we need some kind of clock to check the time and how much time has passed. 
+We need to figure out a way to so how are we going to blink ( toggle ) this led , for convenience lets assume we want to blink it every second . So this tell's us that we need some kind of clock to check the time and how much time has passed. 
 
-We have a clock on out FPGA its a a pulsating that creates a 50Mhz square wave we have to use this to calculate to one second to do so we can simply add a counter that counts till 50_000_000 cycles as that how much we will require to reach one second at a 50 Mhz frequency. 
+We have a clock on out FPGA it is a pulsating signal that creates a 50Mhz square wave, we have to use this to calculate one second to do so we can simply add a counter that counts till 50_000_000 cycles as that how much we will require to reach one second at a 50 Mhz frequency. 
 
 Thus now we will create a hardware that blinks a led whenever its counter reaches 50_000_000 and the verilog for this will look like this 
 
