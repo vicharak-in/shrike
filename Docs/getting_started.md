@@ -1,14 +1,20 @@
 (getting_started)=
 
-# Getting Started   
+# Getting Started
 
-Hello, so you have got the Shrike FPGA , Nice ! Now lets blink some leds and say hello to world of hardware. 
-
+Hello, so you have got the **Shrike FPGA**, Nice!  
+Now lets blink some leds and say hello to world of hardware.  
 We will along the way see how to setup the required software and toolchain as well.
 
+Shrike-lite supports two simple ways to begin programming:
 
+   1. **Arduino (C/C++)**  
+   2. **MicroPython using the UF2 bootloader**
 
-Now that you have your hardware in hand lets follow these steps. 
+Both are beginner-friendly, and you can switch between them anytime.  
+Now that you have the hardware in hand, let’s follow these steps and get Shrike-lite up and running!
+
+---
 
 
 ### 1. Uploading the shrike UF2  
