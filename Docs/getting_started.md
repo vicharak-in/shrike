@@ -2,23 +2,142 @@
 
 # Getting Started
 
-Hello, so you have got the **Shrike FPGA**, Nice!  
-Now lets blink some leds and say hello to world of hardware.  
-We will along the way see how to setup the required software and toolchain as well.
+Hello! So you’ve got the **Shrike-lite FPGA** - nice!
 
-Shrike-lite supports two simple ways to begin programming:
+Before we explain how programming works on Shrike-lite, it’s important to understand what Shrike-lite actually is and how it differs from all kind of other embedded development boards. 
 
-   1. **Arduino (C/C++)**  
-   2. **MicroPython using the UF2 bootloader**
+These points will give you the right foundation, especially if you are new to electronics or computing systems. If you already know the basics of microcontrollers, FPGAs, and embedded systems, you can skip this introduction and jump directly into the programming section.
+
+Shrike-lite is special because it combines two worlds on a single board:  
+&emsp;**A Microcontroller (MCU)** — Raspberry Pi’s [RP2040](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html) (Pico 1 Family)  
+&emsp;**An FPGA (Field-Programmable Gate Array)**
+
+You can write software for the micro-controller and create digital circuits on the FPGA, and then let them work together to build powerful and fun projects. If you’re curious to learn more about FPGAs, you can read about them here.
+
+In Shrike-lite, the micro-controller (RP2040) is connected to the FPGA through an SPI bus. The SPI bus is used for two main purposes:
+
+&emsp;1. **Configuring the FPGA** - loading the bitstream into the FPGA via the RP2040  
+&emsp;2. **Communication** - between the microcontroller (RP2040) and the FPGA.
+
+While your program is running on the micro-controller, you can configure the FPGA at any time to perform specific tasks. Not only that, once the FPGA is programmed, it can also communicate with the RP2040 back and forth.
+The beauty of this setup is that you can reprogram the FPGA an unlimited number of times, and that’s exactly where reconfigurable computing comes to life.
+
+As discussed earlier, we’ll need to learn how compilation works for both systems: the FPGA and the micro-controller (RP2040).
+
+The binary files that the FPGA understands are called **bitstreams**.  
+Follow the guide here to learn how to generate a bitstream for the FPGA:  [Generating Your First Bitstream](https://vicharak-in.github.io/shrike-lite/generating_your_first_bitstream.html)
+
+Once you have the bitstream, you’re ready to load it into the FPGA through a microcontroller (RP2040) program.
+
+We’ll start with a simple blink-LED example to say hello to the world of hardware.  
+Along the way, we’ll also set up the required software and toolchain.
+
+You can program the microcontroller on Shrike-lite using two methods:<br>
+&emsp;**1. Arduino (C/C++)**  
+&emsp;**2. MicroPython using the UF2 bootloader**
 
 Both are beginner-friendly, and you can switch between them anytime.  
-Now that you have the hardware in hand, let’s follow these steps and get Shrike-lite up and running!
+Now that you have the hardware in hand, let’s follow the steps and get Shrike-lite up and running!
 
----
+# Using it with ArduinoIDE
+
+If you already know Arduino and love working with the Arduino IDE, you can continue using it with Shrike-lite. You do not have to switch to MicroPython unless you want to., 
 
 
-### 1. Uploading the shrike UF2  
 
+We will follow these steps to setup our arduino IDE for shrike. If you don't have arduino IDE already ,you can download it from [here](https://www.arduino.cc/en/software/) or if you are using linux(ubuntu)then just run 
+```
+sudo apt install arduino
+```
+
+### Step 1. Adding the board support for RP2040/RP2350
+
+The Shrike has a on board RP2040/RP2350 has a host controller the Arduino IDE doesn't native support them however we can add the board support for the same. 
+It is quit straight forward we need to add this URL 
+```
+https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
+``` 
+in the addition board URL section of arduino IDE which you can find in File->Preferences.
+
+<div align="center">
+
+ <img src="./images/shrike_arduino/board_URL.png" alt="ADD BOARD URL" width="90%">
+
+</div>
+
+If you already have another board URL just add a "," between the two URL's.
+
+These board support had been created by [earlephilhower](https://github.com/earlephilhower) and you can check out github [repository](https://github.com/earlephilhower/arduino-pico) for more details.
+
+After adding the URL go to Tools->Boards->Board Manager in the Arduino IDE. 
+Then search for pico and the board from Earle F. Philhower. 
+
+<div align="center">
+
+ <img src="./images/shrike_arduino/board_manager.png" alt="ADD BOARD" width="90%">
+
+</div>
+Perfect we have successfully add the board support for the RP2040/RP2350.
+
+As we discussed earlier, in shrike-lite the micro-controller (RP2040) is responsible for configuring the FPGA.  
+
+To make this possible, we developed a simple mechanism: we store the FPGA bitstreams in the RP2040’s flash memory and retrieve them whenever we need to configure the FPGA.
+
+### Step 2. Adding the LittleFS Tool
+
+The LittleFS library in Arduino allows you to store, load, and update the bitstream in the flash memory through the microcontroller (RP2040).
+
+We need to add a Little-FS utility to bind a bin file (FPGA bitstream with code for Shrike). We can find the utility [here](https://github.com/earlephilhower/arduino-pico-littlefs-plugin/releases/) download the latest release ZIP. 
+
+We will unzip and copy it to the tools directory in Arduino directory.
+
+In case of windows you will find the Arduino folder in C disk if you have not changed it during installation.
+In case of linux it would be available in your home directory. 
+
+The directory/ folder  should look like this `<home_dir>/Arduino/tools/PicoLittleFS/tool/picolittlefs.jar`
+
+You will need to restart the Arduino IDE and you should see the Pico Little FS tool like this in your Tools menu.
+
+For more details on the PicoLittleFS tool checkout this [repository](https://github.com/earlephilhower/arduino-pico-littlefs-plugin).
+
+### Step 3. Installing the Shrike Library 
+
+The Arduino library developed by Vicharak takes care of configuring the FPGA for you. You can install it directly from the Arduino IDE’s Library Manager, just search for **“Shrike”** and install the **Shrike** library.
+
+
+<div align="center">
+
+ <img src="./images/shrike_arduino/shrike_lib.png" alt="ADD SHRIKE lib" width="90%">
+
+</div>
+
+Choose the first one names as Shrike and not the shrike flash library.
+We are almost done with the setup lets continue and blink en led on FPGA using the arduino IDE. 
+
+### Step 4. Programming the FPGA from ArduinoIDE
+Lets program out first bitstream to fpga using the arduino. We will be blinking an led.
+
+StartArduino IDE and look for Shrike >- shrike_flash in the example section of IDE and then save it with a name of you choice and at a location of your choice. This will create a folder with the name, now in the folder/dir create a subfolder by name `data` keep the case and in mind. 
+
+Any bitstream that needs to be uploaded to the board should be placed in the folder. 
+We have already generated and hosted a bitstream to blink led [here](https://github.com/vicharak-in/shrike-lite/blob/main/test/bitstreams/v1_4/led_blink.bin) save this bitstream to the data subfolder.
+
+Checkout guide to learn how to generate your own fpga design [here](./generating_your_first_bitstream.md).
+
+Onces you have done this go to arduino and hit compile your compilation should finish without error if error occurs don't we have s discord hope on there. 
+
+If the compilation has been done without any error then it's time to connect the board in boot mode " PRESS THE BOOT BUTTON WHILE CONNECTING THE BOARD WITH PC" ( this should be done only the first time of setting up if arduino are if you have programmed the board with any other way last time).
+
+And then hit upload on the board. 
+
+You should see the beautiful blue led blinking on board.
+
+Congratulation you have you arduino IDE and shrike ready to programmed using the Arduino infrastructure. 
+
+
+>Credit and Gratitude  to [earlephilhower](https://github.com/earlephilhower/) to creating the board support for RP2040/RP2350 in ArduinoIDE and the little FS tool. 
+
+# Using it with Micro-python UF2
 We have created custom UF2 for shrike this contains a shrike.py library that has custom function to flash fpga and few others. You can use the normal rpi micro python uf2 as well however the step's would be different. 
 
 Now we will here safely assume that you will be using our uf2.
@@ -82,8 +201,3 @@ in thonny open a new python file and write this python script
 Save this file to your board (RP2040) and run it. (to run this file on board boot up just name it as main.py)
 
 If everything has been done correctly you should see led blinking on the board.
-
-
-
-
-
