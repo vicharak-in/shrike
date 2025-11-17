@@ -39,8 +39,6 @@ You can program the microcontroller on Shrike-lite using two methods:<br>
 Both are beginner-friendly, and you can switch between them anytime.  
 Now that you have the hardware in hand, let’s follow the steps and get Shrike-lite up and running!
 
-(shrike_arduino_guide)=
-
 # Using it with ArduinoIDE
 
 If you already know Arduino and love working with the Arduino IDE, you can continue using it with Shrike-lite. You do not have to switch to MicroPython unless you want to., 
