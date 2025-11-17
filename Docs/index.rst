@@ -31,7 +31,6 @@ We at vicharak have kept in mind need of a learner, maker and a hobbyist while d
    Generating Bitstream <generating_your_first_bitstream>
    Verilog Style Guide <verilog_style_guide>      
    Shrike Pinouts <shrike_pinouts>
-   Shrike Arduino <shrike_arduino_guide>
    Shrike CLI Guide <shrike_cli_guide>
    
 
