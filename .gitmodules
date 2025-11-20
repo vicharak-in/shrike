@@ -1,0 +1,3 @@
+[submodule "lib/shrike_arduino"]
+	path = lib/shrike_arduino
+	url = https://github.com/vicharak-in/shrike_arduino.git
