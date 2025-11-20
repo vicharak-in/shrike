@@ -184,6 +184,11 @@ Now that we have synthesized the verilog lets connect the signal to the Input ou
 
 
 
+> [!NOTE]
+> The bitstream file that you need to copy will be named as "FPGA_bitstream_MCU.bin" found in ffpga -> build -> bitstream folder in your project directory.  
+> If you copy any other file present in the bitstream folder the fpga wont be programmed.
+> You are free to change the name of this file however you please.
+
 Now that you have generated your first bitstream let's upload these on the FPGA, that will be pretty simple follow the step 3-4 in this guide or complete guide if you checking it for first time [getting_started](./getting_started.md) . 
 
 Check out the [Verilog Style Guide](./verilog_style_guide.md) next.

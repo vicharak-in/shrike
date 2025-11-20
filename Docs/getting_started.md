@@ -137,11 +137,13 @@ Congratulation you have you arduino IDE and shrike ready to programmed using the
 
 >Credit and Gratitude  to [earlephilhower](https://github.com/earlephilhower/) to creating the board support for RP2040/RP2350 in ArduinoIDE and the little FS tool. 
 
-# Using it with Micro-python UF2
+# Using it with Micro-python 
+
 We have created custom UF2 for shrike this contains a shrike.py library that has custom function to flash fpga and few others. You can use the normal rpi micro python uf2 as well however the step's would be different. 
 
 Now we will here safely assume that you will be using our uf2.
 
+### 1. Uploading the shrike UF2
 
 1. Download the uf2 corresponding to your board version from the shrike's [Github](https://github.com/vicharak-in/shrike-lite).
 2. Hold the boot button on the board and connect it the your pc now shrike will show up as as storage device.
@@ -192,6 +194,12 @@ Now we will have to flash this file to the fpga to do so we will use the functio
 ```
     shrike.flash("<your_bitstream_name>.bin")
 ```
+
+> [!NOTE]
+> The bitstream file that you need to copy will be named as "FPGA_bitstream_MCU.bin" found in ffpga -> build -> bitstream folder in your project directory.  
+> If you copy any other file present in the bitstream folder the fpga wont be programmed.
+> You are free to change the name of this file however you please.
+
 in thonny open a new python file and write this python script 
 ```
     import shrike
