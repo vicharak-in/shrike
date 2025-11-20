@@ -118,18 +118,4 @@ These types of changes create noise in the PR queue and make it harder to review
 If you spot something small, feel free to open an **issue** instead so we can batch those improvements together. 
 
 
-## Resources 
- #### 1. Learning Resources 
-
-   1. [AISC WORLD Verilog Tutorials ](https://www.asic-world.com/verilog/veritut.html)
-   2. [Nandland FPGA Tutorials](https://nandland.com/fpga-101/)
-   3. [FPGA for Fun](https://www.fpga4fun.com/)
-   4. [Lawrie FPGA Tutorials](https://lawrie.github.io/blackicemxbook/)
-   5. [ProjectF](https://projectf.io/)
-  
- #### 2. Similar Hardware Projects 
-   1. [Ulx3s-Project](https://ulx3s.github.io/)
-   2. [TinyFPGA-Project](https://tinyfpga.com/)
-   3. [icebreaker-Project](https://github.com/icebreaker-fpga/icebreaker)
-   4. [pico-ice](https://pico-ice.tinyvision.ai/)
-   
+Thank You

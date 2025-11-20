@@ -32,6 +32,7 @@ We at vicharak have kept in mind need of a learner, maker and a hobbyist while d
    Verilog Style Guide <verilog_style_guide>      
    Shrike Pinouts <shrike_pinouts>
    Shrike CLI Guide <shrike_cli_guide>
+   Reading List <reading_list>
    
 
 .. note::
