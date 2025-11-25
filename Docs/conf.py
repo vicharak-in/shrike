@@ -10,6 +10,7 @@ extensions = [
     'sphinx.ext.autosectionlabel',
     'sphinx.ext.todo',
     'sphinx.ext.mathjax',
+    "sphinx_design",
 ]
 
 templates_path = ['_templates']

@@ -25,6 +25,7 @@ We at vicharak have kept in mind need of a learner, maker and a hobbyist while d
    :caption: Contents
    :titlesonly:
 
+   Introduction <introduction>
    Hardware Overview <hardware_overview>
    Getting Started <getting_started> 
    Tools Setup <tools_setup_guide>
