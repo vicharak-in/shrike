@@ -106,6 +106,8 @@ Onces you have done this go to arduino and hit compile your compilation should f
 
 If the compilation has been done without any error then it's time to connect the board in boot mode " PRESS THE BOOT BUTTON WHILE CONNECTING THE BOARD WITH PC" ( this should be done only the first time of setting up if arduino are if you have programmed the board with any other way last time).
 
+In the tools section select the Board as Generic RP2040/RP2350 based on your board version and flash size as 4MB Sketch:2MB and FS:2MB and CPU Speed as 133Mhz. 
+
 And then hit upload on the board. 
 
 You should see the beautiful blue led blinking on board.

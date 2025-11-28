@@ -52,12 +52,17 @@ The RP2040/RP2350 LED is connected to GPIO 04 and the FPGA LED is connected to G
 
 The LED's are active high meaning that when the GPIO pin is set to high the LED will turn on and when the GPIO pin is set to low the LED will turn off.
 
+FLASH
+######
+The Shrike Dev Board features a 32Mb/4MB QSPI based Flash memory which is connected to RP2040/2350. The part number for which is W25Q32JV. This flash is used to store the fpga bitstream and RP2040/RP2350 firmware. 
+
 Programming 
 ################
 
 
 Both the IC on the board have separate programming models. The RP2040 
 can be programmed using MicroPython or C whereas the FPGA needed to be programmed using Verilog in the Renesas Go Configure hub.
+
 
 Powering the Board
 ##################
