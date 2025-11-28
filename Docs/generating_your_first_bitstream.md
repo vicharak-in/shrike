@@ -59,18 +59,16 @@ It should look like this.
 
 </div>
 
+Check out this short video guide.
 
-.. Check out this short video guide. 
-
-
-    <div align="center">
-    
-      <video width="90%" controls>
-        <source src="./images/bitstream_gen/go_config_launch.webm" type="video/webm">
-        Your browser does not support the video tag.
-      </video>
-    
-    </div>
+:::{raw} html
+<div align="center">
+  <video width="90%" controls>
+    <source src="bitstream_gen/go_config_launch.webm" type="video/webm">
+    Your browser does not support the video tag.
+  </video>
+</div>
+:::
 
 ### 2. Design 
 
