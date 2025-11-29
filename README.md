@@ -27,33 +27,17 @@ We at vicharak have kept in mind need of a learner, maker and a hobbyist while d
 3.  PMOD Compatible Connector
 4.  Bread Board compatible 
 5.  IO interface Between FPGA and MCU
-6.  QSPI Flash 
+6.  4MB QSPI Flash 
 7.  2x User LED's
 8.  Type C Port for Power and Programming 
 
 
 
-<div align="center">
-
- <img src="./Docs/images/shrike_pinouts.png" alt="shrike" width="80%">
-
-</div>
-
-
-
-
 ### Check out 
- 1. [DOCS](https://vicharak-in.github.io/shrike-lite/index.html)
- 2. [PIN_OUTS](./Docs/shrike_pinouts.md)
+ 1. [Documentation](https://vicharak-in.github.io/shrike-lite/index.html)
+ 2. [PIN_OUTS](https://vicharak-in.github.io/shrike-lite/shrike_pinouts.html)
+ 3. [FPGA_CPU_Interconnect](https://vicharak-in.github.io/shrike-lite/shrike_pinouts.html)
 
-
- 
-## Useful Links : 
-1. FPGA Datasheet - [Renesas Forge FPGA ](https://www.renesas.com/en/products/slg47910#overview)
-
-2. EDA Tool - [Go Configure Software Hub](https://www.renesas.com/en/software-tool/go-configure-software-hub)
-
-3. RP2040 Related Resources- [Getting Started ](https://projects.raspberrypi.org/en/projects/getting-started-with-the-pico)
 
 ## 📫 Join our communities at :
   
@@ -67,32 +51,11 @@ Thank You
  
 
 
-
-
 <div align="center">
 
 ![blink_webp](./asset/shrike_blink.webp)
 </div>
 
-
-
-### FPGA CPU Interconnect Pin-outs 
-
-<div align="center">
-
-| FPGA PIN | RP 2040 PIN |       RP2040         |       FPGA             |
-|----------|-------------|----------------------|------------------------|
-| EN       | 13          | GPIO                 | EN (Enable)            |
-| PWR      | 12          | GPIO                 | PWR                    |
-| 3        | 2           | GPIO                 | SPI_SCLK               |
-| 4        | 1           | UART RX / GPIO       | SPI_SS                 |
-| 5        | 3           | GPIO                 | SPI_SI (MOSI)          |
-| 6        | 0           | UART TX / GPIO       | SPI_SO (MISO) / CONFIG |
-| 18       | 14          | GPIO / I2C 1 SDA     | GPIO                   |
-| 17       | 15          | GPIO / I2C 1 SDA     | GPIO                   |
-
- 
-</div>
 
 
 ## Contribution Guideline  
@@ -119,3 +82,11 @@ If you spot something small, feel free to open an **issue** instead so we can ba
 
 
 Thank You
+
+
+## Useful Links : 
+1. FPGA Datasheet - [Renesas Forge FPGA ](https://www.renesas.com/en/products/slg47910#overview)
+
+2. EDA Tool - [Go Configure Software Hub](https://www.renesas.com/en/software-tool/go-configure-software-hub)
+
+3. RP2040 Related Resources- [Getting Started ](https://projects.raspberrypi.org/en/projects/getting-started-with-the-pico)
