@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GPDProject version="39" oldestCompatibleVersion="32" GPDVersion="6.50.003" lastChange="20 Nov 2025 10:23:26" projectChecksumState="1" projectChecksum="d48faa41">
+<GPDProject version="39" oldestCompatibleVersion="32" GPDVersion="6.50.003" lastChange="2 Dec 2025 17:04:39" projectChecksumState="1" projectChecksum="aacc6e46">
     <generalProjectSettings/>
     <chip family="04" type="06" friendlyName="FFPGA" partNumber="67" package="26">
         <nvmData registerLenght="480">0 0 0 28 0 0 0 0 A5 A5 A5 A5 0 0 0 0 0 0 0 0 5A 5A 5A 5A 0 0 0 0 22 22 22 22 22 22 22 22 22 22 0 0 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</nvmData>
@@ -640,6 +640,7 @@
         <openedTabs>
             <openedTab>main.v</openedTab>
             <openedTab>I/O Planner</openedTab>
+            <openedTab>debouncer.v</openedTab>
         </openedTabs>
         <pipelineStagesStates>
             <pipelineStageState>
@@ -654,6 +655,7 @@
         <modules>
             <scr>
                 <module filename="main.v"/>
+                <module filename="debouncer.v"/>
             </scr>
             <lib/>
             <sim/>
