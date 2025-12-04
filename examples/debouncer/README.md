@@ -2,8 +2,11 @@
 
 Mechanical switches do not change state cleanly when pressed or released. Instead, they bounce rapidly between HIGH and LOW for a few milliseconds, which can cause multiple false triggers in digital logic. A debounce circuit solves this by checking whether the input has remained stable for a fixed period. If the signal stays unchanged long enough, it is accepted as the new valid state; otherwise, it is ignored. This ensures the output is clean, stable, and free from glitches caused by mechanical bouncing.
 
+## Block Diagram
+![SHrikeLite debouncer block diagram](ffpga/images/debouncer_blockdiagram.svg "Block diagram")
+
 ---
-## Overview of FPGA side
+## FPGA overview
 - This project consists of two modules :   
     1) `debouncer :` This module contains a hardware debouncer for cleaning noisy input signals such as mechanical switches or push-buttons used as inputs in the Shrike-Lite FPGA. This module ensures that the output only changes state when the input remains stable for a defined duration.
     2) `top : ` A multi-channel top module that instantiates multiple debouncer modules using a generate loop. The number of debouncer instances is controlled by the parameter `NUM_PORTS` 
@@ -81,4 +84,63 @@ The following screenshot shows the `i_pulse` input (raw switch signal) and the `
 
 ![Debounced Output](ffpga/images/debouncer_output.png)
 
+---
+## Firmware Overview
+- Firmware support to use FPGA as debouncer for buttons.
+    1) `arduino-ide :` shrikeLite_debouncer.ino - demonstrates how to read a debounced button signal on an RP2040 pin from FPGA.
+---
 
+Read the firmware file(s) under [firmware](firmware) directory to get an overview on how to interface and test the debouncer example on ShrikeLite.
+
+### Quick steps for Arduino IDE
+- Connect the board as per the [block diagram](https://github.com/UpendraReddi/shrike-lite/tree/dev-debouncer/examples/debouncer#block-diagram).
+- Connect the board to your machine via USB.
+- Open [Arduino IDE](https://github.com/vicharak-in/shrike-lite/blob/main/Docs/getting_started.md#using-it-with-arduinoide) and select the correct board configuration.
+- Copy the code or open the ino file in the Arduino IDE.
+- Copy the [generated](https://github.com/vicharak-in/shrike-lite/blob/main/Docs/generating_your_first_bitstream.md) [bitstream](ffpga/src/) to [data](https://github.com/vicharak-in/shrike-lite/blob/582c17b042aa2b085ea4249943b5e8b3290207ab/Docs/getting_started.md#step-4-programming-the-fpga-from-arduinoide) folder.
+- Build and upload the file system ([littleFS](https://github.com/vicharak-in/shrike-lite/blob/582c17b042aa2b085ea4249943b5e8b3290207ab/Docs/getting_started.md#step-2-adding-the-littlefs-tool)) and the sketch.
+- Open the [serial terminal](https://docs.arduino.cc/software/ide-v2/tutorials/ide-v2-serial-monitor/) and view the logs after button press and release events.
+
+### Serial Logs
+
+- **Reading button without debouncer (Read the [sketch](firmware/arduino-ide/shrikeLite_debouncer.ino) for more information)**
+```text
+The button is released
+
+(Event) Single button press and release :
+
+The button is pressed
+The button is released
+The button is pressed
+The button is released
+The button is pressed
+The button is released
+The button is pressed
+The button is released
+The button is pressed
+The button is released
+```
+
+> **Observation:**  
+> For a single button press and release event, multiple press and release events have been detected.
+
+- **Reading button with debouncer on FPGA**
+```text
+[ShrikeFlash] Initialized successfully
+[ShrikeFlash] Starting FPGA flash...
+[ShrikeFlash] Flashing: /debouncer_generic.bin
+[ShrikeFlash] File size: 46408 bytes
+[ShrikeFlash] FPGA programming done.
+[ShrikeFlash] Time: 309 ms, Rate: 146.67 KB/s
+The button is released
+
+(event) On button Press:
+The button is pressed
+
+(event) On button Release:
+The button is released
+```
+
+> **Observation:**  
+> For a single button press and release event, the associated events have been reported succesfully.
+> No multiple event log reported as the previous one.
