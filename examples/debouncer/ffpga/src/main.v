@@ -4,20 +4,19 @@
 // 
 // Create Date:     November 20, 2025
 // Design Name:     Debouncer
-// Module Name:     debouncer.v
+// Module Name:     top.v
 // Project:         Shrike-Lite Examples
 // Target Device:   Shrike-Lite (RP2040 + Renesas FPGA (SLG47910V))
 // Tool Versions:   Go Configure Software Hub v.6.48
 // 
 // Description: 
-//    This module is used to debounce any switch or button coming into the FPGA
-//    Does not allow the output of the switch to change unless the switch is
-//    steady for enough time (not toggling).
+//    This module is the top module of debouncer,that will generate multiple 
+//    instances of debouncer design based on the NUM_PORTS parameter.
 // 
-// Dependencies: None
+// Dependencies: debouncer.v
 // 
 // Version:
-//    1.0 - 20/11/2025 - KKK - Initial release
+//    1.0 - 20/11/2025 - Initial release
 // 
 // Additional Comments: 
 //
@@ -25,33 +24,30 @@
 //    Proprietary © Vicharak Computers PVT LTD - 2025
 //-----------------------------------------------------------------------------
 
-(* top *) module debouncer(
-    (* iopad_external_pin, clkbuf_inhibit *) input   clk,
-    (* iopad_external_pin *) input   i_pulse,
-    (* iopad_external_pin *) output  o_pulse,
-    (* iopad_external_pin *) output  o_pulse_en,
-    (* iopad_external_pin *) output  clk_en
+(* top *) module top #(
+    parameter NUM_PORTS = 1,                   // Number of debouncer channels
+    parameter DEBOUNCE_CNT_LIMIT = 5_00_000
+)(
+    (* iopad_external_pin, clkbuf_inhibit *) input  	    clk,
+    (* iopad_external_pin *) input      [NUM_PORTS-1:0]  i_pulse,
+    (* iopad_external_pin *) output     [NUM_PORTS-1:0]  o_pulse,
+    (* iopad_external_pin *) output                      clk_en,
+    (* iopad_external_pin *) output     [NUM_PORTS-1:0]  o_pulse_en
 );
 
-localparam DEBOUNCE_CNT_LIMIT = 5_00_000;  // 10 ms at 50 MHz (min time)
+assign clk_en     = 1'b1;
+assign o_pulse_en =  {NUM_PORTS{1'b1}};
 
-reg [19:0]  r_clk_cnt = 0;
-reg         r_pulse = 1'b0; // To store previous i_pulse value 
-
-assign clk_en = 1'b1;
-assign o_pulse_en = 1'b1;
-assign o_pulse = r_pulse;
-
-always @(posedge clk) begin
-    if((i_pulse != r_pulse) && (r_clk_cnt < DEBOUNCE_CNT_LIMIT)) begin
-        r_clk_cnt <= r_clk_cnt + 1;
+genvar i;
+generate
+    for (i = 0; i < NUM_PORTS; i = i + 1) begin : GEN_DEBOUNCERS
+        debouncer #(
+            .DEBOUNCE_CNT_LIMIT(DEBOUNCE_CNT_LIMIT)
+        ) u_debouncer (
+            .clk(clk),
+            .i_pulse(i_pulse[i]),
+            .o_pulse(o_pulse[i])
+        );
     end
-    else if(r_clk_cnt == DEBOUNCE_CNT_LIMIT) begin
-        r_pulse <= i_pulse;
-        r_clk_cnt <= 0;
-    end 
-    else begin
-        r_clk_cnt <= 0;
-    end
-end
+endgenerate
 endmodule

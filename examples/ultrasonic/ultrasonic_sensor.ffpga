@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GPDProject version="39" oldestCompatibleVersion="32" GPDVersion="6.50.003" lastChange="2 Dec 2025 17:04:39" projectChecksumState="1" projectChecksum="aacc6e46">
+<GPDProject version="39" oldestCompatibleVersion="32" GPDVersion="6.50.003" lastChange="4 Dec 2025 15:17:03" projectChecksumState="1" projectChecksum="82a17cee">
     <generalProjectSettings/>
     <chip family="04" type="06" friendlyName="FFPGA" partNumber="67" package="26">
         <nvmData registerLenght="480">0 0 0 28 0 0 0 0 A5 A5 A5 A5 0 0 0 0 0 0 0 0 5A 5A 5A 5A 0 0 0 0 22 22 22 22 22 22 22 22 22 22 0 0 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</nvmData>
@@ -191,7 +191,7 @@
         <wire output="43" input="2" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="30" wireText="NET30" wireState="0">
             <points>(320.00,498.00); (97.00,498.00)</points>
         </wire>
-        <wire output="44" input="3" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="31" wireText="NET31" wireState="0">
+        <wire output="44" input="3" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="31" wireText="NET31" wireState="0">
             <points>(320.00,449.00); (212.00,449.00)</points>
         </wire>
         <wire output="45" input="4" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="32" wireText="NET32" wireState="0">
@@ -248,7 +248,7 @@
         <wire output="62" input="21" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="49" wireText="NET49" wireState="0">
             <points>(320.00,531.00); (108.00,531.00); (108.00,552.00); (54.00,552.00); (54.00,534.00)</points>
         </wire>
-        <wire output="63" input="22" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="50" wireText="NET50" wireState="0">
+        <wire output="63" input="22" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="50" wireText="NET50" wireState="0">
             <points>(320.00,482.00); (220.00,482.00); (220.00,490.00); (169.00,490.00); (169.00,484.00)</points>
         </wire>
         <wire output="64" input="23" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="51" wireText="NET51" wireState="0">
@@ -640,7 +640,7 @@
         <openedTabs>
             <openedTab>main.v</openedTab>
             <openedTab>I/O Planner</openedTab>
-            <openedTab>debouncer.v</openedTab>
+            <openedTab>ultrasonic_sensor.v</openedTab>
         </openedTabs>
         <pipelineStagesStates>
             <pipelineStageState>
@@ -655,7 +655,7 @@
         <modules>
             <scr>
                 <module filename="main.v"/>
-                <module filename="debouncer.v"/>
+                <module filename="ultrasonic_sensor.v"/>
             </scr>
             <lib/>
             <sim/>
@@ -668,98 +668,23 @@
                 <record id="CLK_t[0:0]_W_in0">
                     <port-name>clk</port-name>
                 </record>
-                <record id="IOB_t[0:0]_xy[0:11]_out0">
-                    <port-name>pll_clk_selection</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[0:11]_out1">
-                    <port-name>pll_bypass</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[0:12]_out0">
-                    <port-name>pll_fbdiv[0]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[0:12]_out1">
-                    <port-name>pll_fbdiv[1]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[0:13]_out0">
-                    <port-name>pll_fbdiv[2]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[0:13]_out1">
-                    <port-name>pll_fbdiv[3]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[0:14]_out0">
-                    <port-name>pll_fbdiv[4]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[0:14]_out1">
-                    <port-name>pll_fbdiv[5]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[0:15]_out0">
-                    <port-name>pll_fbdiv[6]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[0:15]_out1">
-                    <port-name>pll_fbdiv[7]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[0:16]_out0">
-                    <port-name>pll_fbdiv[8]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[0:16]_out1">
-                    <port-name>pll_fbdiv[9]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[0:17]_out0">
-                    <port-name>pll_fbdiv[10]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[0:17]_out1">
-                    <port-name>pll_fbdiv[11]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[0:18]_out0">
-                    <port-name>pll_en</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[0:19]_out0">
-                    <port-name>pll_postdiv1[0]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[0:19]_out1">
-                    <port-name>pll_postdiv1[1]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[0:20]_out0">
-                    <port-name>pll_postdiv1[2]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[0:20]_out1">
-                    <port-name>pll_postdiv2[0]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[0:21]_out0">
-                    <port-name>pll_postdiv2[1]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[0:21]_out1">
-                    <port-name>pll_postdiv2[2]</port-name>
-                </record>
                 <record id="IOB_t[0:0]_xy[0:25]_out0">
                     <port-name>clk_en</port-name>
                 </record>
                 <record id="IOB_t[0:0]_xy[0:6]_in0">
-                    <port-name>i_pulse</port-name>
+                    <port-name>echo</port-name>
                 </record>
                 <record id="IOB_t[0:0]_xy[0:7]_out0">
-                    <port-name>o_pulse</port-name>
+                    <port-name>trig</port-name>
                 </record>
                 <record id="IOB_t[0:0]_xy[0:7]_out1">
-                    <port-name>o_pulse_en</port-name>
+                    <port-name>trig_en</port-name>
                 </record>
-                <record id="IOB_t[0:0]_xy[31:19]_out0">
-                    <port-name>pll_refdiv[0]</port-name>
+                <record id="IOB_t[0:0]_xy[0:9]_out0">
+                    <port-name>object_detected</port-name>
                 </record>
-                <record id="IOB_t[0:0]_xy[31:19]_out1">
-                    <port-name>pll_refdiv[1]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[31:20]_out0">
-                    <port-name>pll_refdiv[2]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[31:20]_out1">
-                    <port-name>pll_refdiv[3]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[31:21]_out0">
-                    <port-name>pll_refdiv[4]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[31:21]_out1">
-                    <port-name>pll_refdiv[5]</port-name>
+                <record id="IOB_t[0:0]_xy[0:9]_out1">
+                    <port-name>object_detected_en</port-name>
                 </record>
             </records>
         </io-spec-tool>
@@ -957,7 +882,7 @@
     </fpga-data>
     <projectData>
         <specs>
-            <lastModify lastModifyValue="19.11.2025 12:42:59"/>
+            <lastModify lastModifyValue="28.11.2025 10:44:43"/>
             <vddSpecs vddMin="1.05" vddTyp="1.1" vddMax="1.15"/>
             <vdd2Specs vdd2Min="1.71" vdd2Typ="2.5" vdd2Max="3.465"/>
             <tempSpecs tempMin="-40" tempTyp="25" tempMax="85"/>
