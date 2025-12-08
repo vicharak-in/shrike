@@ -1,0 +1,14 @@
+# examples are real code, not just docs
+examples/** linguist-documentation=false linguist-detectable=true
+
+# explicitly mark Verilog / SystemVerilog
+*.v   linguist-language=Verilog
+*.vh  linguist-language=Verilog
+*.sv  linguist-language=SystemVerilog
+*.svh linguist-language=SystemVerilog
+# -----------------------------------------------
+# Ignore XML + SVG in language classification
+# (still visible in repo, but not counted)
+# -----------------------------------------------
+*.ffpga linguist-documentation=true
+*.svg linguist-documentation=true
