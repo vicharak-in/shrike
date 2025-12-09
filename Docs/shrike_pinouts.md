@@ -6,7 +6,7 @@
 
 <div align="center">
 
- <img src="./images/shrike_pinouts.png" alt="shrike" width="100%">
+ <img src="./images/shrike_pinouts.svg" alt="shrike" width="100%">
 
 </div>
 
