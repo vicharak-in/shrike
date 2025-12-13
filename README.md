@@ -7,6 +7,7 @@ Currently the family features these two members -:
 
 1. Shrike-lite (FPGA with RP2040) 
 2. Shrike      (FPGA with RP2350) 
+
 And a lot version under development.
 
 We usually work on very complex FPGA-based projects built around [Vaaman](https://vicharak.in/vaaman) and its upcoming series. However, Shrike is a passion project at Vicharak, driven by our love for engineering across both embedded microcontrollers and FPGAs.
@@ -19,7 +20,7 @@ We invite contributors from all over the world to join us in this mission. Toget
 
 ### Get the Hardware 
 
-Shrike-lite the RP2040 version of the family is available at out store for worldwide shipping and the Shrike RP2350 version will be available on the crowdsupply soon. You can follow the links below to get both.
+Shrike-lite the RP2040 version of the family is available at our store for worldwide shipping and the Shrike RP2350 version will be available on the crowdsupply soon. You can follow the links below to get both.
 
 
 #### 1. [Shrike-lite](https://store.vicharak.in/?product=shrike&post_type=product&name=shrike&v=13b5bfe96f3e)
@@ -52,9 +53,9 @@ Shrike-lite the RP2040 version of the family is available at out store for world
 
 
 ### Check out 
- 1. [Documentation](https://vicharak-in.github.io/shrike-lite/index.html)
- 2. [Pin_outs](https://vicharak-in.github.io/shrike-lite/shrike_pinouts.html)
- 3. [FPGA_CPU_Interconnect](https://vicharak-in.github.io/shrike-lite/shrike_pinouts.html)
+ 1. [Documentation](https://vicharak-in.github.io/shrike/index.html)
+ 2. [Pin_outs](https://vicharak-in.github.io/shrike/shrike_pinouts.html)
+ 3. [FPGA_CPU_Interconnect](https://vicharak-in.github.io/shrike/shrike_pinouts.html#fpga-rp2040-communication-pin-outs)
 
 
 ## 📫 Join our communities at :
