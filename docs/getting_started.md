@@ -2,21 +2,21 @@
 
 # Getting Started
 
-In this getting started guide we will see how to blink an led on shrike both on fpga and RP2040.
+In this getting started guide we will see how to blink an led on shrike both on fpga and RP2350/RP2040.
 
-You can program the microcontroller on Shrike-lite using two methods:<br>
+You can program the microcontroller on Shrike using two methods:<br>
 &emsp;**1. Arduino (C/C++)**  
 &emsp;**2. MicroPython using the UF2 bootloader**
 
 Both are beginner-friendly, and you can switch between them anytime.  
-Let’s follow the steps and get Shrike-lite up and running!
+Let’s follow the steps and get Shrike up and running!
 
 ::::{tab-set}
 :::{tab-item} ArduinoIDE
 
 # Using it with ArduinoIDE
 
-If you already know Arduino and love working with the Arduino IDE, you can continue using it with Shrike-lite. You do not have to switch to MicroPython unless you want to., 
+If you already know Arduino and love working with the Arduino IDE, you can continue using it with Shrike. You do not have to switch to MicroPython unless you want to., 
 
 
 We will follow these steps to setup our arduino IDE for shrike. If you don't have arduino IDE already ,you can download it from [here](https://www.arduino.cc/en/software/) or if you are using linux(ubuntu)then just run 
@@ -167,14 +167,14 @@ Now that we have got all the required tools set-ed up let blink some leds.
 
 Open thonny and connect the board to the laptop (do not press boot button this time). And do these two things 
    1. Connect the board from the bottom right corner of Thonny IDE.
-   2. Go to file view mode in the thonny to see the rp2040 as a file system.
+   2. Go to file view mode in the thonny to see the RP2350/RP2040 as a file system.
 
 ### 5. Flashing the bitstream 
 
 The bitstream needs to be copied to the Shrike Mass storage part this is a simple copy process same way as copying a file to a USB drive.
 
 Or you can use this way -- 
-You should in thonny see both the your pc and rp2040 file's on the left windows now we have to transfer the led_blink.bin file to the rp2040. 
+You should in thonny see both the your pc and RP2350/RP2040 file's on the left windows now we have to transfer the led_blink.bin file to the RP2350/RP2040. 
 To do so find the file on your system then right click and upload.
 
 Now we will have to flash this file to the fpga to do so we will use the function 
@@ -194,7 +194,7 @@ in thonny open a new python file and write this python script
     shrike.flash("blink_led.bin")
 ```
 
-Save this file to your board (RP2040) and run it. (to run this file on board boot up just name it as main.py)
+Save this file to your board (RP2350/RP2040) and run it. (to run this file on board boot up just name it as main.py)
 
 :::
 ::::

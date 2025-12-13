@@ -18,7 +18,7 @@
 <div align="center">
 
 
-| FPGA PIN | RP 2040 PIN |       RP2040         |       FPGA             |
+| FPGA PIN | RP2350/RP2040 PIN |       RP2350/RP2040         |       FPGA             |
 |----------|-------------|----------------------|------------------------|
 | EN       | 13          | GPIO                 | EN (Enable)            |
 | PWR      | 12          | GPIO                 | PWR                    |

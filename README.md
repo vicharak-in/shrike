@@ -1,41 +1,59 @@
-# SHRIKE-lite
+# Shrike 
 
 ![image](./asset/shirke-angle-01.jpg)
 
-We usually work on very complex FPGA-based projects built around Vaaman and its upcoming series. However, Shrike-lite is a passion project at Vicharak, driven by our love for engineering across both embedded microcontrollers and FPGAs.
+Shrike is a family of low cost affordable FPGA development board along with a host microcontroller. 
+Currently the family features these two members -: 
+
+1. Shrike-lite (FPGA with RP2040) 
+2. Shrike      (FPGA with RP2350) 
+And a lot version under development.
+
+We usually work on very complex FPGA-based projects built around [Vaaman](https://vicharak.in/vaaman) and its upcoming series. However, Shrike is a passion project at Vicharak, driven by our love for engineering across both embedded microcontrollers and FPGAs.
 
 Our goal is to make FPGAs accessible to everyone by offering robust toolchains, high-quality hardware, and strong ecosystem support. We’re committed to keeping the hardware prices extremely low, and every piece of software for Shrike will be completely open-source.
 
+We at vicharak have kept in mind need of a learner, maker and a hobbyist while designing this art. This dev board will be your stepping stone in the field of FPGA, reconfigurable and heterogenous computing.
+
 We invite contributors from all over the world to join us in this mission. Together, let’s make FPGA technology truly accessible to all. 
 
-Shrike-lite is lighter version of world's first fully open source FPGA Dev board [crowdsupply](https://www.crowdsupply.com/vicharak/shrike) releasing on CrowdSupply Renesas Forge FPGA SLG47910 and RP2350. 
+### Get the Hardware 
 
-We at vicharak have kept in mind need of a learner, maker and a hobbyist while designing this art. This dev board will be your stepping stone in the field of FPGA, reconfigurable and heterogenous computing. 
+Shrike-lite the RP2040 version of the family is available at out store for worldwide shipping and the Shrike RP2350 version will be available on the crowdsupply soon. You can follow the links below to get both.
+
+
+#### 1. [Shrike-lite](https://store.vicharak.in/?product=shrike&post_type=product&name=shrike&v=13b5bfe96f3e)
+
+#### 2. [Shrike](https://www.crowdsupply.com/vicharak/shrike)
 
 ### Board level Block Diagram
 
 <div align="center">
 
-![shrike](./asset/shrike_lite.svg)
+![shrike](./asset/shrike_block.svg)
 
 </div>
 
+
 ### Key Features : 
 
-1.  FPGA with 1120 5 Input LUT's
-2.  RP2040 - ARM Cortex M0
-3.  PMOD Compatible Connector
-4.  Bread Board compatible 
-5.  IO interface Between FPGA and MCU
-6.  4MB QSPI Flash 
-7.  2x User LED's
-8.  Type C Port for Power and Programming 
+| **Feature**                          | **Shrike**                         | **Shrike-lite**                   |
+|:-----------------------------------:|:----------------------------------:|:---------------------------------:|
+| FPGA                                | 1120 × 5-input LUTs                | 1120 × 5-input LUTs               |
+| MCU                                 | RP2350                            | RP2040                            |
+| PMOD Compatible Connector           | ✅                                | ✅                                |
+| Breadboard Compatible               | ✅                                | ✅                                |
+| FPGA ↔ MCU IO Interface             | ✅                                | ✅                                |
+| QSPI Flash                          | 4 MB                              | 4 MB                              |
+| User LEDs                           | 2                                 | 2                                 |
+| USB Type-C (Power & Programming)    | ✅                                | ✅                                |
+
 
 
 
 ### Check out 
  1. [Documentation](https://vicharak-in.github.io/shrike-lite/index.html)
- 2. [PIN_OUTS](https://vicharak-in.github.io/shrike-lite/shrike_pinouts.html)
+ 2. [Pin_outs](https://vicharak-in.github.io/shrike-lite/shrike_pinouts.html)
  3. [FPGA_CPU_Interconnect](https://vicharak-in.github.io/shrike-lite/shrike_pinouts.html)
 
 
@@ -48,14 +66,6 @@ We at vicharak have kept in mind need of a learner, maker and a hobbyist while d
 We are building a ecosystem for learners , makers and hobbyist around shrike and the projects that will follow in future, thus we request you contribution in the same. Join our communities across all the platforms, pitch and showcase your ideas with Shrike. 
 
 Thank You 
- 
-
-
-<div align="center">
-
-![blink_webp](./asset/shrike_blink.webp)
-</div>
-
 
 
 ## Contribution Guideline  
@@ -89,4 +99,4 @@ Thank You
 
 2. EDA Tool - [Go Configure Software Hub](https://www.renesas.com/en/software-tool/go-configure-software-hub)
 
-3. RP2040 Related Resources- [Getting Started ](https://projects.raspberrypi.org/en/projects/getting-started-with-the-pico)
+3. RP2350/RP2040 Related Resources- [Getting Started ](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html)

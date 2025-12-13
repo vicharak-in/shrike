@@ -5,7 +5,7 @@ on:
     branches:
       - main
     paths:
-      - 'Docs/**'   # Trigger only when files in Docs/ change
+      - 'docs/**'   # Trigger only when files in docs/ change
 
 permissions:
   contents: write 
@@ -30,7 +30,7 @@ jobs:
 
       - name: Build documentation
         run: |
-          sphinx-build -b html Docs/ build/
+          sphinx-build -b html docs/ build/
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v4

@@ -7,7 +7,7 @@ The shrike  features Reneasas Forge FPGA SLG47910 1120 Luts FPGA and RP2040/RP23
  To work with Shrike you will need these 2 software.
 
    1. Go Configure Software Hub (For Fpga Development)
-   2. Thonny IDE (For RP2040/2350).
+   2. Thonny IDE (For RP2350/RP2040).
 
 We will install these software on you host machine (computer) one by one.
 
@@ -59,7 +59,7 @@ Congratulations you are one step near to FPGA Development.
 
 ### 2. Setting up Thonny IDE 
 
-To work with RP2040/RP2350 side we will need thonny IDE it's officially recommended by the Raspberry pi. 
+To work with RP2350/RP2040 side we will need thonny IDE it's officially recommended by the Raspberry pi. 
 
 Follow these steps get Thonny on you computer. 
 

@@ -9,14 +9,20 @@
 .. rst-class:: lead
 
 ##############################################
- Welcome to Shrike-lite  FPGA's documentation!
+ Welcome to Shrike FPGA's documentation!
 ##############################################
 
-Shrike-lite is lighter version of world's first fully open source FPGA Dev board crowdsupply releasing on CrowdSupply Renesas Forge FPGA SLG47910 and RP2350.
+Shrike is a family of low cost affordable FPGA development board along with a host microcontroller. 
+Currently the family features these two members -: 
+
+1. Shrike-lite (FPGA with RP2040) 
+2. Shrike      (FPGA with RP2350) 
+And a lot version under development.
+
 
 We at vicharak have kept in mind need of a learner, maker and a hobbyist while designing this art. This dev board will be your stepping stone in the field of FPGA , reconfigurable and heterogenous computing.
 
-.. image:: ./../asset/shrike_lite.svg
+.. image:: ./../asset/shrike_block.svg
    :width: 100%
    :align: center
 

@@ -13,9 +13,9 @@ Now we will follow these steps to setup our arduino IDE for shrike. If you don't
 sudo apt install arduino
 ```
 
-### Step 1. Adding the board support for RP2040/RP2350
+### Step 1. Adding the board support for RP2350/RP2040
 
-The Shrike has a on board RP2040/RP2350 has a host controller the Arduino IDE doesn't native support them however we can add the board support for the same. 
+The Shrike has a on board RP2350/RP2040 has a host controller the Arduino IDE doesn't native support them however we can add the board support for the same. 
 It is quit straight forward we need to add this URL 
 ```
 https://github.com/earlephilhower/arduino-pico/releases/download/global/package_rp2040_index.json
