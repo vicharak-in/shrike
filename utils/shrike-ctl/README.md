@@ -32,7 +32,7 @@ Once the board is running the shrike-ctl firmware, the FPGA can be  programmed f
 
 ### Usage
 
-Exicute the Python script with argumnets for the serial port and bitstream path, 
+Execute the Python script with arguments for the serial port and bitstream path, 
 
 for example:
 
@@ -45,9 +45,9 @@ Where:
 - `<PORT>` is the serial port name (e.g., `COM5` on Windows, `/dev/ttyACM0` or `/dev/ttyUSB0` on Linux).  
 - `<BitstreamFilePath>` is the path to your FPGA bitstream file.
 
-
-#### In your CMakeLists.txt file, update the path to the location where you downloaded the pico-sdk. This path is required in CMakeLists.txt.
-Replace your path `include(/home/prasad-gaikwad/pico-sdk/pico_sdk_import.cmake)`
-
+### Build guide
+```note
+In your CMakeLists.txt file, update the path to pico-sdk.
+Replace your path at `include(/PATH/TO/PICO_SDK/pico_sdk_import.cmake)`
+```
 Download `PICO-SDK` [here](https://github.com/raspberrypi/pico-sdk/blob/master/README.md)
- 
