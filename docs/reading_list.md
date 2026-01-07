@@ -24,8 +24,3 @@ This is a compilation of the resources and references suggested for Shrike and F
 3. [icebreaker-Project](https://github.com/icebreaker-fpga/icebreaker)
 4. [pico-ice](https://pico-ice.tinyvision.ai/)
    
-
-## 3. Communities to Join
-1. [ULX3S](https://discord.gg/WwWtuk5w)
-2. [TinyVision](https://discord.gg/RQXEF59m)
-3. [1bitsquared](https://discord.gg/nrnGxCuF)
