@@ -1,0 +1,62 @@
+`timescale 1ns / 1ps
+
+module tb_dds_ask;
+
+    // Inputs
+    reg [5:0] i_freq_word;
+    reg       i_data;
+    reg       i_clk = 0;
+
+    // Outputs
+    wire      o_pwm_out;
+    wire      o_pwm_out_oe;
+    wire      o_clk_en;
+
+    // Instantiate the DUT
+    // The Linter will find this via the `include`
+    // The Simulator will handle the duplicate via the `ifndef` guard in main.v
+    dds_ask_modulator uut (
+        .i_freq_word(i_freq_word),
+        .i_data(i_data),
+        .i_clk(i_clk),
+        .o_pwm_out(o_pwm_out),
+        .o_pwm_out_oe(o_pwm_out_oe),
+        .o_clk_en(o_clk_en)
+    );
+
+    // Clock
+    always #10 i_clk = ~i_clk;
+
+    // Test Stimulus
+    initial begin
+        $dumpfile("waveform.vcd");
+        $dumpvars(0, tb_dds_ask);
+
+        i_data = 0;
+        i_freq_word = 6'd60;
+        #25000;
+
+        i_freq_word = 6'd60;
+        i_data = 1;
+        #25000;
+
+        i_data = 0;
+        i_freq_word = 6'd60;
+        #25000;
+
+        i_freq_word = 6'd60;
+        i_data = 1;
+        #25000;
+
+        i_data = 0;
+        i_freq_word = 6'd60;
+        #25000;
+
+        i_freq_word = 6'd60;
+        i_data = 1;
+        #25000;
+
+        $finish;
+    end
+
+endmodule
