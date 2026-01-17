@@ -25,7 +25,8 @@ The beauty of this setup is that you can reprogram the FPGA an unlimited number 
 As discussed earlier, we’ll need to learn how compilation works for both systems: the FPGA and the micro-controller (RP2350/RP2040).
 
 The binary files that the FPGA understands are called **bitstreams**.  
-Follow the guide here to learn how to generate a bitstream for the FPGA:  [Generating Your First Bitstream](https://vicharak-in.github.io/shrike-lite/generating_your_first_bitstream.html)
+Follow the guide here to learn how to generate a bitstream for the FPGA: 
+ [Generating Your First Bitstream](https://vicharak-in.github.io/shrike/generating_your_first_bitstream.html)
 
 Once you have the bitstream, you’re ready to load it into the FPGA through a microcontroller (RP2040) program.
 

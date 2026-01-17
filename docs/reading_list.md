@@ -26,6 +26,6 @@ This is a compilation of the resources and references suggested for Shrike and F
    
 
 ## 3. Communities to Join
-1. [ULX3S](https://discord.gg/WwWtuk5w)
-2. [TinyVision](https://discord.gg/RQXEF59m)
-3. [1bitsquared](https://discord.gg/nrnGxCuF)
+1. ULX3S
+2. TinyVision
+3. 1bitsquared

@@ -102,7 +102,7 @@ We have already generated and hosted a bitstream to blink led [here](https://git
 
 Checkout guide to learn how to generate your own fpga design [here](./generating_your_first_bitstream.md).
 
-Onces you have done this go to arduino and hit compile your compilation should finish without error if error occurs don't we have s discord hope on there. 
+Once you have done this, open Arduino IDE and click on Compile. The compilation should complete without any errors. If you encounter any errors, don’t worry—we have a Discord community. Hop in there and we’ll help you out.
 
 If the compilation has been done without any error then it's time to connect the board in boot mode " PRESS THE BOOT BUTTON WHILE CONNECTING THE BOARD WITH PC" ( this should be done only the first time of setting up if arduino are if you have programmed the board with any other way last time).
 
