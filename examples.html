@@ -7,17 +7,17 @@
 <meta content="white" media="(prefers-color-scheme: light)" name="theme-color"/>
 <meta content="black" media="(prefers-color-scheme: dark)" name="theme-color"/>
 <meta content="width=device-width, initial-scale=1" name="viewport"/>
-<title>User guide to access and use shrike from your terminal(CLI) | Shrike Documentation</title>
-<meta content="User guide to access and use shrike from your terminal(CLI) | Shrike Documentation" property="og:title"/>
-<meta content="User guide to access and use shrike from your terminal(CLI) | Shrike Documentation" name="twitter:title"/>
+<title>Example Projects on Shrike | Shrike Documentation</title>
+<meta content="Example Projects on Shrike | Shrike Documentation" property="og:title"/>
+<meta content="Example Projects on Shrike | Shrike Documentation" name="twitter:title"/>
 <link href="_static/pygments.css?v=e72c8e07" rel="stylesheet" type="text/css"/>
 <link href="_static/theme.css?v=42baaae4" rel="stylesheet" type="text/css"/>
 <link href="_static/sphinx-design.min.css?v=95c83b7e" rel="stylesheet" type="text/css"/>
 <link href="_static/awesome-sphinx-design.css?v=15e0fffa" rel="stylesheet" type="text/css"/>
 <link href="search.html" rel="search" title="Search"/>
 <link href="genindex.html" rel="index" title="Index"/>
-<link href="examples.html" rel="next" title="Example Projects on Shrike"/>
-<link href="shrike_pinouts.html" rel="prev" title="Shrike Dev Board Pin Outs"/>
+<link href="reading_list.html" rel="next" title="Reading List"/>
+<link href="shrike_cli_guide.html" rel="prev" title="User guide to access and use shrike from your terminal(CLI)"/>
 <script>
     <!-- Prevent Flash of wrong theme -->
       const userPreference = localStorage.getItem('darkMode');
@@ -79,8 +79,8 @@
 <li class="toctree-l1"><a class="reference internal" href="generating_your_first_bitstream.html">Generating Bitstream</a></li>
 <li class="toctree-l1"><a class="reference internal" href="verilog_style_guide.html">Verilog Style Guide</a></li>
 <li class="toctree-l1"><a class="reference internal" href="shrike_pinouts.html">Shrike Pinouts</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Shrike CLI Guide</a></li>
-<li class="toctree-l1"><a class="reference internal" href="examples.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="shrike_cli_guide.html">Shrike CLI Guide</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="reading_list.html">Reading List</a></li>
 </ul>
 </nav>
@@ -101,97 +101,139 @@
 <path d="M240 856h120V616h240v240h120V496L480 316 240 496v360Zm-80 80V456l320-240 320 240v480H520V696h-80v240H160Zm320-350Z"></path>
 </svg>
 </a>
-<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">User guide to access and use shrike from your terminal(CLI)</span>
+<div class="mr-1">/</div><span aria-current="page" class="font-medium text-foreground overflow-hidden text-ellipsis whitespace-nowrap">Example Projects on Shrike</span>
 </nav>
 <div id="content" role="main">
-<section id="user-guide-to-access-and-use-shrike-from-your-terminal-cli">
-<span id="shrike-cli-guide"></span><h1>User guide to access and use shrike from your terminal(CLI)<a class="headerlink" href="#user-guide-to-access-and-use-shrike-from-your-terminal-cli" title="Link to this heading">¶</a></h1>
-<p>If you are anything like our team at <a class="reference internal" href="#vicharak.in"><span class="xref myst">vicharak</span></a> and you don’t want to move away from the terminal. We have got you cover here is a quick guide for accessing and using shrike from terminal (CLI).</p>
-<p>To do so we will be using mpremote feature of micro-python.</p>
-<p>Before getting started with accessing the shrike over terminal you should upload the shrike uf2 board read first two steps from <a class="reference internal" href="getting_started.html"><span class="std std-doc">this</span></a> guide to learn how to.</p>
-<p>Now we are assuming that you have done those two steps lets connect with shrike over terminal.</p>
-<p>We will follow these steps</p>
-<section id="getting-the-py-env-and-mpremote">
-<h2>1. Getting the Py-env and mpremote<a class="headerlink" href="#getting-the-py-env-and-mpremote" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#getting-the-py-env-and-mpremote'">¶</a></h2>
-<p>Mpremote is a python package and we will have to use pip to install it thus we need to a py virtual env. (if you already have one use that).</p>
-<p>Or to setup a python Env read <a class="reference external" href="https://docs.python.org/3/library/venv.html">this</a> and then activate it .</p>
-<p>Now that your v-env is activated we will get mpremote in the env. To do so run this command</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">    <span class="n">pip</span> <span class="n">install</span> <span class="n">mpremote</span> 
+<section id="example-projects-on-shrike">
+<span id="examples"></span><h1>Example Projects on Shrike<a class="headerlink" href="#example-projects-on-shrike" title="Link to this heading">¶</a></h1>
+<p>Example Projects that you can try on shrike check them out <a class="reference external" href="https://github.com/vicharak-in/shrike/tree/main/examples">here</a>.</p>
+<section id="breathing-led">
+<h2>1. <a class="reference external" href="https://github.com/vicharak-in/shrike/tree/main/examples/breathing_led">Breathing Led</a><a class="headerlink" href="#breathing-led" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#breathing-led'">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">Breathing Led Pattern on LED.
 </span></code></pre></div>
 </div>
-<p>if everything run’s without error you have successfully got all the tools to access shrike over terminal however if you face issues then google it or ask in our discord.</p>
-<p>Now lets blink led form the terminal</p>
 </section>
-<section id="blinking-the-cpu-led">
-<h2>2. Blinking the CPU led<a class="headerlink" href="#blinking-the-cpu-led" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#blinking-the-cpu-led'">¶</a></h2>
-<p>To check out how mpremote works we will first blink the led connected to rp2040 and then we will flash blink led on fpga.</p>
-<p>To blink a led on rp2040 the python script looks like this save this as a test_led.py file on your pc.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="kn">from</span><span class="w"> </span><span class="nn">machine</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pin</span>
-</span><span id="line-2"><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
-</span><span id="line-3">
-</span><span id="line-4"><span class="n">led</span> <span class="o">=</span> <span class="n">Pin</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="n">Pin</span><span class="o">.</span><span class="n">OUT</span><span class="p">)</span>  <span class="c1"># onboard LED on GPIO 25</span>
-</span><span id="line-5">
-</span><span id="line-6"><span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-</span><span id="line-7"><span class="n">led</span><span class="o">.</span><span class="n">toggle</span><span class="p">()</span>   <span class="c1"># switch state</span>
-</span><span id="line-8"><span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+<section id="debounce-button">
+<h2>2. <a class="reference external" href="https://github.com/vicharak-in/shrike/tree/main/examples/debouncer">Debounce Button</a><a class="headerlink" href="#debounce-button" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#debounce-button'">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">Input Button Debounce'r
 </span></code></pre></div>
 </div>
-<p>then we can run this file using the command</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">    <span class="n">mpremote</span> <span class="n">run</span> <span class="n">test_led</span><span class="o">.</span><span class="n">py</span>
-</span></code></pre></div>
-</div>
-<p>if you have multiple shrike or rp2040 connected then you need to specify the port number of the board you want to programme something like</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">    <span class="n">mpremote</span> <span class="n">connect</span> <span class="n">port</span><span class="p">:</span><span class="o">&lt;</span><span class="n">port</span> <span class="n">path</span><span class="o">&gt;</span> <span class="n">run</span> <span class="n">test_led</span><span class="o">.</span><span class="n">py</span>
-</span></code></pre></div>
-</div>
-<p>you should see the led blinking on shrike.</p>
-<p>You can also access the REPL on the rp2040 by running</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">    <span class="n">mpremote</span> 
-</span></code></pre></div>
-</div>
-<p>now you can python one line at a time.</p>
 </section>
-<section id="uploading-the-bitstream-to-the-shrike">
-<h2>3. Uploading the bitstream to the shrike.<a class="headerlink" href="#uploading-the-bitstream-to-the-shrike" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#uploading-the-bitstream-to-the-shrike'">¶</a></h2>
-<p>To flash the fpga with bitstream we need to first upload it to the rp2040 to do that we need to simply run the cp command of mpremote. The bitstream file could be found <a class="reference external" href="https://github.com/vicharak-in/shrike_fpga/tree/main/test/bitstreams">here</a> get the one corresponding to your board version.</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">    <span class="n">mpremote</span> <span class="n">cp</span> <span class="n">blink_led</span><span class="o">.</span><span class="n">bin</span> <span class="p">:</span> 
+<section id="ask-modulator">
+<h2>3. <a class="reference external" href="https://github.com/vicharak-in/shrike/tree/main/examples/ask_modulator">Ask_modulator</a><a class="headerlink" href="#ask-modulator" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#ask-modulator'">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">Ask modulation Engine.
 </span></code></pre></div>
 </div>
-<p>do not forget the : in the end . Now just run the cmd below to check if the file is copied or not</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">    <span class="n">mpremote</span> <span class="n">ls</span> 
-</span></code></pre></div>
-</div>
-<p>lets flash that bitstream to the fpga now.</p>
 </section>
-<section id="flashing-the-fpga">
-<h2>4. Flashing the fpga<a class="headerlink" href="#flashing-the-fpga" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#flashing-the-fpga'">¶</a></h2>
-<p>To flash the uploaded bitstream we need to execute this python script</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="kn">import</span><span class="w"> </span><span class="nn">shrike</span>
-</span><span id="line-2">
-</span><span id="line-3"><span class="c1">#shrike.flash("&lt;bitstream_name&gt;.bin")</span>
-</span><span id="line-4"><span class="c1"># in out case that is </span>
-</span><span id="line-5">
-</span><span id="line-6"><span class="n">shrike</span><span class="o">.</span><span class="n">flash</span><span class="p">(</span><span class="s2">"blink_led.bin"</span><span class="p">)</span>
+<section id="segment-display-clock">
+<h2>4. <a class="reference external" href="https://github.com/vicharak-in/shrike/tree/main/examples/7-segment_display_pmod_clock">7-segment Display Clock</a><a class="headerlink" href="#segment-display-clock" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#segment-display-clock'">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">7 Segment Display Controller and display's clock ticks.
 </span></code></pre></div>
 </div>
-<p>now you can run this cmd as mentioned in step 2 or you can open the repl and type the python script one by one.</p>
-<p>Onces the fpga is flashed you should see the led connected to fpga blinking.</p>
-<p>The mpremote has a lot more features as well you can check them all out in there guide <a class="reference external" href="https://docs.micropython.org/en/latest/reference/mpremote.html#">here</a>.</p>
-<p>Will also suggest reading this <a class="reference external" href="https://github.com/orgs/micropython/discussions/9096">discussion</a>.</p>
+</section>
+<section id="vector-4">
+<h2>5. <a class="reference external" href="https://github.com/vicharak-in/shrike/tree/main/examples/Vector-4">Vector 4</a><a class="headerlink" href="#vector-4" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#vector-4'">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">A 4 Bit Simple as possible CPU.
+</span></code></pre></div>
+</div>
+</section>
+<section id="vector-8">
+<h2>6. <a class="reference external" href="https://github.com/vicharak-in/shrike/tree/main/examples/Vector-8">Vector 8</a><a class="headerlink" href="#vector-8" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#vector-8'">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">A 8 Bit Simple as possible CPU.
+</span></code></pre></div>
+</div>
+</section>
+<section id="i2c-led">
+<h2>7. <a class="reference external" href="https://github.com/vicharak-in/shrike/tree/main/examples/i2c_led">i2c Led</a><a class="headerlink" href="#i2c-led" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#i2c-led'">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">I2C Protocol basic example to controller and LED over I2C.
+</span></code></pre></div>
+</div>
+</section>
+<section id="led-blink">
+<h2>8. <a class="reference external" href="https://github.com/vicharak-in/shrike/tree/main/examples/led_blink">Led blink</a><a class="headerlink" href="#led-blink" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#led-blink'">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">Basic LED blink example.
+</span></code></pre></div>
+</div>
+</section>
+<section id="led-pmod">
+<h2>9. <a class="reference external" href="https://github.com/vicharak-in/shrike/tree/main/examples/led_pmod">Led PMOD</a><a class="headerlink" href="#led-pmod" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#led-pmod'">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">LED PMOD Extension example.
+</span></code></pre></div>
+</div>
+</section>
+<section id="logic-gates">
+<h2>10. <a class="reference external" href="https://github.com/vicharak-in/shrike/tree/main/examples/logic_gates">LOGIC Gates</a><a class="headerlink" href="#logic-gates" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#logic-gates'">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">Emulation of Basic logic gates on shrike.
+</span></code></pre></div>
+</div>
+</section>
+<section id="pll-oscillator">
+<h2>11. <a class="reference external" href="https://github.com/vicharak-in/shrike/tree/main/examples/pll_osc">Pll oscillator</a><a class="headerlink" href="#pll-oscillator" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pll-oscillator'">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">Usage example for PLL.
+</span></code></pre></div>
+</div>
+</section>
+<section id="pmod-patters">
+<h2>12. <a class="reference external" href="https://github.com/vicharak-in/shrike/tree/main/examples/pmod_patterns">Pmod Patters</a><a class="headerlink" href="#pmod-patters" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pmod-patters'">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">Pattern Generator on LED PMOD.
+</span></code></pre></div>
+</div>
+</section>
+<section id="pwm-4">
+<h2>13. <a class="reference external" href="https://github.com/vicharak-in/shrike/tree/main/examples/pwm_4">PWM_4</a><a class="headerlink" href="#pwm-4" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pwm-4'">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">PWM engine on shrike.
+</span></code></pre></div>
+</div>
+</section>
+<section id="spi-loopback-led">
+<h2>14. <a class="reference external" href="https://github.com/vicharak-in/shrike/tree/main/examples/spi_loopback_led">spi_loopback_led</a><a class="headerlink" href="#spi-loopback-led" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#spi-loopback-led'">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">Usage example for SPI.
+</span></code></pre></div>
+</div>
+</section>
+<section id="stack-processor">
+<h2>15. <a class="reference external" href="https://github.com/vicharak-in/shrike/tree/main/examples/stack_processor">stack_processor</a><a class="headerlink" href="#stack-processor" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#stack-processor'">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">SPI based Stack Processor.
+</span></code></pre></div>
+</div>
+</section>
+<section id="uart-led">
+<h2>16. <a class="reference external" href="https://github.com/vicharak-in/shrike/tree/main/examples/uart_led">uart_led</a><a class="headerlink" href="#uart-led" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#uart-led'">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">Usage example for UART.
+</span></code></pre></div>
+</div>
+</section>
+<section id="uart-sum">
+<h2>17. <a class="reference external" href="https://github.com/vicharak-in/shrike/tree/main/examples/uart_sum">uart_sum</a><a class="headerlink" href="#uart-sum" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#uart-sum'">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">UART based ALU.
+</span></code></pre></div>
+</div>
+</section>
+<section id="ultrasonic-controller">
+<h2>18. <a class="reference external" href="https://github.com/vicharak-in/shrike/tree/main/examples/ultrasonic">ultrasonic controller</a><a class="headerlink" href="#ultrasonic-controller" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#ultrasonic-controller'">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">Ultrasonic sensor interfacing with FPGA.
+</span></code></pre></div>
+</div>
+</section>
+<section id="ws2812">
+<h2>19. <a class="reference external" href="https://github.com/vicharak-in/shrike/tree/main/examples/ws2812">ws2812</a><a class="headerlink" href="#ws2812" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#ws2812'">¶</a></h2>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">WS2812 Led controller in FPGA.
+</span></code></pre></div>
+</div>
 </section>
 </section>
 </div><div class="flex justify-between items-center pt-6 mt-12 border-t border-border gap-4">
 <div class="mr-auto">
-<a class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors border border-input hover:bg-accent hover:text-accent-foreground py-2 px-4" href="shrike_pinouts.html">
+<a class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors border border-input hover:bg-accent hover:text-accent-foreground py-2 px-4" href="shrike_cli_guide.html">
 <svg class="mr-2 h-4 w-4" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
 <polyline points="15 18 9 12 15 6"></polyline>
 </svg>
-        Shrike Dev Board Pin Outs
+        User guide to access and use shrike from your terminal(CLI)
       </a>
 </div>
 <div class="ml-auto">
-<a class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors border border-input hover:bg-accent hover:text-accent-foreground py-2 px-4" href="examples.html">
-        Example Projects on Shrike
+<a class="inline-flex items-center justify-center rounded-md text-sm font-medium transition-colors border border-input hover:bg-accent hover:text-accent-foreground py-2 px-4" href="reading_list.html">
+        Reading List
         <svg class="ml-2 h-4 w-4" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
 <polyline points="9 18 15 12 9 6"></polyline>
 </svg>
@@ -200,10 +242,25 @@
 </div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
 <div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
 <ul>
-<li><a :data-current="activeSection === '#getting-the-py-env-and-mpremote'" class="reference internal" href="#getting-the-py-env-and-mpremote">1. Getting the Py-env and mpremote</a></li>
-<li><a :data-current="activeSection === '#blinking-the-cpu-led'" class="reference internal" href="#blinking-the-cpu-led">2. Blinking the CPU led</a></li>
-<li><a :data-current="activeSection === '#uploading-the-bitstream-to-the-shrike'" class="reference internal" href="#uploading-the-bitstream-to-the-shrike">3. Uploading the bitstream to the shrike.</a></li>
-<li><a :data-current="activeSection === '#flashing-the-fpga'" class="reference internal" href="#flashing-the-fpga">4. Flashing the fpga</a></li>
+<li><a :data-current="activeSection === '#breathing-led'" class="reference internal" href="#breathing-led">1. Breathing Led</a></li>
+<li><a :data-current="activeSection === '#debounce-button'" class="reference internal" href="#debounce-button">2. Debounce Button</a></li>
+<li><a :data-current="activeSection === '#ask-modulator'" class="reference internal" href="#ask-modulator">3. Ask_modulator</a></li>
+<li><a :data-current="activeSection === '#segment-display-clock'" class="reference internal" href="#segment-display-clock">4. 7-segment Display Clock</a></li>
+<li><a :data-current="activeSection === '#vector-4'" class="reference internal" href="#vector-4">5. Vector 4</a></li>
+<li><a :data-current="activeSection === '#vector-8'" class="reference internal" href="#vector-8">6. Vector 8</a></li>
+<li><a :data-current="activeSection === '#i2c-led'" class="reference internal" href="#i2c-led">7. i2c Led</a></li>
+<li><a :data-current="activeSection === '#led-blink'" class="reference internal" href="#led-blink">8. Led blink</a></li>
+<li><a :data-current="activeSection === '#led-pmod'" class="reference internal" href="#led-pmod">9. Led PMOD</a></li>
+<li><a :data-current="activeSection === '#logic-gates'" class="reference internal" href="#logic-gates">10. LOGIC Gates</a></li>
+<li><a :data-current="activeSection === '#pll-oscillator'" class="reference internal" href="#pll-oscillator">11. Pll oscillator</a></li>
+<li><a :data-current="activeSection === '#pmod-patters'" class="reference internal" href="#pmod-patters">12. Pmod Patters</a></li>
+<li><a :data-current="activeSection === '#pwm-4'" class="reference internal" href="#pwm-4">13. PWM_4</a></li>
+<li><a :data-current="activeSection === '#spi-loopback-led'" class="reference internal" href="#spi-loopback-led">14. spi_loopback_led</a></li>
+<li><a :data-current="activeSection === '#stack-processor'" class="reference internal" href="#stack-processor">15. stack_processor</a></li>
+<li><a :data-current="activeSection === '#uart-led'" class="reference internal" href="#uart-led">16. uart_led</a></li>
+<li><a :data-current="activeSection === '#uart-sum'" class="reference internal" href="#uart-sum">17. uart_sum</a></li>
+<li><a :data-current="activeSection === '#ultrasonic-controller'" class="reference internal" href="#ultrasonic-controller">18. ultrasonic controller</a></li>
+<li><a :data-current="activeSection === '#ws2812'" class="reference internal" href="#ws2812">19. ws2812</a></li>
 </ul>
 </div>
 </aside>
