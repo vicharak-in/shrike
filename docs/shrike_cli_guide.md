@@ -26,13 +26,13 @@ Now that your v-env is activated we will get mpremote in the env. To do so run t
 ```
 if everything run's without error you have successfully got all the tools to access shrike over terminal however if you face issues then google it or ask in our discord. 
 
-Now lets blink led form the terminal 
+Now lets blink led from the terminal 
 
 ### 2. Blinking the CPU led 
 
-To check out how mpremote works we will first blink the led connected to rp2040 and then we will flash blink led on fpga.
+To check out how mpremote works we will first blink the led connected to rp2040/rp2350 and then we will flash blink_led bitstream on fpga.
 
-To blink a led on rp2040 the python script looks like this save this as a test_led.py file on your pc.
+To blink a led on rp2040/rp2350 the python script looks like this save this as a test_led.py file on your pc.
 
 ```
 from machine import Pin
@@ -65,7 +65,7 @@ now you can python one line at a time.
 
 ### 3. Uploading the bitstream to the shrike.
 
-To flash the fpga with bitstream we need to first upload it to the rp2040 to do that we need to simply run the cp command of mpremote. The bitstream file could be found [here](https://github.com/vicharak-in/shrike_fpga/tree/main/test/bitstreams) get the one corresponding to your board version. 
+To flash the fpga with bitstream we need to first upload it to the rp2040 to do that we need to simply run the cp command of mpremote. The bitstream file could be found [here](https://github.com/vicharak-in/shrike/tree/main/test/bitstreams/) get the one corresponding to your board version. 
 
 ```
     mpremote cp blink_led.bin : 
@@ -85,7 +85,7 @@ To flash the uploaded bitstream we need to execute this python script
 import shrike
 
 #shrike.flash("<bitstream_name>.bin")
-# in out case that is 
+# in our case that is 
 
 shrike.flash("blink_led.bin")
 ```
