@@ -46,5 +46,5 @@ We at vicharak have kept in mind need of a learner, maker and a hobbyist while d
 .. note::
 
    We welcome contributions and bug reports through our `GitHub
-   repository <https://github.com/vicharak-in/shrike-lite>`_.
+   repository <https://github.com/vicharak-in/shrike>`_.
 

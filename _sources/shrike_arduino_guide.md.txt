@@ -77,7 +77,7 @@ Lets program out first bitstream to fpga using the arduino. We will be blinking 
 StartArduino IDE and look for Shrike >- shrike_flash in the example section of IDE and then save it with a name of you choice and at a location of your choice. This will create a folder with the name, now in the folder/dir create a subfolder by name `data` keep the case and in mind. 
 
 Any bitstream that needs to be uploaded to the board should be placed in the folder. 
-We have already generated and hosted a bitstream to blink led [here](https://github.com/vicharak-in/shrike-lite/blob/main/test/bitstreams/v1_4/led_blink.bin) save this bitstream to the data subfolder.
+We have already generated and hosted a bitstream to blink led [here](https://github.com/vicharak-in/shrike/blob/main/test/bitstreams/v1_4/led_blink.bin) save this bitstream to the data subfolder.
 
 Checkout guide to learn how to generate your own fpga design [here](./generating_your_first_bitstream.md).
 

@@ -26,6 +26,7 @@ This is a compilation of the resources and references suggested for Shrike and F
    
 
 ## 3. Communities to Join
-1. ULX3S
-2. TinyVision
-3. 1bitsquared
+1. Vicharak
+2. ULX3S
+3. TinyVision
+4. 1bitsquared

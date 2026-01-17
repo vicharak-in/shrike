@@ -78,4 +78,4 @@ Note : if you are on Debian, Raspbian, Ubuntu, Mint just Run `sudo apt install t
 
 
 
-Congratulations you now have all the tools that you require for developing with shrike. Lets move ahead and Generate Your first Bitstream check this guide [here](./generating_your_first_bitstream.md) .
+Congratulations you now have all the tools that you require for developing with shrike. 

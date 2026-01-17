@@ -120,12 +120,12 @@
 </span></code></pre></div>
 </div>
 <p>if everything run’s without error you have successfully got all the tools to access shrike over terminal however if you face issues then google it or ask in our discord.</p>
-<p>Now lets blink led form the terminal</p>
+<p>Now lets blink led from the terminal</p>
 </section>
 <section id="blinking-the-cpu-led">
 <h2>2. Blinking the CPU led<a class="headerlink" href="#blinking-the-cpu-led" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#blinking-the-cpu-led'">¶</a></h2>
-<p>To check out how mpremote works we will first blink the led connected to rp2040 and then we will flash blink led on fpga.</p>
-<p>To blink a led on rp2040 the python script looks like this save this as a test_led.py file on your pc.</p>
+<p>To check out how mpremote works we will first blink the led connected to rp2040/rp2350 and then we will flash blink_led bitstream on fpga.</p>
+<p>To blink a led on rp2040/rp2350 the python script looks like this save this as a test_led.py file on your pc.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="kn">from</span><span class="w"> </span><span class="nn">machine</span><span class="w"> </span><span class="kn">import</span> <span class="n">Pin</span>
 </span><span id="line-2"><span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
 </span><span id="line-3">
@@ -153,7 +153,7 @@
 </section>
 <section id="uploading-the-bitstream-to-the-shrike">
 <h2>3. Uploading the bitstream to the shrike.<a class="headerlink" href="#uploading-the-bitstream-to-the-shrike" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#uploading-the-bitstream-to-the-shrike'">¶</a></h2>
-<p>To flash the fpga with bitstream we need to first upload it to the rp2040 to do that we need to simply run the cp command of mpremote. The bitstream file could be found <a class="reference external" href="https://github.com/vicharak-in/shrike_fpga/tree/main/test/bitstreams">here</a> get the one corresponding to your board version.</p>
+<p>To flash the fpga with bitstream we need to first upload it to the rp2040 to do that we need to simply run the cp command of mpremote. The bitstream file could be found <a class="reference external" href="https://github.com/vicharak-in/shrike/tree/main/test/bitstreams/">here</a> get the one corresponding to your board version.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1">    <span class="n">mpremote</span> <span class="n">cp</span> <span class="n">blink_led</span><span class="o">.</span><span class="n">bin</span> <span class="p">:</span> 
 </span></code></pre></div>
 </div>
@@ -169,7 +169,7 @@
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="kn">import</span><span class="w"> </span><span class="nn">shrike</span>
 </span><span id="line-2">
 </span><span id="line-3"><span class="c1">#shrike.flash("&lt;bitstream_name&gt;.bin")</span>
-</span><span id="line-4"><span class="c1"># in out case that is </span>
+</span><span id="line-4"><span class="c1"># in our case that is </span>
 </span><span id="line-5">
 </span><span id="line-6"><span class="n">shrike</span><span class="o">.</span><span class="n">flash</span><span class="p">(</span><span class="s2">"blink_led.bin"</span><span class="p">)</span>
 </span></code></pre></div>
