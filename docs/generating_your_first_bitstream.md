@@ -160,7 +160,7 @@ Now that we have synthesized the verilog lets connect the signal to the Input ou
 </div>
  
 
- 3. Lets map the led out signals , filter the selection using only he GPIO , Unpick all the other onces. 
+ 3. Lets map the led out signals , filter the selection , select only the GPIO , un-tick all the other onces. 
 
  We have two signal related to led "LED" and "LED_en" as output, on shrike led is connected to pin number 16 we will connected these signals to "GPIO16_OUT"  and "GPIO16_OE" respectively.
 

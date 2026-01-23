@@ -12,7 +12,7 @@ Shrike is special because it combines two worlds on a single board:
 &emsp;**A Microcontroller (MCU)** — Raspberry Pi’s [RP2350/RP2040](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html) (Pico 1 Family)  
 &emsp;**An FPGA (Field-Programmable Gate Array)**
 
-You can write software for the micro-controller and create digital circuits on the FPGA, and then let them work together to build powerful and fun projects. If you’re curious to learn more about FPGAs, you can read about them here.
+You can write software for the micro-controller and create digital circuits on the FPGA, and then let them work together to build powerful and fun projects. If you’re curious to learn more about FPGAs, you can read about them from resources listed [here](./reading_list.md).
 
 In Shrike, the micro-controller is connected to the FPGA through an SPI bus. The SPI bus is used for two main purposes:
 
