@@ -98,7 +98,7 @@ Lets program out first bitstream to fpga using the arduino. We will be blinking 
 StartArduino IDE and look for Shrike >- shrike_flash in the example section of IDE and then save it with a name of you choice and at a location of your choice. This will create a folder with the name, now in the folder/dir create a subfolder by name `data` keep the case and in mind. 
 
 Any bitstream that needs to be uploaded to the board should be placed in the folder. 
-We have already generated and hosted a bitstream to blink led [here](https://github.com/vicharak-in/shrike-lite/blob/main/test/bitstreams/v1_4/led_blink.bin) save this bitstream to the data subfolder.
+We have already generated and hosted a bitstream to blink led [here](https://github.com/vicharak-in/shrike/blob/main/test/bitstreams/v1_4/led_blink.bin) save this bitstream to the data subfolder.
 
 Checkout guide to learn how to generate your own fpga design [here](./generating_your_first_bitstream.md).
 
@@ -106,7 +106,7 @@ Once you have done this, open Arduino IDE and click on Compile. The compilation 
 
 If the compilation has been done without any error then it's time to connect the board in boot mode " PRESS THE BOOT BUTTON WHILE CONNECTING THE BOARD WITH PC" ( this should be done only the first time of setting up if arduino are if you have programmed the board with any other way last time).
 
-In the tools section select the Board as Generic RP2040/RP2350 based on your board version and flash size as 4MB Sketch:2MB and FS:2MB and CPU Speed as 133Mhz. 
+In the tools section select the Board as VICHARAK Shrike Lite / VICHARAK Shrike based on your board version and flash size as 4MB Sketch:2MB and FS:2MB and CPU Speed as 125 Mhz. 
 
 And then hit upload on the board. 
 
@@ -130,7 +130,7 @@ Now we will here safely assume that you will be using our uf2.
 
 ### 1. Uploading the shrike UF2
 
-1. Download the uf2 corresponding to your board version from the shrike's [Github](https://github.com/vicharak-in/shrike-lite).
+1. Download the uf2 corresponding to your board version from the shrike's [Github](https://github.com/vicharak-in/shrike).
 2. Hold the boot button on the board and connect it the your pc now shrike will show up as as storage device.
 3. Copy the downloaded uf2 in storage device you can simply drag and drop in mostly all the devices. 
 4. After the successful copying the storage device should disappear.
@@ -149,7 +149,7 @@ For windows simply right click and rename for changing the name in linux read [t
 
 ### 3. Get the bitstream(.bin) for led blink 
 
-To program a FPGA you will require  bitstream file this is much like a firmware for MCU's we will see how to generate these but for now we have uploaded the bitstream required for led_bin you can download them the corresponding to your board's version [here](https://github.com/vicharak-in/shrike-lite/tree/main/test/bitstreams). 
+To program a FPGA you will require  bitstream file this is much like a firmware for MCU's we will see how to generate these but for now we have uploaded the bitstream required for led_bin you can download them the corresponding to your board's version [here](https://github.com/vicharak-in/shrike/tree/main/test/bitstreams). 
 
 Now that you have both uf2 and bin file settled up lets move forward and upload the bitstream to board.
 
