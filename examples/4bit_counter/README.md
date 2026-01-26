@@ -171,7 +171,7 @@ print(f"Binary: {binary_str} | Hex: 0x{hex_str}")
 
 ## 6. Hardware Diagram & Significance
 
-![4-bit Up/Down Counter Block Diagram](./media/4Bit_UPDown_Counter.png)
+![4-bit Up/Down Counter Block Diagram](./media/4Bit_UpDown_Counter.png)
 
  
 *Block-level view of the Up/Down Counter showing the FPGA-generated 4-bit counter, parallel data bus to RP2040, and control signals.*
