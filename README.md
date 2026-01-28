@@ -95,6 +95,19 @@ If you spot something small, feel free to open an **issue** instead so we can ba
 Thank You
 
 
+## LICENSE 
+
+### Software
+
+This project’s software is licensed under the GNU General Public License v2.0 (GPL-2.0).
+See the [LICENSE](./LICENSE.md)for details.
+
+### Hardware
+
+This project’s hardware designs (HDL/RTL, schematics, PCB files, constraints, etc.) are licensed under the CERN Open Hardware License v1.2.
+See [LICENSE_HW](./LICENSE_HW.md) for details.
+
+
 ## Useful Links : 
 1. FPGA Datasheet - [Renesas Forge FPGA ](https://www.renesas.com/en/products/slg47910#overview)
 
