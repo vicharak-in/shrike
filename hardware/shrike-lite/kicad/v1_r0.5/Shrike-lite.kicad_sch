@@ -1,0 +1,149 @@
+(kicad_sch
+	(version 20250114)
+	(generator "eeschema")
+	(generator_version "9.0")
+	(uuid "626b50d8-23f3-495d-8beb-8b0f7cda802e")
+	(paper "A3")
+	(lib_symbols)
+	(sheet
+		(at 245.11 119.38)
+		(size 38.1 38.1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 255 255 194 1.0000)
+		)
+		(uuid "4dd279a0-7311-4d00-a74a-f0ead1422d18")
+		(property "Sheetname" "FPGA"
+			(at 252.73 119.38 0)
+			(effects
+				(font
+					(size 5.08 5.08)
+					(thickness 1.016)
+					(bold yes)
+					(italic yes)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "FPGA.kicad_sch"
+			(at 245.11 158.0646 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "Shrike-lite"
+				(path "/626b50d8-23f3-495d-8beb-8b0f7cda802e"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 118.11 119.38)
+		(size 38.1 38.1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 255 255 194 1.0000)
+		)
+		(uuid "80436102-c5c5-4cb8-a941-3ac7d52b0cec")
+		(property "Sheetname" "Power"
+			(at 127.127 119.38 0)
+			(effects
+				(font
+					(size 5.08 5.08)
+					(thickness 1.016)
+					(bold yes)
+					(italic yes)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "Power.kicad_sch"
+			(at 118.11 158.6996 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "Shrike-lite"
+				(path "/626b50d8-23f3-495d-8beb-8b0f7cda802e"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet
+		(at 181.61 119.38)
+		(size 38.1 38.1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(stroke
+			(width 0.1524)
+			(type solid)
+		)
+		(fill
+			(color 255 255 194 1.0000)
+		)
+		(uuid "df4fc8cc-f8bc-489e-b8bc-ccf7195d8a94")
+		(property "Sheetname" "RP2040"
+			(at 184.912 119.126 0)
+			(effects
+				(font
+					(size 5.08 5.08)
+					(thickness 1.016)
+					(bold yes)
+					(italic yes)
+				)
+				(justify left bottom)
+			)
+		)
+		(property "Sheetfile" "RP2040.kicad_sch"
+			(at 181.61 158.0646 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left top)
+				(hide yes)
+			)
+		)
+		(instances
+			(project "Shrike-lite"
+				(path "/626b50d8-23f3-495d-8beb-8b0f7cda802e"
+					(page "4")
+				)
+			)
+		)
+	)
+	(sheet_instances
+		(path "/"
+			(page "1")
+		)
+	)
+	(embedded_fonts no)
+)
