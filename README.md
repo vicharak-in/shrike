@@ -68,6 +68,10 @@ We are building a ecosystem for learners , makers and hobbyist around shrike and
 
 Thank You 
 
+### What to contribute ? 
+You can contribute the project's and example's that you have designed on Shrike or any utils that you might have designed.
+
+We also have live bounty from time to time check it [here](./bounty.md) 
 
 ## Contribution Guideline  
 
