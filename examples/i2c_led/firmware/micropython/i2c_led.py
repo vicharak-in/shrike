@@ -3,6 +3,12 @@
 from machine import Pin, I2C
 import time
 
+
+#reset pin for active low reset 
+# pin value low is reset
+reset = machine.Pin(3, machine.Pin.OUT)
+reset.high()   
+
 # Configure I2C (SDA = GP0, SCL = GP1)
 i2c = I2C(0, scl=Pin(1), sda=Pin(0), freq=100_000)
 

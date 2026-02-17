@@ -31,7 +31,7 @@
 		(
     		// common port
     		.i_clk(i_clk),      //  input clock signal
-    		.i_rst(i_rst),      //  input reset signal
+    		.i_rst(~i_rst),      //  input reset signal
     		.i_en(1),       //  input signal which start operation
     		.o_busy(w_busy),     //  output which indicates the operation state
     		// interface port
@@ -49,7 +49,7 @@
 	reg led_on;
 	
 	always @ (posedge i_clk) begin 
-		if(i_rst)begin
+		if(~i_rst)begin
 			led_on <= 1'b0;
 		end 
 		if(w_int_rx) begin
