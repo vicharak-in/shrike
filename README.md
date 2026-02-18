@@ -6,7 +6,8 @@ Shrike is a family of low cost affordable FPGA development board along with a ho
 Currently the family features these two members -: 
 
 1. Shrike-lite (FPGA with RP2040) 
-2. Shrike      (FPGA with RP2350) 
+2. Shrike      (FPGA with RP2350)
+3. Shrike-fi   (FPGA with ESP32-C3) 
 
 And a lot version under development.
 
@@ -27,6 +28,8 @@ Shrike-lite the RP2040 version of the family is available at our store for world
 
 #### 2. [Shrike](https://www.crowdsupply.com/vicharak/shrike)
 
+#### 3. Shrike-fi (Launching Soon)
+
 ### Board level Block Diagram
 
 <div align="center">
@@ -38,16 +41,22 @@ Shrike-lite the RP2040 version of the family is available at our store for world
 
 ### Key Features : 
 
-| **Feature**                          | **Shrike**                         | **Shrike-lite**                   |
-|:-----------------------------------:|:----------------------------------:|:---------------------------------:|
-| FPGA                                | 1120 × 5-input LUTs                | 1120 × 5-input LUTs               |
-| MCU                                 | RP2350                            | RP2040                            |
-| PMOD Compatible Connector           | ✅                                | ✅                                |
-| Breadboard Compatible               | ✅                                | ✅                                |
-| FPGA ↔ MCU IO Interface             | ✅                                | ✅                                |
-| QSPI Flash                          | 4 MB                              | 4 MB                              |
-| User LEDs                           | 2                                 | 2                                 |
-| USB Type-C (Power & Programming)    | ✅                                | ✅                                |
+| **Feature**                          | **Shrike**             | **Shrike-lite**        |**Shrike-fi**       |
+|:-----------------------------------:|:-----------------------:|:----------------------:|:------------------:|
+| FPGA                                | 1120 × 5-input LUTs     | 1120 × 5-input LUTs    | 1120 × 5-input LUTs|
+| MCU                                 | RP2350                  | RP2040                 | ESP32-C3           |
+| PMOD Compatible Connector           | ✅                      | ✅                     | ✅                 |
+| Breadboard Compatible               | ✅                      | ✅                     | ✅                 |
+| FPGA ↔ MCU IO Interface             | ✅                      | ✅                     | ✅                 |  
+| QSPI Flash                          | 4 MB                    | 4 MB                   | 8 MB               |
+| PSRAM                               | ❌                      | ❌                     | 8 MB               |
+| User LEDs                           | 2                       | 2                      | 2                  |
+| USB Type-C (Power & Programming)    | ✅                      | ✅                     | ✅                 |
+| WiFi                                | ❌                      | ❌                     | ✅                 |
+| BLE                                 | ❌                      | ❌                     | ✅                 |
+| Dedicated USB for UART              | ❌                      | ❌                     | ✅                 |
+
+
 
 
 
