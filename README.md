@@ -44,12 +44,11 @@ Shrike-lite the RP2040 version of the family is available at our store for world
 | **Feature**                          | **Shrike**             | **Shrike-lite**        |**Shrike-fi**       |
 |:-----------------------------------:|:-----------------------:|:----------------------:|:------------------:|
 | FPGA                                | 1120 × 5-input LUTs     | 1120 × 5-input LUTs    | 1120 × 5-input LUTs|
-| MCU                                 | RP2350                  | RP2040                 | ESP32-C3           |
+| MCU                                 | RP2350                  | RP2040                 | ESP32-S3           |
 | PMOD Compatible Connector           | ✅                      | ✅                     | ✅                 |
 | Breadboard Compatible               | ✅                      | ✅                     | ✅                 |
 | FPGA ↔ MCU IO Interface             | ✅                      | ✅                     | ✅                 |  
 | QSPI Flash                          | 4 MB                    | 4 MB                   | 8 MB               |
-| PSRAM                               | ❌                      | ❌                     | 8 MB               |
 | User LEDs                           | 2                       | 2                      | 2                  |
 | USB Type-C (Power & Programming)    | ✅                      | ✅                     | ✅                 |
 | WiFi                                | ❌                      | ❌                     | ✅                 |
