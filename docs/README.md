@@ -1,5 +1,9 @@
 # Welcome to Shrike Documentation 
 
+## NOTE: 
+
+*A more beautiful compiled version of this documentation is available [here](https://vicharak-in.github.io/shrike/), suggest to use it,if you don't hate sphinx.* 
+
 Hello its great to see that you have got shrike dev Board . Now that you have the hardware you can follow the guides we have created and gets your hand's dirty with real hardware. 
 
 For a bit clarification and to insure there is no confusion please follow this Index (Read from 1 to 10).
