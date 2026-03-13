@@ -48,12 +48,12 @@ Shrike-lite the RP2040 version of the family is available at our store for world
 | PMOD Compatible Connector           | ✅                      | ✅                     | ✅                 |
 | Breadboard Compatible               | ✅                      | ✅                     | ✅                 |
 | FPGA ↔ MCU IO Interface             | ✅                      | ✅                     | ✅                 |  
-| QSPI Flash                          | 4 MB                    | 4 MB                   | 8 MB               |
+| Flash (QSPI)                        | 4 MB                    | 4 MB                   | 8 MB               |
+| PSRAM (QSPI)                        | ❌                      | ❌                     | 8 MB               |
 | User LEDs                           | 2                       | 2                      | 2                  |
 | USB Type-C (Power & Programming)    | ✅                      | ✅                     | ✅                 |
 | WiFi                                | ❌                      | ❌                     | ✅                 |
 | BLE                                 | ❌                      | ❌                     | ✅                 |
-| Dedicated USB for UART              | ❌                      | ❌                     | ✅                 |
 
 
 
