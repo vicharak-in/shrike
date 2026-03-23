@@ -58,7 +58,7 @@ Shrike-lite the RP2040 version of the family is available at our store for world
 
 
 
-
+### Documentation for Shrike-fi is work in Progress. 
 
 ### Check out 
  1. [Documentation](https://vicharak-in.github.io/shrike/index.html)
