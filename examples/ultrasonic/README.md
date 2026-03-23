@@ -95,7 +95,7 @@ This design was tested using two different output configurations:
 When testing through the RP2040 MCU, load the Arduino sketch that reads the FPGA interconnect pin. The pin number in your FPGA constraints must match what is used in the Arduino code.
 
 > **Note:**  
-> The output signal `object_detected` can connected to standard GPIO pin of FPGA, or can also be connected to the RP2040 MCU on the Shrike‑Lite board through any FPGA-to-RP2040 interconnect pins. For details on available interconnections and pin mapping, refer to the [Shrike‑Lite pinout reference](https://github.com/vicharak-in/shrike-lite/blob/main/Docs/shrike_pinouts.md).
+> The output signal `object_detected` can connected to standard GPIO pin of FPGA, or can also be connected to the RP2040 MCU on the Shrike‑Lite board through any FPGA-to-RP2040 interconnect pins. For details on available interconnections and pin mapping, refer to the [Shrike‑Lite pinout reference](https://github.com/vicharak-in/shrike/blob/main/docs/shrike_pinouts.md).
 ---
 
 ### Safety NOTE:
@@ -116,12 +116,12 @@ To avoid damaging the FPGA or the sensor:
 Read the firmware file(s) under [firmware](firmware) directory to get an overview on how to interface and test the ultrasonic example on ShrikeLite.
 
 ### Quick steps for Arduino IDE
-- Connect the board as per the [block diagram](https://github.com/UpendraReddi/shrike-lite/tree/dev-ultrasonic_sensor/examples/ultrasonic#block-diagram).
+- Connect the board as per the [block diagram](https://github.com/vicharak-in/shrike/tree/main/examples/ultrasonic#block-diagram).
 - Connect the board to your machine via USB.
-- Open [Arduino IDE](https://github.com/vicharak-in/shrike-lite/blob/main/Docs/getting_started.md#using-it-with-arduinoide) and select the correct board configuration.
+- Open [Arduino IDE](https://github.com/vicharak-in/shrike/blob/main/docs/getting_started.md#using-it-with-arduinoide) and select the correct board configuration.
 - Copy the code or open the ino file in the Arduino IDE.
-- Copy the [generated](https://github.com/vicharak-in/shrike-lite/blob/main/Docs/generating_your_first_bitstream.md) [bitstream](ffpga/src/) to [data](https://github.com/vicharak-in/shrike-lite/blob/582c17b042aa2b085ea4249943b5e8b3290207ab/Docs/getting_started.md#step-4-programming-the-fpga-from-arduinoide) folder.
-- Build and upload the file system ([littleFS](https://github.com/vicharak-in/shrike-lite/blob/582c17b042aa2b085ea4249943b5e8b3290207ab/Docs/getting_started.md#step-2-adding-the-littlefs-tool)) and the sketch.
+- Copy the [generated](https://github.com/vicharak-in/shrike/blob/main/docs/generating_your_first_bitstream.md) [bitstream](ffpga/src/) to [data](https://github.com/vicharak-in/shrike/blob/main/docs/getting_started.md#step-4-programming-the-fpga-from-arduinoide) folder.
+- Build and upload the file system ([littleFS](https://github.com/vicharak-in/shrike/blob/main/docs/getting_started.md#step-2-adding-the-littlefs-tool)) and the sketch.
 - Open the [serial terminal](https://docs.arduino.cc/software/ide-v2/tutorials/ide-v2-serial-monitor/) and view the logs after button press and release events.
 
 ### Serial Logs
@@ -150,4 +150,5 @@ The object is not detected
 
 > **Observation:**  
 > If the Object is in range or not, it reports the event accordingly
+
 
