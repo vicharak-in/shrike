@@ -88,7 +88,7 @@ Then search for pico and the board from Earle F. Philhower.
 
 Then search for ESP32 by Espressif Systems.
 
-TODO: Add board manager image for ESP32.
+<!-- TODO: Add board manager image for ESP32. -->
 
 ::::
 
@@ -116,7 +116,7 @@ This works for both the RP2040 and ESP32-S3 based boards. ( even tho name says e
 
 You will need to restart the Arduino IDE and you should see the Little FS tool like this in your Tools menu.
 
-TODO: Update this image.
+<!-- TODO: Update this image. -->
 
 For more details on the LittleFS tool checkout this [repository](https://github.com/earlephilhower/arduino-littlefs-upload).
 
@@ -127,7 +127,7 @@ For more details on the LittleFS tool checkout this [repository](https://github.
 The Arduino library developed by Vicharak takes care of configuring the FPGA for you. You can install it directly from the Arduino IDE's Library Manager, just search for **"Shrike"** and install the **Shrike** library.
 
 
-TODO: Update this image 
+<!-- TODO: Update this image --> 
 
 <div align="center">
 
@@ -183,6 +183,7 @@ Congratulation you have your arduino IDE and shrike ready to be programmed using
 
 > Credit and Gratitude to [earlephilhower](https://github.com/earlephilhower/) for creating the board support for RP2040/RP2350 in ArduinoIDE and the little FS tool. 
 
+<!-- 
 For shrike Lite
 
 :::::{tab-set}
@@ -202,6 +203,8 @@ Blehh Shrike-fi
 ::::
 
 :::::
+
+-->
 
 ::::::
 

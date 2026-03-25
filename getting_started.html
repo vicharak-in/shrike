@@ -164,7 +164,7 @@ Shrike/Shrike-lite</label><div class="sd-tab-content docutils">
 <label class="sd-tab-label" data-sync-group="tab" data-sync-id="Shrike-fi" for="sd-tab-item-5">
 Shrike-fi</label><div class="sd-tab-content docutils">
 <p>Then search for ESP32 by Espressif Systems.</p>
-<p>TODO: Add board manager image for ESP32.</p>
+
 </div>
 </div>
 <p>Perfect we have successfully add the board support for the Shrike.</p>
@@ -176,11 +176,11 @@ Shrike-fi</label><div class="sd-tab-content docutils">
 <p>Now for setting up these tools for Arduino IDE version 2.x.x please follow <a class="reference external" href="https://randomnerdtutorials.com/arduino-ide-2-install-esp32-littlefs/">this</a> guide and after proper setup please continue the below steps.</p>
 <p>This works for both the RP2040 and ESP32-S3 based boards. ( even tho name says esp32).</p>
 <p>You will need to restart the Arduino IDE and you should see the Little FS tool like this in your Tools menu.</p>
-<p>TODO: Update this image.</p>
+
 <p>For more details on the LittleFS tool checkout this <a class="reference external" href="https://github.com/earlephilhower/arduino-littlefs-upload">repository</a>.</p>
 <p class="rubric" id="step-3-installing-the-shrike-library">Step 3. Installing the Shrike Library</p>
 <p>The Arduino library developed by Vicharak takes care of configuring the FPGA for you. You can install it directly from the Arduino IDE’s Library Manager, just search for <strong>“Shrike”</strong> and install the <strong>Shrike</strong> library.</p>
-<p>TODO: Update this image</p>
+
 <div align="center">
 <a class="reference internal image-reference" href="_images/shrike_lib.png"><img alt="ADD SHRIKE lib" src="_images/shrike_lib.png" style="width: 90%;"/>
 </a>
@@ -215,19 +215,7 @@ Shrike-fi</label><div class="sd-tab-content docutils">
 <blockquote>
 <div><p>Credit and Gratitude to <a class="reference external" href="https://github.com/earlephilhower/">earlephilhower</a> for creating the board support for RP2040/RP2350 in ArduinoIDE and the little FS tool.</p>
 </div></blockquote>
-<p>For shrike Lite</p>
-<div class="sd-tab-set docutils">
-<input checked="checked" id="sd-tab-item-8" name="sd-tab-set-4" type="radio"/>
-<label class="sd-tab-label" data-sync-group="tab" data-sync-id="Shrike/Shrike-lite" for="sd-tab-item-8">
-Shrike/Shrike-lite</label><div class="sd-tab-content docutils">
-<p>Blehhhh Shrike-lite</p>
-</div>
-<input id="sd-tab-item-9" name="sd-tab-set-4" type="radio"/>
-<label class="sd-tab-label" data-sync-group="tab" data-sync-id="Shrike-fi" for="sd-tab-item-9">
-Shrike-fi</label><div class="sd-tab-content docutils">
-<p>Blehh Shrike-fi</p>
-</div>
-</div>
+
 </div>
 <input id="sd-tab-item-1" name="sd-tab-set-0" type="radio"/>
 <label class="sd-tab-label" for="sd-tab-item-1">
@@ -236,8 +224,8 @@ Micro-python</label><div class="sd-tab-content docutils">
 <p>We have created custom binary for shrike this contains a shrike.py library that has custom function to flash fpga and few other functions as well.</p>
 <p class="rubric" id="uploading-the-shrike-binary">1. Uploading the shrike binary</p>
 <div class="sd-tab-set docutils">
-<input checked="checked" id="sd-tab-item-10" name="sd-tab-set-5" type="radio"/>
-<label class="sd-tab-label" data-sync-group="tab" data-sync-id="Shrike/Shrike-lite" for="sd-tab-item-10">
+<input checked="checked" id="sd-tab-item-8" name="sd-tab-set-4" type="radio"/>
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="Shrike/Shrike-lite" for="sd-tab-item-8">
 Shrike/Shrike-lite</label><div class="sd-tab-content docutils">
 <ol class="arabic simple">
 <li><p>Download the binary corresponding to your board version from the shrike’s <a class="reference external" href="https://github.com/vicharak-in/shrike">Github</a>.</p></li>
@@ -252,8 +240,8 @@ Shrike/Shrike-lite</label><div class="sd-tab-content docutils">
 <p>The default device ID for mass storage device is <code class="docutils literal notranslate"><span class="pre">5221-0000</span></code> this could be changed as per your choice.
 For windows simply right click and rename for changing the name in linux read <a class="reference external" href="https://superuser.com/questions/223527/renaming-a-fat16-volume">this</a>.</p>
 </div>
-<input id="sd-tab-item-11" name="sd-tab-set-5" type="radio"/>
-<label class="sd-tab-label" data-sync-group="tab" data-sync-id="Shrike-fi" for="sd-tab-item-11">
+<input id="sd-tab-item-9" name="sd-tab-set-4" type="radio"/>
+<label class="sd-tab-label" data-sync-group="tab" data-sync-id="Shrike-fi" for="sd-tab-item-9">
 Shrike-fi</label><div class="sd-tab-content docutils">
 <ol class="arabic simple">
 <li><p>Download the binary corresponding to your board version from the shrike’s <a class="reference external" href="https://github.com/vicharak-in/shrike">Github</a>.</p></li>
