@@ -31,7 +31,7 @@
 <link href="search.html" rel="search" title="Search"/>
 <link href="genindex.html" rel="index" title="Index"/>
 <link href="hardware_overview.html" rel="next" title="Shrike - Hardware Overview"/>
-<link href="index.html" rel="prev" title="Welcome to Shrike FPGA’s documentation!"/>
+<link href="index.html" rel="prev" title="Welcome to Shrike documentation!"/>
 </head>
 <body :class="{ 'overflow-hidden': showSidebar }" class="min-h-screen font-sans antialiased bg-background text-foreground" x-data="{ showSidebar: false, showScrollTop: false }">
 <div @click.self="showSidebar = false" class="fixed inset-0 z-50 overflow-hidden bg-background/80 backdrop-blur-sm md:hidden" x-cloak="" x-show="showSidebar"></div><div class="relative flex flex-col min-h-screen" id="page"><a class="absolute top-0 left-0 z-[100] block bg-background p-4 text-xl transition -translate-x-full opacity-0 focus:translate-x-0 focus:opacity-100" href="#content">
@@ -108,11 +108,11 @@
 <div id="content" role="main">
 <section id="introduction-to-shrike-project">
 <span id="introduction"></span><h1>Introduction to Shrike Project<a class="headerlink" href="#introduction-to-shrike-project" title="Link to this heading">¶</a></h1>
-<p>Hello! So you’ve got the <strong>Shrike FPGA</strong> - nice!</p>
+<p>Hello! So you’ve got the <strong>Shrike</strong> - nice!</p>
 <p>Before we explain how programming works on Shrike, it’s important to understand what Shrike actually is and how it differs from all kind of other embedded development boards.</p>
 <p>These points will give you the right foundation, especially if you are new to electronics or computing systems. If you already know the basics of microcontroller, FPGAs, and embedded systems, you can skip this introduction and jump directly into the programming section.</p>
 <p>Shrike is special because it combines two worlds on a single board:<br/>
- <strong>A Microcontroller (MCU)</strong> — Raspberry Pi’s <a class="reference external" href="https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html">RP2350/RP2040</a> (Pico 1 Family)<br/>
+ <strong>A Microcontroller (MCU)</strong> — Raspberry Pi’s RP2350/RP2040 (Shrike &amp; Shrike-lite) or ESP32-S3 (Shrike-fi)<br/>
  <strong>An FPGA (Field-Programmable Gate Array)</strong></p>
 <p>You can write software for the micro-controller and create digital circuits on the FPGA, and then let them work together to build powerful and fun projects. If you’re curious to learn more about FPGAs, you can read about them from resources listed <a class="reference internal" href="reading_list.html"><span class="std std-doc">here</span></a>.</p>
 <p>In Shrike, the micro-controller is connected to the FPGA through an SPI bus. The SPI bus is used for two main purposes:</p>
@@ -120,11 +120,11 @@
  2. <strong>Communication</strong> - between the microcontroller and the FPGA.</p>
 <p>While your program is running on the micro-controller, you can configure the FPGA at any time to perform specific tasks. Not only that, once the FPGA is programmed, it can also communicate with the MCU back and forth.
 The beauty of this setup is that you can reprogram the FPGA an unlimited number of times, and that’s exactly where reconfigurable computing comes to life.</p>
-<p>As discussed earlier, we’ll need to learn how compilation works for both systems: the FPGA and the micro-controller (RP2350/RP2040).</p>
+<p>As discussed earlier, we’ll need to learn how compilation works for both systems: the FPGA and the micro-controller .</p>
 <p>The binary files that the FPGA understands are called <strong>bitstreams</strong>.<br/>
 Follow the guide here to learn how to generate a bitstream for the FPGA:
 <a class="reference external" href="https://vicharak-in.github.io/shrike/generating_your_first_bitstream.html">Generating Your First Bitstream</a></p>
-<p>Once you have the bitstream, you’re ready to load it into the FPGA through a microcontroller (RP2040) program.</p>
+<p>Once you have the bitstream, you’re ready to load it into the FPGA through a microcontroller program.</p>
 <p>We’ll start with a simple blink-LED example to say hello to the world of hardware.<br/>
 Along the way, we’ll also set up the required software and toolchain.</p>
 </section>
@@ -134,7 +134,7 @@ Along the way, we’ll also set up the required software and toolchain.</p>
 <svg class="mr-2 h-4 w-4" fill="none" height="24" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewbox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg">
 <polyline points="15 18 9 12 15 6"></polyline>
 </svg>
-        Welcome to Shrike FPGA’s documentation!
+        Welcome to Shrike documentation!
       </a>
 </div>
 <div class="ml-auto">

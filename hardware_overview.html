@@ -108,15 +108,14 @@
 <div id="content" role="main">
 <section id="shrike-hardware-overview">
 <span id="hardware-overview"></span><h1>Shrike - Hardware Overview<a class="headerlink" href="#shrike-hardware-overview" title="Link to this heading">¶</a></h1>
-<p>Shrike is a family low-cost, low-power, and easy-to-use FPGA development board that combines both the
-Renesas FPGA and microcontroller. It is designed for hobbyists, students, and professionals to explore and prototype FPGA-based designs with ease.</p>
+<p>Shrike is a family low-cost, low-power, and easy-to-use FPGA development board that combines both the Renesas FPGA and microcontroller. It is designed for hobbyists, students, and professionals to explore and prototype FPGA-based designs with ease.</p>
 <p>The board features a variety of peripherals to support various applications. Some of the key features include:</p>
-<p>::::{tab-set}
-:::{tab-item} Shrike/Shrike-lite</p>
-<section id="hardware-features">
-<h2>Hardware Features :<a class="headerlink" href="#hardware-features" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#hardware-features'">¶</a></h2>
-<blockquote>
-<div><ul class="simple">
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio"/>
+<label class="sd-tab-label" for="sd-tab-item-0">
+Shrike/Shrike-lite</label><div class="sd-tab-content docutils">
+<p class="rubric" id="hardware-features">Hardware Features</p>
+<ul class="simple">
 <li><p>Renesas FPGA with 1120 5 Input LUT’s</p></li>
 <li><p>MCU - RP2350/RP2040</p></li>
 <li><p>PMOD Connector</p></li>
@@ -125,70 +124,54 @@ Renesas FPGA and microcontroller. It is designed for hobbyists, students, and pr
 <li><p>USB Type C for Power &amp; Programming</p></li>
 <li><p>MCU User LED</p></li>
 <li><p>FPGA User LED</p></li>
-<li><p>23 MCU GPIO’</p></li>
+<li><p>23 MCU GPIO</p></li>
 <li><p>14 FPGA GPIO’s</p></li>
 <li><p>6 Bit FPGA MCU Link</p></li>
 <li><p>Bread Board Compatible</p></li>
 </ul>
-</div></blockquote>
-</section>
-<section id="gpio-s">
-<h2>GPIO’s<a class="headerlink" href="#gpio-s" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#gpio-s'">¶</a></h2>
+<hr class="docutils"/>
+<p class="rubric" id="gpio-s">GPIO’s</p>
 <p>The Shrike Packed with User IO’s I have 23 MCU IO’s and 14 FPGA IO’s all of which are 3.3V compatible.</p>
 <p>The Board also has Header for 3.3V and 5V Power Rails for powering external peripherals.</p>
-</section>
-<section id="pmod-connector">
-<h2>PMOD Connector<a class="headerlink" href="#pmod-connector" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#pmod-connector'">¶</a></h2>
-<p>The Shrike Board has a PMOD connector for connecting to various peripherals,the PMOD connector is 3.3 V Compatible</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>All the pins on shrike are 3.3 V compatible supplying anything more than that will result in damage to IC’s on  board which are beyond repair.</p>
-</div>
-</section>
-<section id="type-c-port">
-<h2>Type C Port<a class="headerlink" href="#type-c-port" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#type-c-port'">¶</a></h2>
-<p>The Board has a USB type C connector for both programming and power.
+<hr class="docutils"/>
+<p class="rubric" id="pmod-connector">PMOD Connector</p>
+<p>The Shrike Board has a PMOD connector for connecting to various peripherals, the PMOD connector is 3.3 V Compatible</p>
+<blockquote>
+<div><p><strong>Note:</strong> All the pins on shrike are 3.3 V compatible supplying anything more than that will result in damage to IC’s on board which are beyond repair.</p>
+</div></blockquote>
+<hr class="docutils"/>
+<p class="rubric" id="type-c-port">Type C Port</p>
+<p>The Board has a USB type C connector for both programming and power.<br/>
 Connect the board to a host PC using a type c cable and you are good to go.</p>
-</section>
-<section id="user-led-s">
-<h2>User LED’s<a class="headerlink" href="#user-led-s" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#user-led-s'">¶</a></h2>
-<p>The board has two user LED’s one for the RP2350/RP2040 and one for the FPGA. The LED’s are connected to GPIO pins of the respective chips.
+<hr class="docutils"/>
+<p class="rubric" id="user-led-s">User LED’s</p>
+<p>The board has two user LED’s one for the RP2350/RP2040 and one for the FPGA. The LED’s are connected to GPIO pins of the respective chips.<br/>
 The RP2350/RP2040 LED is connected to GPIO 04 and the FPGA LED is connected to GPIO 16.</p>
 <p>The LED’s are active high meaning that when the GPIO pin is set to high the LED will turn on and when the GPIO pin is set to low the LED will turn off.</p>
-</section>
-<section id="flash">
-<h2>FLASH<a class="headerlink" href="#flash" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#flash'">¶</a></h2>
+<hr class="docutils"/>
+<p class="rubric" id="flash">FLASH</p>
 <p>The Shrike Dev Board features a 32Mb/4MB QSPI based Flash memory which is connected to RP2350/RP2040. The part number for which is W25Q32JV. This flash is used to store the fpga bitstream and RP2350/RP2040 firmware.</p>
-</section>
-<section id="programming">
-<h2>Programming<a class="headerlink" href="#programming" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#programming'">¶</a></h2>
-<p>Both the IC on the board have separate programming models. The RP2040
-can be programmed using MicroPython, Arduino or Rpi’s C SDK whereas the FPGA needed to be programmed using Verilog in the Renesas Go Configure hub.</p>
-</section>
-<section id="powering-the-board">
-<h2>Powering the Board<a class="headerlink" href="#powering-the-board" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#powering-the-board'">¶</a></h2>
-<dl>
-<dt>The board can be powered using one of these two methods:</dt><dd><ol class="arabic simple">
+<hr class="docutils"/>
+<p class="rubric" id="programming">Programming</p>
+<p>Both the IC on the board have separate programming models. The RP2040 can be programmed using MicroPython, Arduino or RPi’s C SDK whereas the FPGA needs to be programmed using Verilog in the Renesas Go Configure hub.</p>
+<hr class="docutils"/>
+<p class="rubric" id="powering-the-board">Powering the Board</p>
+<p>The board can be powered using one of these two methods:</p>
+<ol class="arabic simple">
 <li><p>The USB Type C port</p></li>
-<li><p>Header 1 marked 5V and any of the GND pins on the board.</p></li>
+<li><p>Header 1 marked 5V and any of the GND pins on the board</p></li>
 </ol>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The board can be powered using the USB Type C port or the header marked 5V. Do not power the board using both methods at the same time as this will damage the board.</p>
-</div>
-</dd>
-</dl>
+<blockquote>
+<div><p><strong>Note:</strong> The board can be powered using the USB Type C port or the header marked 5V. Do not power the board using both methods at the same time as this will damage the board.</p>
+</div></blockquote>
 <p>The voltage on the Type C and header both should be 5V only. The board has a voltage regulator that converts the 5V to 3.3V for the RP2350/RP2040 and the FPGA.</p>
 <p>The voltage on the PMOD connector is 3.3V.</p>
-<p>::</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><code><span id="line-1"><span class="p">:::{</span><span class="n">tab</span><span class="o">-</span><span class="n">item</span><span class="p">}</span> <span class="n">Shrike</span><span class="o">-</span><span class="n">fi</span>
-</span></code></pre></div>
 </div>
-</section>
-<section id="id1">
-<h2>Hardware Features :<a class="headerlink" href="#id1" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#id1'">¶</a></h2>
-<blockquote>
-<div><ul class="simple">
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio"/>
+<label class="sd-tab-label" for="sd-tab-item-1">
+Shrike-fi</label><div class="sd-tab-content docutils">
+<p class="rubric" id="id1">Hardware Features</p>
+<ul class="simple">
 <li><p>Renesas FPGA with 1120 5 Input LUT’s</p></li>
 <li><p>MCU - ESP32S3</p></li>
 <li><p>PMOD Connector</p></li>
@@ -197,66 +180,51 @@ can be programmed using MicroPython, Arduino or Rpi’s C SDK whereas the FPGA n
 <li><p>USB Type C for Power &amp; Programming</p></li>
 <li><p>MCU User LED</p></li>
 <li><p>FPGA User LED</p></li>
-<li><p>24 MCU GPIO’</p></li>
+<li><p>24 MCU GPIO</p></li>
 <li><p>14 FPGA GPIO’s</p></li>
 <li><p>6 Bit FPGA MCU Link</p></li>
 <li><p>Bread Board Compatible</p></li>
 </ul>
-</div></blockquote>
-</section>
-<section id="id2">
-<h2>GPIO’s<a class="headerlink" href="#id2" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#id2'">¶</a></h2>
+<hr class="docutils"/>
+<p class="rubric" id="id2">GPIO’s</p>
 <p>The Shrike-fi Packed with User IO’s I have 24 MCU IO’s and 14 FPGA IO’s all of which are 3.3V compatible.</p>
 <p>The Board also has Header for 3.3V and 5V Power Rails for powering external peripherals.</p>
-</section>
-<section id="id3">
-<h2>PMOD Connector<a class="headerlink" href="#id3" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#id3'">¶</a></h2>
-<p>The Shrike-fi Board has a PMOD connector for connecting to various peripherals,the PMOD connector is 3.3 V Compatible</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>All the pins on Shrike-fi are 3.3 V compatible supplying anything more than that will result in damage to IC’s on  board which are beyond repair.</p>
-</div>
-</section>
-<section id="id4">
-<h2>Type C Port<a class="headerlink" href="#id4" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#id4'">¶</a></h2>
-<p>The Board has two USB type C connector for programming and power.
+<hr class="docutils"/>
+<p class="rubric" id="id3">PMOD Connector</p>
+<p>The Shrike-fi Board has a PMOD connector for connecting to various peripherals, the PMOD connector is 3.3 V Compatible</p>
+<blockquote>
+<div><p><strong>Note:</strong> All the pins on Shrike-fi are 3.3 V compatible supplying anything more than that will result in damage to IC’s on board which are beyond repair.</p>
+</div></blockquote>
+<hr class="docutils"/>
+<p class="rubric" id="id4">Type C Port</p>
+<p>The Board has two USB type C connector for programming and power.<br/>
 Connect the board to a host PC using a type c cable and you are good to go.</p>
-</section>
-<section id="id5">
-<h2>User LED’s<a class="headerlink" href="#id5" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#id5'">¶</a></h2>
-<p>The board has two user LED’s one for the ESP32S3 and one for the FPGA. The LED’s are connected to GPIO pins of the respective chips.
-The ESP32S3’s LED is connected to GPIO 21 and the FPGA LED is connected to GPIO 16.</p>
+<hr class="docutils"/>
+<p class="rubric" id="id5">User LED’s</p>
+<p>The board has two user LED’s one for the ESP32S3 and one for the FPGA. The LED’s are connected to GPIO pins of the respective chips.<br/>
+The ESP32S3 LED is connected to GPIO 21 and the FPGA LED is connected to GPIO 16.</p>
 <p>The LED’s are active high meaning that when the GPIO pin is set to high the LED will turn on and when the GPIO pin is set to low the LED will turn off.</p>
-</section>
-<section id="id6">
-<h2>FLASH<a class="headerlink" href="#id6" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#id6'">¶</a></h2>
-<p>The Shrike Dev Board features a 32Mb/4MB QSPI based Flash memory which is connected to ESP32S3 and . The part number for which is W25Q32JV. This flash is used to store the fpga bitstream and firmware.</p>
-<p>The board also has 8MB in package PSRAM in the ESP32S3.</p>
-</section>
-<section id="id7">
-<h2>Programming<a class="headerlink" href="#id7" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#id7'">¶</a></h2>
-<p>Both the IC on the board have separate programming models. The ESP32S3
-can be programmed using MicroPython, Arduino or ESP-SDK whereas the FPGA needed to be programmed using Verilog in the Renesas Go Configure hub.</p>
-</section>
-<section id="id8">
-<h2>Powering the Board<a class="headerlink" href="#id8" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#id8'">¶</a></h2>
-<dl>
-<dt>The board can be powered using one of these two methods:</dt><dd><ol class="arabic simple">
+<hr class="docutils"/>
+<p class="rubric" id="id6">FLASH</p>
+<p>The Shrike Dev Board features a 32Mb/4MB QSPI based Flash memory which is connected to ESP32S3. The part number for which is W25Q32JV. This flash is used to store the fpga bitstream and firmware.</p>
+<p>The board also has 8MB in-package PSRAM in the ESP32S3.</p>
+<hr class="docutils"/>
+<p class="rubric" id="id7">Programming</p>
+<p>Both the IC on the board have separate programming models. The ESP32S3 can be programmed using MicroPython, Arduino or ESP-SDK whereas the FPGA needs to be programmed using Verilog in the Renesas Go Configure hub.</p>
+<hr class="docutils"/>
+<p class="rubric" id="id8">Powering the Board</p>
+<p>The board can be powered using one of these two methods:</p>
+<ol class="arabic simple">
 <li><p>The USB Type C port</p></li>
-<li><p>Header 1 marked 5V and any of the GND pins on the board.</p></li>
+<li><p>Header 1 marked 5V and any of the GND pins on the board</p></li>
 </ol>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>The board can be powered using the USB Type C port or the header marked 5V. Do not power the board using both methods at the same time as this will damage the board.</p>
-</div>
-</dd>
-</dl>
+<blockquote>
+<div><p><strong>Note:</strong> The board can be powered using the USB Type C port or the header marked 5V. Do not power the board using both methods at the same time as this will damage the board.</p>
+</div></blockquote>
 <p>The voltage on the Type C and header both should be 5V only. The board has a voltage regulator that converts the 5V to 3.3V for the ESP32S3 and the FPGA.</p>
 <p>The voltage on the PMOD connector is 3.3V.</p>
-<section id="id9">
-<h3>:::<a class="headerlink" href="#id9" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#id9'">¶</a></h3>
-</section>
-</section>
+</div>
+</div>
 </section>
 </div><div class="flex justify-between items-center pt-6 mt-12 border-t border-border gap-4">
 <div class="mr-auto">
@@ -275,31 +243,7 @@ can be programmed using MicroPython, Arduino or ESP-SDK whereas the FPGA needed 
 </svg>
 </a>
 </div>
-</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
-<div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
-<ul>
-<li><a :data-current="activeSection === '#hardware-features'" class="reference internal" href="#hardware-features">Hardware Features :</a></li>
-<li><a :data-current="activeSection === '#gpio-s'" class="reference internal" href="#gpio-s">GPIO’s</a></li>
-<li><a :data-current="activeSection === '#pmod-connector'" class="reference internal" href="#pmod-connector">PMOD Connector</a></li>
-<li><a :data-current="activeSection === '#type-c-port'" class="reference internal" href="#type-c-port">Type C Port</a></li>
-<li><a :data-current="activeSection === '#user-led-s'" class="reference internal" href="#user-led-s">User LED’s</a></li>
-<li><a :data-current="activeSection === '#flash'" class="reference internal" href="#flash">FLASH</a></li>
-<li><a :data-current="activeSection === '#programming'" class="reference internal" href="#programming">Programming</a></li>
-<li><a :data-current="activeSection === '#powering-the-board'" class="reference internal" href="#powering-the-board">Powering the Board</a></li>
-<li><a :data-current="activeSection === '#id1'" class="reference internal" href="#id1">Hardware Features :</a></li>
-<li><a :data-current="activeSection === '#id2'" class="reference internal" href="#id2">GPIO’s</a></li>
-<li><a :data-current="activeSection === '#id3'" class="reference internal" href="#id3">PMOD Connector</a></li>
-<li><a :data-current="activeSection === '#id4'" class="reference internal" href="#id4">Type C Port</a></li>
-<li><a :data-current="activeSection === '#id5'" class="reference internal" href="#id5">User LED’s</a></li>
-<li><a :data-current="activeSection === '#id6'" class="reference internal" href="#id6">FLASH</a></li>
-<li><a :data-current="activeSection === '#id7'" class="reference internal" href="#id7">Programming</a></li>
-<li><a :data-current="activeSection === '#id8'" class="reference internal" href="#id8">Powering the Board</a><ul>
-<li><a :data-current="activeSection === '#id9'" class="reference internal" href="#id9">:::</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</aside>
+</div></div>
 </main>
 </div>
 </div><footer class="py-6 border-t border-border md:py-0">
