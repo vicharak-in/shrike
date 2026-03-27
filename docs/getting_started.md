@@ -2,20 +2,23 @@
 
 # Getting Started
 
-In this getting started guide we will see how to blink an led on shrike both on fpga and RP2350/RP2040.
+In this getting started guide we will see how to blink an led on shrike both on fpga and MCU.
 
-You can program the microcontroller on Shrike using two methods:<br>
+You can program the microcontroller on Shrike using three methods:<br>
+
 &emsp;**1. Arduino (C/C++)**  
-&emsp;**2. MicroPython using the UF2 bootloader**
+&emsp;**2. MicroPython**
+&emsp;**3. Circuit-Python**
 
-Both are beginner-friendly, and you can switch between them anytime.  
+All are beginner-friendly, and you can switch between them anytime.  
+
 Let's follow the steps and get Shrike up and running!
 
 :::::::{tab-set}
 
 ::::::{tab-item} ArduinoIDE
 
-# Using it with ArduinoIDE
+# Shrike with ArduinoIDE
 
 If you already know Arduino and love working with the Arduino IDE, you can continue using it with Shrike. You do not have to switch to MicroPython unless you want to.
 
@@ -210,7 +213,7 @@ Blehh Shrike-fi
 
 ::::::{tab-item} Micro-python 
 
-# Using it with Micro-python 
+# Shrike with Micro-python 
 
 We have created custom binary for shrike this contains a shrike.py library that has custom function to flash fpga and few other functions as well.
 
@@ -304,7 +307,7 @@ Now we will have to flash this file to the fpga to do so we will use the functio
 
 :::{note}
 
-The bitstream file that you need to copy will be named as "FPGA_bitstream_MCU.bin" found in fpga -> build -> bitstream folder in your project directory.  
+For any custom project the bitstream file that you need to copy will be named as "FPGA_bitstream_MCU.bin" found in fpga -> build -> bitstream folder in your project directory.  
 If you copy any other file present in the bitstream folder the fpga wont be programmed.
 You are free to change the name of this file however you please.
 
@@ -314,12 +317,84 @@ In thonny open a new python file and write this python script
 
 ```
     import shrike
-    shrike.flash("blink_led.bin")
+    shrike.flash("led_blink.bin")
 ```
 
 Save this file to your board and run it. (to run this file on board boot up just name it as main.py)
 
 
+
 ::::::
+
+::::::{tab-item} Circuit-Python 
+
+# Shrike with Circuit Python
+
+CircuitPython is a programming language designed by adafruit to simplify experimenting and learning to code on low-cost microcontroller boards. It build on a fork of Micropython , thus its seems very similar yet very different.
+
+The way Circuit-Python works with Shrike is we have a custom circuit python build (binary). One must follow these steps to get started with the Circuit-Python on Shrike.
+
+### 1. Uploading the Shrike binary
+
+1. Download the binary corresponding to your board version from the shrike's [Github](https://github.com/vicharak-in/shrike).
+2. Hold the boot button on the board and connect it the your pc now shrike will show up as as storage device.
+3. Copy the downloaded uf2 in storage device you can simply drag and drop in mostly all the devices. 
+4. After the successful copying the storage device should disappear.
+
+
+Check the video tutorial on how to upload the uf2 Shrike dev board(its a generic board video and uf2 will differ in our case) [here](https://www.youtube.com/watch?v=os4mv_8jWfU).
+
+Congratulations you have successfully uploaded the Circuit-Python uf2. 
+
+### 2. Get the bitstream(.bin) for led blink 
+
+To program a FPGA you will require  bitstream file this is much like a firmware for MCU's we will see how to generate these but for now we have uploaded the bitstream required for led_bin you can download them the corresponding to your board's version [here](https://github.com/vicharak-in/shrike/tree/main/test/bitstreams). 
+
+Now that you have both uf2 and bin file settled up lets move forward and upload the bitstream to board.
+
+The board will showing up as a storage device on the pc now copy the downloaded bitstream to the board. 
+
+### 3. Getting the Thonny IDE 
+
+Now we will need to get thonny on our pc. Installation is quite straight forward You can download it from [here](https://thonny.org/). 
+
+Now that we have got all the required tools set-ed up let blink some leds.
+
+Open thonny and connect the board to the laptop (do not press boot button this time). And connect the board from the bottom right corner of Thonny IDE.
+
+### 4. Flashing the bitstream 
+
+The custom binary of circuit-python contain a python library for flashing and resting  the fpga and a few other functions as well. 
+
+
+So we will use this library to flash this bitstream file to the fpga, to do so we will use the function 
+
+```
+    shrike.flash("<your_bitstream_name>.bin")
+```
+
+If you are using the test bitstream provided by use it is named as led_blink.bin 
+
+:::{note}
+
+For any custom project the bitstream file that you need to copy will be named as "FPGA_bitstream_MCU.bin" found in fpga -> build -> bitstream folder in your project directory.  
+If you copy any other file present in the bitstream folder the fpga wont be programmed.
+You are free to change the name of this file however you please.
+
+:::
+
+In thonny open a new python file and write this python script 
+
+```
+    import shrike
+    shrike.flash("led_blink.bin")
+```
+
+Save this file to your board and run it. (to run this file on board boot up just name it as main.py)
+
+
+
+::::::
+
 
 :::::::
