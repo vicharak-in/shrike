@@ -1,4 +1,4 @@
-module top ( 
+(* top *) module top ( 
 	(* iopad_external_pin, clkbuf_inhibit *) input clk, 	// System Clock (50MHz) 
 	(* iopad_external_pin *) output clk_en, 
 	(* iopad_external_pin *) input rst_n, 			   	// System Reset (Active Low) 
