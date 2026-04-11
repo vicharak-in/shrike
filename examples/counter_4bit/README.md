@@ -1,7 +1,9 @@
 # counter_4bit
 
 **Difficulty:** Beginner  
+
 **Uses MCU:** Yes  
+
 **External Hardware:** None  
 
 ## Overview

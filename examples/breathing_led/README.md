@@ -1,7 +1,9 @@
 # breathing_led
 
 **Difficulty:** Beginner  
+
 **Uses MCU:** No  
+
 **External Hardware:** None  
 
 ## Overview

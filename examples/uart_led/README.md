@@ -1,7 +1,9 @@
 # uart_led
 
 **Difficulty:** Beginner
+
 **Uses MCU:** Yes
+
 **External Hardware:** None
 
 ## Overview
@@ -14,7 +16,7 @@ This example demonstrates controlling an LED on the FPGA using UART communicatio
 | -------------------- | ----------------------- | -------------  |
 | Shrike-Lite (RP2040) | `firmware/arduino-ide/` | ✅ Tested      |
 | Shrike (RP2350)      | `firmware/arduino-ide/` | ✅ Tested      |
-| Shrike-fi (ESP32-S3) | `firmware/arduino-ide/` | ❌ Not Tested  |
+| Shrike-fi (ESP32-S3) | `firmware/arduino-ide/` | ⬜ Untested    |
 
 > FPGA bitstream is the same across all boards.
 

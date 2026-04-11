@@ -1,67 +1,148 @@
-# Add Two 8-bit Numbers on FPGA and Return Result via UART
+# uart_alu
+
+**Difficulty:** Intermediate
+
+**Uses MCU:** Yes
+
+**External Hardware:** None
+
+## Overview
+
 This project demonstrates UART-based communication between an RP2040 and an FPGA. Two 8-bit numbers are sent from the RP2040 to the FPGA over UART. The FPGA stores the received values, performs an addition operation, and then transmits the result back to the RP2040 using UART.
 
-## Overview on FPGA side
-- This project consists of three modules :   
-    1) `top :` This module implements the FSM.
-        - Continuously look for input data
-        - Add the two 8 bit numbers.
-        - Generate appropriate transmission signal onces summation is done.
-    2) `uart_rx : ` This module implements a UART Receiver.
-        - When the data is received, it makes "data valid" signal high.
-    3) `uart_rx : ` This module implements a UART Transmitter.
-        - When the start signal is given, it transmit the data present in its output buffer.
+## Compatibility
+
+| Board                | Firmware                | Status        |
+| -------------------- | ----------------------- | ------------- |
+| Shrike-Lite (RP2040) | `firmware/micropython/` | ✅ Tested     |
+| Shrike (RP2350)      | `firmware/micropython/` | ✅ Tested     |
+| Shrike-fi (ESP32-S3) | `firmware/micropython/` | ⬜ Untested   |
+
+> FPGA bitstream is the same across all boards.
+
+## Hardware Setup
+
+No external hardware required.
+
+### FPGA Connections
+
+| FPGA GPIO Pin | Signal Name | Direction | Description            |
+| ------------- | ----------- | --------- | ---------------------- |
+| 3             | Reset       | Input     | Reset signal           |
+| 4             | UART TX     | Output    | UART output to RP2040  |
+| 6             | UART RX     | Input     | UART input from RP2040 |
+
+### RP2040 Connections
+
+| RP2040 Pin | Signal Name | Direction | Description          |
+| ---------- | ----------- | --------- | -------------------- |
+| 1          | UART RX     | Input     | UART input from FPGA |
+| 0          | UART TX     | Output    | UART output to FPGA  |
+| 2          | Reset       | Output    | Reset signal to FPGA |
+
+> Ensure pin mapping in FPGA constraints matches firmware configuration.
 
 ---
 
-## Features
-- Configurable `BAUD_RATE` 
+## Quick Start (Pre-Built Bitstream)
+
+1. Connect Shrike board via USB
+2. Upload `bitstream/uart_alu.bin` using ShrikeFlash
+3. Run `uart_sum.py` on RP2040
+4. Expected result:
+
+   * Two numbers are sent to FPGA
+   * FPGA computes sum
+   * Result is returned via UART
+
+---
+
+## Build From Source
+
+### FPGA (Verilog)
+
+1. Open project in Go Configure Software Hub
+2. Add modules: `top`, `uart_rx`, `uart_tx`
+3. Configure I/O mapping
+4. Generate bitstream
+
+### Firmware (MicroPython)
+
+1. Open `uart_sum.py` in Thonny
+2. Configure UART pins and baud rate
+3. Run script
+
+---
+
+## How It Works
+
+The design consists of three modules:
+
+### 1. `top` Module
+
+* Implements FSM
+* Continuously monitors UART input
+* Stores two 8-bit values
+* Performs addition
+* Triggers transmission of result
+
+### 2. `uart_rx` Module
+
+* Receives UART data
+* Asserts "data valid" signal when byte is received
+
+### 3. `uart_tx` Module
+
+* Transmits data over UART
+* Sends result when triggered
 
 ---
 
 ## Top Module Interface
 
-| Signal        | Direction | Description                          |
-|---------------|-----|--------------------------------------|
-| `clk`         | In  | System clock (50 MHz typical)        |
-| `rst`        | In  | Reset Pin   |
-| `rx`        | In | Receiver Line |
-| `tx`  | Out | Transmission Line              |
-| `tx_en`     | Out | Output enable for transmitter (always 1)              |
-| `clk_en`      | Out | Clock enable (always 1)              |
+| Signal   | Direction | Description                   |
+| -------- | --------- | ----------------------------- |
+| `clk`    | In        | System clock (50 MHz typical) |
+| `rst`    | In        | Reset signal                  |
+| `rx`     | In        | UART receiver line            |
+| `tx`     | Out       | UART transmitter line         |
+| `tx_en`  | Out       | Output enable (always 1)      |
+| `clk_en` | Out       | Clock enable (always 1)       |
 
 ---
 
 ## Parameters Used
-#### `CLK :` 
-- Parameter to represent the System clock frequency in Hz.
-    -  `parameter CLK = 50_000_000`
-#### `BAUD_RATE :` 
-- Parameter to configure Baud Rate of UART communication.
-     - `parameter BAUD_RATE = 115200`
+
+### `CLK`
+
+* System clock frequency
+
+```
+parameter CLK = 50_000_000
+```
+
+### `BAUD_RATE`
+
+* UART communication baud rate
+
+```
+parameter BAUD_RATE = 115200
+```
 
 ---
 
-## Pin Usage for Testing
-This design was tested using configuration given below:
+## Expected Output
 
-### FPGA 
-| FPGA GPIO Pin | Signal Name | Direction | Description                       |
-|----------|-------------|-----------|-----------------------------------|
-| 3       | Reset     | Input    | For Reseting the FPGA     |
-| 4       | UART TX     | Input     | UART ouput to RP2040    |
-| 6       | UART RX     | Output    | UART input from RP2040    |
+The result of adding two 8-bit numbers is received back on the RP2040 via UART.
 
-### RP2040
-| RP2040 Pin | Signal Name | Direction | Description                       |
-|----------|-------------|-----------|-----------------------------------|
-| 1       | UART RX     | Input     | UART input from FPGA    |
-| 0       | UART TX     | Output    | UART ouput to FPGA    |
-| 2       | Reset     | Output    | MCU output for reseting the FPGA     |
+### Output in Thonny
 
-When testing using RP2040 MCU, first load the bitstream to FPGA then run the `uart_sum.py`. The pin number in your FPGA constraints must match what is used in the micropython code.
-
----
-
-## Expected Output in Thonny
 ![Expected Output in Thonny](ffpga/images/output.JPG "Expected Output")
+
+---
+
+## Notes
+
+* Ensure correct baud rate configuration on both FPGA and RP2040
+* Reset must be handled properly before communication
+* UART communication is byte-based and sequential

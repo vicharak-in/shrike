@@ -1,6 +1,26 @@
-# Debouncer Module
+# button_debouncer
+
+**Difficulty:** Beginner
+
+**Uses MCU:** Yes
+
+**External Hardware:** Push Button / Switch (for testing)
+
+## Overview
 
 Mechanical switches do not change state cleanly when pressed or released. Instead, they bounce rapidly between HIGH and LOW for a few milliseconds, which can cause multiple false triggers in digital logic. A debounce circuit solves this by checking whether the input has remained stable for a fixed period. If the signal stays unchanged long enough, it is accepted as the new valid state; otherwise, it is ignored. This ensures the output is clean, stable, and free from glitches caused by mechanical bouncing.
+
+
+## Compatibility
+
+| Board                | Firmware                | Status     |
+| -------------------- | ----------------------- | ---------- |
+| Shrike-Lite (RP2040) | `firmware/arduino-ide/` | ✅ Tested   |
+| Shrike (RP2350)      | `firmware/arduino-ide/` | ✅ Tested   |
+| Shrike-fi (ESP32-S3) | `firmware/arduino-ide/` | ⬜ Untested |
+
+> FPGA bitstream is the same across all boards.
+
 
 ## Block Diagram
 ![SHrikeLite debouncer block diagram](ffpga/images/debouncer_blockdiagram.svg "Block diagram")
