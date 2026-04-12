@@ -1,0 +1,6 @@
+ffpga/build/
+ffpga/*.xml
+ffpga/*.log
+__pycache__/
+*.pyc
+.DS_Store
