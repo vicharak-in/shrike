@@ -1,16 +1,23 @@
 # shrike_serv
 
-> **Difficulty: Advanced**
-> World's first documented port of a RISC-V soft CPU to the Renesas SLG47910 ForgeFPGA.
+**Difficulty:** Advanced
+**Uses MCU:** Yes
+**External Hardware:** None
 
-This example runs [SERV](https://github.com/olofk/serv) — the world's smallest
-RISC-V CPU (RV32I, bit-serial) — directly on the SLG47910 FPGA fabric of the
-Shrike board. The RP2040/RP2350 flashes the bitstream, reads two GPIO pins, and
-prints the computation result over USB serial.
+World's first documented port of a RISC-V soft CPU to the Renesas SLG47910
+ForgeFPGA. Runs [SERV](https://github.com/olofk/serv) entirely on FPGA fabric.
+
+---
+
+## Expected Output
 
 ```
+Flashing SERV bitstream to FPGA...
+[shrike_flash] FPGA programming done.
 SERV RISC-V computed: 1 + 2 = 3
 ```
+
+![Serial output](images/output.JPG)
 
 ---
 
@@ -19,40 +26,40 @@ SERV RISC-V computed: 1 + 2 = 3
 | Board | MCU | Status |
 |---|---|---|
 | Shrike-lite | RP2040 | Tested and working |
-| Shrike | RP2350 | Untested — pin map may differ |
+| Shrike | RP2350 | Untested |
 | Shrike-fi | ESP32-S3 | Untested |
 
 ---
 
-## Resource utilisation (verified on hardware)
+## Resource Utilisation
 
 | Resource | Used | Available | % |
 |---|---|---|---|
-| CLB LUT5s | 516 | 1120 | 46.1 |
-| FFs | 230 | 1120 | 20.5 |
-| CLB FFs | 225 | 1120 | 20.1 |
-| CLBs | 109 | 140 | 77.9 |
-| GPIOs | 6 | 19 | 31.6 |
-| OSCs | 1 | 1 | 100 |
+| CLB LUT5s | 516 | 1120 | 46 |
+| FFs | 230 | 1120 | 21 |
+| CLBs | 109 | 140 | 78 |
+| GPIOs | 6 | 19 | 32 |
 
 ---
 
-## Directory structure
+## Directory Structure
 
 ```
 shrike_serv/
+├── README.md
+├── shrike_serv.ffpga          # Go Configure project file
 ├── ffpga/
-│   ├── shrike_serv.ffpga        ← Go Configure project file
-│   ├── serv_shrike_top.v        ← Shrike top-level wrapper
-│   ├── nuclear_rom.v            ← case()-based instruction ROM
-│   ├── serv_rf_ram_shrike.v     ← FF register file (replaces serv_rf_ram.v)
-│   └── serv/                   ← SERV RTL (clone from olofk/serv)
-├── bitstream/
-│   └── shrike_serv.bin         ← pre-built bitstream
+│   └── src/
+│       ├── serv_shrike_top.v  # Top-level wrapper
+│       ├── nuclear_rom.v      # Hardcoded instruction ROM
+│       └── serv_rf_ram_shrike.v  # FF register file
+├── images/
+│   └── output.JPG
 ├── firmware/
 │   └── micropython/
-│       └── shrike_serv.py      ← MicroPython: flash + read + print
-└── README.md
+│       └── shrike_serv.py
+└── bitstream/
+    └── shrike_serv.bin        # Pre-built bitstream
 ```
 
 ---
@@ -63,45 +70,42 @@ shrike_serv/
 
 ```bash
 git clone https://github.com/olofk/serv
-cp serv/rtl/*.v ffpga/serv/
+cp serv/rtl/*.v ffpga/src/
 ```
 
-> **Do not copy `serv_rf_ram.v`** — use `serv_rf_ram_shrike.v` instead.
+> Do **not** copy `serv_rf_ram.v` — use `serv_rf_ram_shrike.v` instead.
 
 ### Step 2 — Edit serv_rf_top.v
 
-Find the `serv_rf_ram` instantiation and replace it:
-
 ```verilog
-// BEFORE
-serv_rf_ram #(.DEPTH(32), .RF_W(RF_W)) rf_ram (...);
-
-// AFTER
+// Find this line in serv_rf_top.v and change:
+serv_rf_ram     #(.DEPTH(32), .RF_W(RF_W)) rf_ram (...);
+// To:
 serv_rf_ram_shrike #(.DEPTH(16), .RF_W(RF_W)) rf_ram (...);
 ```
 
-### Step 3 — Open the project in Go Configure
+### Step 3 — Open in Go Configure
 
-Open `ffpga/shrike_serv.ffpga` directly in Go Configure Software Hub.
-All sources are pre-configured. If rebuilding from scratch, add files in this order:
+Open `shrike_serv.ffpga` directly in Go Configure Software Hub.
 
+If rebuilding from scratch, add files in this order:
 ```
-ffpga/serv/serv_state.v
-ffpga/serv/serv_decode.v
-ffpga/serv/serv_immdec.v
-ffpga/serv/serv_bufreg.v
-ffpga/serv/serv_bufreg2.v
-ffpga/serv/serv_alu.v
-ffpga/serv/serv_mem_if.v
-ffpga/serv/serv_csr.v
-ffpga/serv/serv_ctrl.v
-ffpga/serv/serv_rf_if.v
-ffpga/serv/serv_rf_ram_if.v
-ffpga/serv_rf_ram_shrike.v      ← NOT serv_rf_ram.v
-ffpga/serv/serv_rf_top.v
-ffpga/serv/serv_top.v
-ffpga/nuclear_rom.v
-ffpga/serv_shrike_top.v
+ffpga/src/serv_state.v
+ffpga/src/serv_decode.v
+ffpga/src/serv_immdec.v
+ffpga/src/serv_bufreg.v
+ffpga/src/serv_bufreg2.v
+ffpga/src/serv_alu.v
+ffpga/src/serv_mem_if.v
+ffpga/src/serv_csr.v
+ffpga/src/serv_ctrl.v
+ffpga/src/serv_rf_if.v
+ffpga/src/serv_rf_ram_if.v
+ffpga/src/serv_rf_ram_shrike.v
+ffpga/src/serv_rf_top.v
+ffpga/src/serv_top.v
+ffpga/src/nuclear_rom.v
+ffpga/src/serv_shrike_top.v
 ```
 
 **IO Planner — assign ONLY:**
@@ -111,141 +115,118 @@ ffpga/serv_shrike_top.v
 | `clk` | `OSC_CLK` |
 | `clk_en` | `OSC_EN` |
 
-**Leave all `result_bit*` signals unassigned** — see toolchain note 3 below.
+Leave all `result_bit*` signals unassigned — see toolchain note 3 below.
 
-Click **Synthesize** then **Generate Bitstream**. Output: `ffpga/build/bitstream/FPGA_bitstream_MCU.bin`
+Click **Synthesize** then **Generate Bitstream**.
 
 ### Step 4 — Flash and run
 
-1. Hold BOOT + plug USB-C → drag Shrike MicroPython UF2 to drive (first time only)
-2. Open **Thonny** → connect MicroPython RP2040 (bottom-right)
-3. View → Files → copy `bitstream/shrike_serv.bin` to board
-4. Open `firmware/micropython/shrike_serv.py` → click **Run**
-
-### Expected output
-
-```
-Flashing SERV bitstream to FPGA...
-[shrike_flash] FPGA programming done.
-SERV RISC-V computed: 1 + 2 = 3
-```
+Copy `bitstream/shrike_serv.bin` to the board via Thonny file panel, then run
+`firmware/micropython/shrike_serv.py`.
 
 ---
 
-## Physical verification (multimeter)
+## How to Change the Computation
 
-GPIO pins stay latched after execution:
+To compute something other than `1 + 2 = 3`, edit `ffpga/src/nuclear_rom.v`.
 
-| RP2040 pin | FPGA pin | Expected |
+### Understanding the instruction encoding
+
+Each line in the `case()` block is one 32-bit RISC-V instruction. The hex
+values encode standard RV32I instructions. Use any RISC-V assembler or the
+table below to get the hex for your instruction.
+
+### Example — compute 4 + 5 = 9
+
+Open `ffpga/src/nuclear_rom.v` and change the program:
+
+```verilog
+always @(*) begin
+  case (i_adr[4:2])
+    3'd0 : o_dat = 32'h00400093;   // addi x1, x0, 4   → x1 = 4
+    3'd1 : o_dat = 32'h00500113;   // addi x2, x0, 5   → x2 = 5
+    3'd2 : o_dat = 32'h002081B3;   // add  x3, x1, x2  → x3 = 9
+    3'd3 : o_dat = 32'h40000237;   // lui  x4, 0x40000 → x4 = GPIO base
+    3'd4 : o_dat = 32'h00322023;   // sw   x3, 0(x4)   → output result
+    3'd5 : o_dat = 32'h0000006F;   // jal  x0, 0       → halt
+    default : o_dat = 32'h00000013; // nop
+  endcase
+end
+```
+
+### Encoding your own `addi` instruction
+
+The `addi x1, x0, N` instruction puts the value `N` into register `x1`.
+
+```
+Hex format:  0xNNN00093
+             ^^^           = immediate value N in hex (12-bit, max 2047)
+                ^^         = source register x0 = 00
+                  ^        = destination register x1 = 1
+                   ^^^     = opcode for addi
+```
+
+Quick reference:
+
+| Value | addi x1 instruction | addi x2 instruction |
 |---|---|---|
-| GPIO15 | GPIO17 (result bit 0) | ~3.3 V |
-| GPIO14 | GPIO18 (result bit 1) | ~3.3 V |
+| 1 | `32'h00100093` | `32'h00100113` |
+| 2 | `32'h00200093` | `32'h00200113` |
+| 3 | `32'h00300093` | `32'h00300113` |
+| 4 | `32'h00400093` | `32'h00400113` |
+| 5 | `32'h00500093` | `32'h00500113` |
+| 10 | `32'h00A00093` | `32'h00A00113` |
+| 20 | `32'h01400093` | `32'h01400113` |
 
-Result = 3 = `0b11` → both pins HIGH simultaneously.
+After editing, re-synthesise and re-generate the bitstream in Go Configure,
+then copy the new `FPGA_bitstream_MCU.bin` to the board as `shrike_serv.bin`.
 
----
+### Result output range
 
-## How it works
-
-### RISC-V program (in `nuclear_rom.v`)
-
-```asm
-addi  x1, x0, 1        # x1 = 1
-addi  x2, x0, 2        # x2 = 2
-add   x3, x1, x2       # x3 = 3
-lui   x4, 0x40000      # x4 = 0x40000000  (GPIO base)
-sw    x3, 0(x4)        # store result → latches GPIO17=1, GPIO18=1
-jal   x0, 0            # halt
-```
-
-### Data flow
-
-```
-SERV executes at 50 MHz inside SLG47910 FPGA fabric
-  ↓  sw x3, 0(x4) fires
-gpio_result register latches dbus_dat[1:0] = 0b11
-  ↓  auto-routed to FPGA GPIO17 + GPIO18
-  ↓  via PCB 0-ohm resistors (hardwired on Shrike-lite)
-RP2040 GPIO15 = HIGH, GPIO14 = HIGH
-  ↓
-result = (bit1<<1)|bit0 = 3
-  ↓
-"SERV RISC-V computed: 1 + 2 = 3"
-```
+The current design outputs `dbus_dat[1:0]` — 2 bits — so the readable result
+range is 0–3. For larger results, modify `serv_shrike_top.v` to output more
+bits (add `result_bit2`, `result_bit3`, etc.) and update the IO Planner and
+`firmware/micropython/shrike_serv.py` to read the extra pins.
 
 ---
 
-## Toolchain notes (novel findings for SLG47910)
-
-Three undocumented issues were found and fixed during development.
+## Toolchain Notes (Novel Findings for SLG47910)
 
 ### 1. BRAM initialisation crash
 
-**Trigger:** `$readmemh("program.hex", bram)` in instruction memory.
+`$readmemh` → Yosys falls back to RAMSRL → ~820 LUTs consumed → compiler aborts.
 
-**Failure chain:**
-```
-$readmemh → Yosys attempts SLG47910_BRAM with pre-loaded content
-         → Forge BRAM hex init fails silently
-         → Falls back to RAMSRL (shift-register LUT RAM)
-         → 128-byte ROM in RAMSRL = ~820 CLB LUTs
-         → Compiler aborts: resource overflow
-```
-
-**Fix:** Replace with `case()` combinational block → pure LUT mux tree,
-no BRAM, no RAMSRL, no crash. See `ffpga/nuclear_rom.v`.
-
----
+**Fix:** `case()` combinational block in `nuclear_rom.v` — pure LUT logic,
+no BRAM, no RAMSRL.
 
 ### 2. Silent register file routing failure
 
-**Trigger:** Using `serv_rf_ram.v` from the SERV repository.
+`serv_rf_ram.v` uses a `reg` array → Yosys infers RAMSRL → Forge PNR silently
+fails to route → CPU frozen at `PC=0x00`, no error reported, bitstream appears
+to generate successfully.
 
-**Failure chain:**
-```
-reg [RF_W-1:0] mem [0:MEM_DEPTH-1]
-  → Yosys infers $mem → maps to RAMSRL
-  → Forge PNR accepts netlist — NO ERROR REPORTED
-  → Forge PNR silently fails to route RAMSRL inside serv_rf_top
-  → Register file outputs disconnected in placed design
-  → Every register read returns 0
-  → CPU frozen at PC=0x00000000 indefinitely
-  → Bitstream generates "successfully"
-```
-
-**Fix:** `(* ram_style = "registers" *)` attribute forces Yosys to generate
-individual DFFs instead of RAMSRL. PNR routes standard DFFs cleanly.
-See `ffpga/serv_rf_ram_shrike.v`.
-
----
+**Fix:** `(* ram_style = "registers" *)` in `serv_rf_ram_shrike.v` → plain DFFs.
 
 ### 3. IO Planner explicit GPIO17/18 assignment breaks output
 
-**Trigger:** Manually assigning `result_bit0 → GPIO17_OUT` in IO Planner.
+Manually assigning `result_bit*` signals in IO Planner conflicts with Yosys
+auto-routing. FPGA GPIO17/18 are the only pins hardwired to RP2040 GPIO14/15
+via PCB 0-ohm resistors. Auto-routing correctly places signals there.
 
-**Why it happens:** FPGA GPIO17/18 are the only FPGA pins hardwired to RP2040
-GPIO14/15 via PCB 0-ohm resistors (not used by SPI config bus or EN/PWR pins).
-When `result_bit*` signals carry `(* iopad_external_pin *)` but are NOT assigned
-in IO Planner, Yosys auto-routes them to the only available free pins with RP2040
-connections — GPIO17 and GPIO18. Explicit IO Planner entries in `io_spec_in.txt`
-conflict with this auto-routing and break the connection silently.
-
-**Fix:** Assign ONLY `clk → OSC_CLK` and `clk_en → OSC_EN` in IO Planner.
-Leave all `result_bit*` signals unassigned.
+**Fix:** Assign ONLY `clk → OSC_CLK` and `clk_en → OSC_EN`. Leave result
+signals unassigned.
 
 ---
 
 ## References
 
-- [SERV — The SErial RISC-V CPU](https://github.com/olofk/serv) by Olof Kindgren (ISC licence)
+- [SERV](https://github.com/olofk/serv) by Olof Kindgren (ISC licence)
 - [SLG47910 Datasheet](https://www.renesas.com/en/products/slg47910)
 - [Shrike documentation](https://vicharak-in.github.io/shrike/)
-- [Shrike pinouts](https://vicharak-in.github.io/shrike/shrike_pinouts.html)
 - [Go Configure Software Hub](https://www.renesas.com/en/software-tool/go-configure-software-hub)
 
 ---
 
 ## Licence
 
-GPL-2.0 — consistent with the Shrike repository licence.
-SERV RTL files retain their original ISC licence headers.
+GPL-2.0. SERV RTL files retain their original ISC licence headers.
