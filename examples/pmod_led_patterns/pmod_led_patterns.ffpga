@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GPDProject version="37" oldestCompatibleVersion="32" GPDVersion="6.48.002" lastChange="7 Jun 2025 21:58:52" projectChecksumState="1" projectChecksum="9836730d">
+<GPDProject version="40" oldestCompatibleVersion="32" GPDVersion="6.52.001" lastChange="13 Apr 2026 18:31:53" projectChecksumState="1" projectChecksum="8963f02e">
     <generalProjectSettings/>
     <chip family="04" type="06" friendlyName="FFPGA" partNumber="67" package="26">
         <nvmData registerLenght="480">0 0 0 28 0 0 0 0 A5 A5 A5 A5 0 0 0 0 0 0 0 0 5A 5A 5A 5A 0 0 0 0 22 22 22 22 22 22 22 22 22 22 0 0 3 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0</nvmData>
         <checksum crc32="0x451C1D42" version="2"/>
+        <virtualProperties/>
         <VDDItem id="0">
-            <item id="0" caption="VDD (PIN 22)">
+            <item id="0" caption="VDDC (PIN 22)">
                 <graphics pos="(1350.00,143.10)" angle="0" flipping="2" hidden="0" tOrigin="(20.00,10.00)"/>
             </item>
         </VDDItem>
@@ -113,7 +114,7 @@
         <wire output="86" input="88" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="3" wireText="NET3" wireState="0">
             <points>(220.00,70.00); (320.00,70.00)</points>
         </wire>
-        <wire output="79" input="38" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="4" wireText="NET4" wireState="0">
+        <wire output="79" input="38" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="4" wireText="NET4" wireState="0">
             <points>(220.00,80.00); (314.00,80.00); (314.00,87.00); (320.00,87.00)</points>
         </wire>
         <wire output="39" input="63" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="5" wireText="NET5" wireState="0">
@@ -206,10 +207,10 @@
         <wire output="48" input="7" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="35" wireText="NET35" wireState="0">
             <points>(320.00,103.00); (97.00,103.00)</points>
         </wire>
-        <wire output="49" input="8" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="36" wireText="NET36" wireState="0">
+        <wire output="49" input="8" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="36" wireText="NET36" wireState="0">
             <points>(961.00,55.00); (1071.00,55.00)</points>
         </wire>
-        <wire output="50" input="9" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="37" wireText="NET37" wireState="0">
+        <wire output="50" input="9" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="37" wireText="NET37" wireState="0">
             <points>(961.00,107.00); (1177.00,107.00)</points>
         </wire>
         <wire output="51" input="10" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="38" wireText="NET38" wireState="0">
@@ -233,10 +234,10 @@
         <wire output="57" input="16" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="44" wireText="NET44" wireState="0">
             <points>(961.00,610.00); (1071.00,610.00)</points>
         </wire>
-        <wire output="58" input="17" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="45" wireText="NET45" wireState="0">
+        <wire output="58" input="17" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="45" wireText="NET45" wireState="0">
             <points>(961.00,558.00); (1177.00,558.00)</points>
         </wire>
-        <wire output="59" input="18" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="46" wireText="NET46" wireState="0">
+        <wire output="59" input="18" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="46" wireText="NET46" wireState="0">
             <points>(961.00,506.00); (1071.00,506.00)</points>
         </wire>
         <wire output="60" input="19" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="47" wireText="NET47" wireState="0">
@@ -263,10 +264,10 @@
         <wire output="67" input="26" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="54" wireText="NET54" wireState="0">
             <points>(320.00,136.00); (108.00,136.00); (108.00,152.00); (54.00,152.00); (54.00,139.00)</points>
         </wire>
-        <wire output="68" input="27" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="55" wireText="NET55" wireState="0">
+        <wire output="68" input="27" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="55" wireText="NET55" wireState="0">
             <points>(961.00,90.00); (1060.00,90.00); (1060.00,96.00); (1113.00,96.00); (1113.00,90.00)</points>
         </wire>
-        <wire output="69" input="28" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="56" wireText="NET56" wireState="0">
+        <wire output="69" input="28" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="56" wireText="NET56" wireState="0">
             <points>(961.00,142.00); (1172.00,142.00); (1172.00,160.00); (1219.00,160.00); (1219.00,142.00)</points>
         </wire>
         <wire output="70" input="29" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="57" wireText="NET57" wireState="0">
@@ -290,10 +291,10 @@
         <wire output="76" input="35" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="63" wireText="NET63" wireState="0">
             <points>(961.00,645.00); (1060.00,645.00); (1060.00,664.00); (1113.00,664.00); (1113.00,645.00)</points>
         </wire>
-        <wire output="77" input="36" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="64" wireText="NET64" wireState="0">
+        <wire output="77" input="36" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="64" wireText="NET64" wireState="0">
             <points>(961.00,593.00); (1172.00,593.00); (1172.00,608.00); (1219.00,608.00); (1219.00,593.00)</points>
         </wire>
-        <wire output="78" input="37" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="65" wireText="NET65" wireState="0">
+        <wire output="78" input="37" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="65" wireText="NET65" wireState="0">
             <points>(961.00,541.00); (1060.00,541.00); (1060.00,547.00); (1113.00,547.00); (1113.00,541.00)</points>
         </wire>
         <wire output="0" input="42" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="66" wireText="NET66" wireState="0">
@@ -580,29 +581,72 @@
             </lastConfiguration>
             <savedConfigurations/>
         </platform>
+        <platform id="18" friendlyName="Go Configure Development Board">
+            <lastConfiguration modified="0">
+                <SaveEmulator Name="Default">
+                    <PowerOptions synced="0"/>
+                    <ExternalChipConnectionSource source="0"/>
+                    <PowerSwitch internalPower="1" externalPower="0"/>
+                    <ExpansionConnector></ExpansionConnector>
+                    <TestPoints/>
+                    <I2C slaveAddress="-1"/>
+                </SaveEmulator>
+            </lastConfiguration>
+            <savedConfigurations/>
+        </platform>
+        <platform id="19" friendlyName="HVPAK SLG47125 Demo Board">
+            <lastConfiguration modified="0">
+                <SaveEmulator Name="Default">
+                    <PowerOptions synced="0"/>
+                    <ExternalChipConnectionSource source="0"/>
+                    <PowerSwitch internalPower="1" externalPower="0"/>
+                    <ExpansionConnector></ExpansionConnector>
+                    <TestPoints/>
+                    <I2C slaveAddress="-1"/>
+                </SaveEmulator>
+            </lastConfiguration>
+            <savedConfigurations/>
+        </platform>
+        <platform id="20" friendlyName="Go Configure Development Board">
+            <lastConfiguration modified="0">
+                <SaveEmulator Name="Default">
+                    <PowerOptions synced="0"/>
+                    <ExternalChipConnectionSource source="0"/>
+                    <PowerSwitch internalPower="1" externalPower="0"/>
+                    <ExpansionConnector></ExpansionConnector>
+                    <TestPoints/>
+                    <I2C slaveAddress="-1"/>
+                </SaveEmulator>
+            </lastConfiguration>
+            <savedConfigurations/>
+        </platform>
     </emulatorConfiguration>
     <fpga-data>
         <!--Fpga project data-->
-        <project-data-version>5</project-data-version>
-        <oldestCompatibleVersion>3</oldestCompatibleVersion>
+        <project-data-version>7</project-data-version>
+        <oldestCompatibleVersion>6</oldestCompatibleVersion>
         <settings>
             <generateBitstream>
                 <MAX_CPU>16</MAX_CPU>
                 <additionalArguments></additionalArguments>
                 <clockConcurrentOptimization>true</clockConcurrentOptimization>
+                <compilerVersion>22</compilerVersion>
                 <highDensityIOPacking>false</highDensityIOPacking>
                 <highDensityPackingLogic>true</highDensityPackingLogic>
                 <maximumRoutingIterations>300</maximumRoutingIterations>
                 <placeAndTrialRoute>false</placeAndTrialRoute>
                 <placeAndTrialRouteIterationCount>20</placeAndTrialRouteIterationCount>
+                <timingAnalysisCorner>0</timingAnalysisCorner>
             </generateBitstream>
             <simulation>
                 <wavedumpOutputFormat>1</wavedumpOutputFormat>
             </simulation>
             <synthesize>
                 <additionalArguments></additionalArguments>
+                <enableHardMultiplexerResources>false</enableHardMultiplexerResources>
                 <flatten>true</flatten>
                 <keep>false</keep>
+                <multiplexerResourcesNumber>5</multiplexerResourcesNumber>
                 <noDSP>true</noDSP>
                 <useABC9>true</useABC9>
             </synthesize>
@@ -618,7 +662,7 @@
             </pipelineStageState>
             <pipelineStageState>
                 <pipelineStage>1</pipelineStage>
-                <pipelineState>3</pipelineState>
+                <pipelineState>1</pipelineState>
             </pipelineStageState>
         </pipelineStagesStates>
         <modules>
@@ -629,6 +673,8 @@
             <sim/>
             <netlists/>
             <timing-constraints/>
+            <full-chip-simulation-models/>
+            <placement-constraints/>
         </modules>
         <io-spec-tool>
             <records filter="16">
@@ -642,49 +688,49 @@
                     <port-name>led_pmod[5]</port-name>
                 </record>
                 <record id="IOB_t[0:0]_xy[31:22]_out1">
-                    <port-name>led_en[3]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[31:23]_out0">
-                    <port-name>led_pmod[1]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[31:23]_out1">
-                    <port-name>led_en[2]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[31:24]_out0">
-                    <port-name>led_pmod[4]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[31:24]_out1">
-                    <port-name>led_en[1]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[31:25]_out0">
-                    <port-name>led_pmod[0]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[31:25]_out1">
-                    <port-name>led_en[0]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[31:5]_out0">
-                    <port-name>led_pmod[7]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[31:5]_out1">
-                    <port-name>led_en[7]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[31:6]_out0">
-                    <port-name>led_pmod[3]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[31:6]_out1">
-                    <port-name>led_en[6]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[31:8]_out0">
-                    <port-name>led_pmod[6]</port-name>
-                </record>
-                <record id="IOB_t[0:0]_xy[31:8]_out1">
                     <port-name>led_en[5]</port-name>
                 </record>
-                <record id="IOB_t[0:0]_xy[31:9]_out0">
+                <record id="IOB_t[0:0]_xy[31:23]_out0">
+                    <port-name>led_pmod[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:23]_out1">
+                    <port-name>led_en[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:24]_out0">
+                    <port-name>led_pmod[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:24]_out1">
+                    <port-name>led_en[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:25]_out0">
                     <port-name>led_pmod[2]</port-name>
                 </record>
+                <record id="IOB_t[0:0]_xy[31:25]_out1">
+                    <port-name>led_en[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:26]_out0">
+                    <port-name>led_pmod[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:26]_out1">
+                    <port-name>led_en[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:27]_out0">
+                    <port-name>led_pmod[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:27]_out1">
+                    <port-name>led_en[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:8]_out0">
+                    <port-name>led_pmod[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:8]_out1">
+                    <port-name>led_en[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:9]_out0">
+                    <port-name>led_pmod[6]</port-name>
+                </record>
                 <record id="IOB_t[0:0]_xy[31:9]_out1">
-                    <port-name>led_en[4]</port-name>
+                    <port-name>led_en[6]</port-name>
                 </record>
             </records>
         </io-spec-tool>
@@ -852,14 +898,40 @@
                 </wire>
             </wires-data>
         </macrocell-mode-data>
+        <pllConfigurator>
+            <!--PLL configurator data-->
+            <pllConfiguratorDataVersion>1</pllConfiguratorDataVersion>
+            <pllConfigurations>
+                <pllConfiguration>
+                    <pllFref>50.000000</pllFref>
+                    <pllIsManualCalculationMode>0</pllIsManualCalculationMode>
+                    <pllOutputChannels>
+                        <pllOutputChannel>
+                            <pllIsOutEnabled>1</pllIsOutEnabled>
+                            <pllRequiredFout>50.000000</pllRequiredFout>
+                            <pllRefDiv>1</pllRefDiv>
+                            <pllFbDiv>25</pllFbDiv>
+                            <pllPostDiv1>5</pllPostDiv1>
+                            <pllPostDiv2>5</pllPostDiv2>
+                        </pllOutputChannel>
+                    </pllOutputChannels>
+                    <pllProperties>
+                        <pllBypass>0</pllBypass>
+                        <pllClockSelection>0</pllClockSelection>
+                        <pllEnableUserClockByPll>0</pllEnableUserClockByPll>
+                        <pllLock>0</pllLock>
+                    </pllProperties>
+                </pllConfiguration>
+            </pllConfigurations>
+        </pllConfigurator>
         <!--Fpga project data END-->
     </fpga-data>
     <projectData>
         <specs>
-            <lastModify lastModifyValue="05.06.2025 4:17:35"/>
+            <lastModify lastModifyValue="13.04.2026 12:55:38"/>
             <vddSpecs vddMin="1.15" vddTyp="1.15" vddMax="1.15"/>
             <vdd2Specs vdd2Min="1.71" vdd2Typ="2.5" vdd2Max="3.3"/>
-            <tempSpecs tempMin="-34"/>
+            <tempSpecs tempMin="-34" tempTyp="25" tempMax="85"/>
         </specs>
         <projectDataFields>
             <textLineDataField name="Customer Name" id="2" text=""/>
