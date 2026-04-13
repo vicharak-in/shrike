@@ -227,7 +227,7 @@ We have created custom binary for shrike this contains a shrike.py library that 
 :sync: Shrike/Shrike-lite
 
 
-1. Download the binary corresponding to your board version from the shrike's [Github](https://github.com/vicharak-in/shrike).
+1. Download the binary corresponding to your board version from the shrike's [Releases](https://github.com/vicharak-in/shrike/releases/)
 2. Hold the boot button on the board and connect it the your pc now shrike will show up as as storage device.
 3. Copy the downloaded uf2 in storage device you can simply drag and drop in mostly all the devices. 
 4. After the successful copying the storage device should disappear.
@@ -249,7 +249,7 @@ For windows simply right click and rename for changing the name in linux read [t
 ::::{tab-item} Shrike-fi
 :sync: Shrike-fi
 
-1. Download the binary corresponding to your board version from the shrike's [Github](https://github.com/vicharak-in/shrike).
+1. Download the binary corresponding to your board version from the shrike's [Releases](https://github.com/vicharak-in/shrike/releases/).
 
 2. Install the ESP tools `pip install esptool`. 
     You might need to activate a python virtual environment. Check this guide to know how to do so. 
@@ -336,7 +336,7 @@ The way Circuit-Python works with Shrike is we have a custom circuit python buil
 
 ### 1. Uploading the Shrike binary
 
-1. Download the binary corresponding to your board version from the shrike's [Github](https://github.com/vicharak-in/shrike).
+1. Download the binary corresponding to your board version from the shrike's [Release](https://github.com/vicharak-in/shrike/releases/).
 2. Hold the boot button on the board and connect it the your pc now shrike will show up as as storage device.
 3. Copy the downloaded uf2 in storage device you can simply drag and drop in mostly all the devices. 
 4. After the successful copying the storage device should disappear.
