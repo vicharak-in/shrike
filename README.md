@@ -49,11 +49,13 @@ Shrike-lite the RP2040 version of the family is available at our store for world
 | Breadboard Compatible               | ✅                      | ✅                     | ✅                 |
 | FPGA ↔ MCU IO Interface             | ✅                      | ✅                     | ✅                 |  
 | Flash (QSPI)                        | 4 MB                    | 4 MB                   | 8 MB               |
-| PSRAM (QSPI)                        | ❌                      | ❌                     | 8 MB               |
 | User LEDs                           | 2                       | 2                      | 2                  |
 | USB Type-C (Power & Programming)    | ✅                      | ✅                     | ✅                 |
 | WiFi                                | ❌                      | ❌                     | ✅                 |
 | BLE                                 | ❌                      | ❌                     | ✅                 |
+| Optional Add-on Features                                                                                    |
+| PSRAM (QSPI)                        | ❌                      | ❌                     | 8 MB               |
+| BMS On Board                        | ❌                      | ❌                     | ✅                 | 
 
 
 
@@ -76,18 +78,18 @@ We are building a ecosystem for learners , makers and hobbyist around shrike and
 
 Thank You 
 
-### What to contribute ? 
-
-You can contribute the project's and example's that you have designed on Shrike or any utils that you might have designed.
-
-We also have live bounty from time to time check it [here](./bounty.md) 
-
 ## Contribution Guideline  
 
 Your contribution to the Shrike project are always welcome.
 To contribute fork the project test your changes and create a PR. Few things in to keep in mind for better contribution. 
 Please read the Contribution [Guide](./CONTRIBUTING.md) to know them.
 
+
+### What to contribute ? 
+
+You can contribute the project's and example's that you have designed on Shrike or any utils that you might have designed.
+
+We also have live bounty from time to time check it [here](./bounty.md) 
 
 ## LICENSE 
 
