@@ -170,7 +170,7 @@ Build the bitstream in GCSH, copy the output `.bin` file into `bitstream/`, and 
 
 If your example includes MCU firmware, write it to support all Shrike boards from a single source file using compile-time (`#ifdef`) or runtime (`sys.platform`) detection.
 
-See the [Platform-Agnostic Firmware Guide](docs/platform_agnostic_guide.md) for patterns and examples.
+See the [Platform-Agnostic Firmware Guide](docs/PLATFORM_AGNOSTIC_FIRMWARE_GUIDE.md) for patterns and examples.
 
 ### Naming Conventions
 
