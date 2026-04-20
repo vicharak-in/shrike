@@ -55,14 +55,15 @@ def flash(filename: str, word_size=46408):
                 if not word:
                     break
                 SPI.write(word)
+    
+        SS.value(1)
+        utime.sleep(0.1)
+        print("[shrike_flash] FPGA programming done.")
     except OSError as e:
         print(f"[shrike_flash] File error: {e}")
     except Exception as e:
         print(f"[shrike_flash] Error: {e}")
 
-    SS.value(1)
-    utime.sleep(0.1)
-    print("[shrike_flash] FPGA programming done.")
     
 def reset():
     """
