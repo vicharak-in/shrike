@@ -31,6 +31,5 @@ sudo chmod +x multi_shrike_test.sh
 sudo ./multi_shrike_test.sh
 ```
 
-6. Connect the Boards One after another and you are good to Go
-
+6. Connect all the boards at the same time, and you're ready to go.
 
