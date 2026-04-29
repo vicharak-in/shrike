@@ -13,19 +13,24 @@ git clone https://github.com/vicharak-in/shrike-lite.git
 cd shrike-lite/test/multi_hardware_test
 ```
 
-3. Execute the setup file 
+3. Download the MicroPython UF2 file:
+```
+wget https://github.com/vicharak-in/shrike/releases/download/v1.0.0/shrike-lite-micropython.uf2
+```
+
+4. Execute the setup file 
 
 ```
 sudo chmod +x setup.sh
 sudo ./setup.sh
 ```
 
-4. Execute the test file 
+5. Execute the test file 
 ```
 sudo chmod +x multi_shrike_test.sh
 sudo ./multi_shrike_test.sh
 ```
 
-5. Connect the Boards One after another and you are good to Go
+6. Connect the Boards One after another and you are good to Go
 
 
