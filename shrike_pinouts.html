@@ -25,9 +25,9 @@
 <meta content="Shrike Dev Board Pin Outs | Shrike Documentation" property="og:title"/>
 <meta content="Shrike Dev Board Pin Outs | Shrike Documentation" name="twitter:title"/>
 <link href="_static/pygments.css?v=e72c8e07" rel="stylesheet" type="text/css"/>
-<link href="_static/theme.css?v=73505e79" rel="stylesheet" type="text/css"/>
+<link href="_static/theme.css?v=979577e3" rel="stylesheet" type="text/css"/>
 <link href="_static/sphinx-design.min.css?v=95c83b7e" rel="stylesheet" type="text/css"/>
-<link href="_static/awesome-sphinx-design.css?v=c54898a4" rel="stylesheet" type="text/css"/>
+<link href="_static/awesome-sphinx-design.css?v=b1d4564d" rel="stylesheet" type="text/css"/>
 <link href="search.html" rel="search" title="Search"/>
 <link href="genindex.html" rel="index" title="Index"/>
 <link href="shrike_cli_guide.html" rel="next" title="User guide to access and use shrike from your terminal(CLI)"/>
@@ -108,19 +108,21 @@
 <div id="content" role="main">
 <section id="shrike-dev-board-pin-outs">
 <span id="shrike-pinouts"></span><h1>Shrike Dev Board Pin Outs<a class="headerlink" href="#shrike-dev-board-pin-outs" title="Link to this heading">¶</a></h1>
+<div class="sd-tab-set docutils">
+<input checked="checked" id="sd-tab-item-0" name="sd-tab-set-0" type="radio"/>
+<label class="sd-tab-label" for="sd-tab-item-0">
+Shrike/Shrike-lite</label><div class="sd-tab-content docutils">
 <div align="center">
 <a class="reference internal image-reference" href="_images/shrike_pinouts.svg"><img alt="shrike" src="_images/shrike_pinouts.svg" style="width: 100%;"/>
 </a>
 </div>
-<section id="fpga-rp2040-communication-pin-outs">
-<h2>FPGA RP2040 Communication Pin-outs<a class="headerlink" href="#fpga-rp2040-communication-pin-outs" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#fpga-rp2040-communication-pin-outs'">¶</a></h2>
+<p class="rubric" id="fpga-rp2040-communication-pin-outs">FPGA RP2040 Communication Pin-outs</p>
 <p>To make communication between RP2040/RP2350 and FPGA simple we have connected a 6 bit IO bus on the PCB .
 Its actually a 8 bit bus however 2 pin are always pre-occupied with EN and PWR pins these are used to reset and control the initialization of FPGA.</p>
 <p>Out of remaining 6 pins, 4 pins are dual purpose which works both as configuration pins ( to program the fpga) and then IO bus. This pins are completely internally routed however test pads are available in the top of the board in case need arises to probe them.</p>
 <p>The remaining 2 pins  FPGA PIN 17 , 18 are both internally connected and routed to IO header , mode of can be configuration by soldering/de-soldering the 0ohm resistor on board (check schematic for details).</p>
 <p>In default these resistor are placed and thus these pins are connected to respective RP2040/RP2350 IO (see table below) internally. Thus in this case it is recommended to NOT use them as IO on header even tho they are present. Same goes for RP2040 pin number 14 , 15.</p>
-<section id="fpga-cpu-interconnect-pin-outs">
-<h3>FPGA CPU Interconnect Pin-outs<a class="headerlink" href="#fpga-cpu-interconnect-pin-outs" title="Link to this heading" x-intersect.margin.0%.0%.-70%.0%="activeSection = '#fpga-cpu-interconnect-pin-outs'">¶</a></h3>
+<p class="rubric" id="fpga-cpu-interconnect-pin-outs">FPGA CPU Interconnect Pin-outs</p>
 <div align="center">
 <table class="docutils align-default">
 <thead>
@@ -168,14 +170,70 @@ Its actually a 8 bit bus however 2 pin are always pre-occupied with EN and PWR p
 </tr>
 <tr class="row-odd"><td><p>17</p></td>
 <td><p>15</p></td>
-<td><p>GPIO / I2C 1 SDA</p></td>
+<td><p>GPIO / I2C 1 SCL</p></td>
 <td><p>GPIO</p></td>
 </tr>
 </tbody>
 </table>
 </div>
-</section>
-</section>
+</div>
+<input id="sd-tab-item-1" name="sd-tab-set-0" type="radio"/>
+<label class="sd-tab-label" for="sd-tab-item-1">
+Shrike-fi</label><div class="sd-tab-content docutils">
+<div align="center">
+<a class="reference internal image-reference" href="_images/shrike_fi_pinouts.svg"><img alt="shrike fi pinouts" src="_images/shrike_fi_pinouts.svg" style="width: 100%;"/>
+</a>
+</div>
+<p class="rubric" id="fpga-esp32-communication-pin-outs">FPGA ESP32 Communication Pin-outs</p>
+<p>To make communication between ESP32 and FPGA simple we have connected a 4 bit IO bus on the PCB .
+Its actually a 6 bit bus however 2 pin are always pre-occupied with EN and PWR pins these are used to reset and control the initialization of FPGA.</p>
+<p>These 4 pins are dual purpose which works both as configuration pins ( to program the fpga) and then IO bus. This pins are completely internally routed however test pads are available in the top of the board in case need arises to probe them.</p>
+<p class="rubric" id="id1">FPGA CPU Interconnect Pin-outs</p>
+<div align="center">
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>FPGA PIN</p></th>
+<th class="head"><p>ESP32 PIN</p></th>
+<th class="head"><p>ESP32</p></th>
+<th class="head"><p>FPGA</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>EN</p></td>
+<td><p>9</p></td>
+<td><p>GPIO</p></td>
+<td><p>EN (Enable)</p></td>
+</tr>
+<tr class="row-odd"><td><p>PWR</p></td>
+<td><p>8</p></td>
+<td><p>GPIO</p></td>
+<td><p>PWR</p></td>
+</tr>
+<tr class="row-even"><td><p>3</p></td>
+<td><p>12</p></td>
+<td><p>GPIO</p></td>
+<td><p>SPI_SCLK</p></td>
+</tr>
+<tr class="row-odd"><td><p>4</p></td>
+<td><p>10</p></td>
+<td><p>GPIO</p></td>
+<td><p>SPI_SS</p></td>
+</tr>
+<tr class="row-even"><td><p>5</p></td>
+<td><p>11</p></td>
+<td><p>GPIO</p></td>
+<td><p>SPI_SI (MOSI)</p></td>
+</tr>
+<tr class="row-odd"><td><p>6</p></td>
+<td><p>13</p></td>
+<td><p>GPIO</p></td>
+<td><p>SPI_SO (MISO) / CONFIG</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
 </section>
 </div><div class="flex justify-between items-center pt-6 mt-12 border-t border-border gap-4">
 <div class="mr-auto">
@@ -194,16 +252,7 @@ Its actually a 8 bit bus however 2 pin are always pre-occupied with EN and PWR p
 </svg>
 </a>
 </div>
-</div></div><aside class="hidden text-sm xl:block" id="right-sidebar">
-<div class="sticky top-16 -mt-10 max-h-[calc(100vh-5rem)] h-full overflow-y-auto pt-6 space-y-2"><p class="font-medium">On this page</p>
-<ul>
-<li><a :data-current="activeSection === '#fpga-rp2040-communication-pin-outs'" class="reference internal" href="#fpga-rp2040-communication-pin-outs">FPGA RP2040 Communication Pin-outs</a><ul>
-<li><a :data-current="activeSection === '#fpga-cpu-interconnect-pin-outs'" class="reference internal" href="#fpga-cpu-interconnect-pin-outs">FPGA CPU Interconnect Pin-outs</a></li>
-</ul>
-</li>
-</ul>
-</div>
-</aside>
+</div></div>
 </main>
 </div>
 </div><footer class="py-6 border-t border-border md:py-0">
@@ -217,7 +266,7 @@ Its actually a 8 bit bus however 2 pin are always pre-occupied with EN and PWR p
 <script src="_static/documentation_options.js?v=f2a433a1"></script>
 <script src="_static/doctools.js?v=9bcbadda"></script>
 <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
-<script defer="defer" src="_static/theme.js?v=582b20c5"></script>
+<script defer="defer" src="_static/theme.js?v=d6a9845b"></script>
 <script src="_static/design-tabs.js?v=f930bc37"></script>
 </body>
 </html>

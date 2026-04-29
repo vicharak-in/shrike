@@ -3,6 +3,8 @@
 # Shrike Dev Board Pin Outs 
 
 
+::::{tab-set}
+:::{tab-item} Shrike/Shrike-lite
 
 <div align="center">
 
@@ -37,6 +39,50 @@ In default these resistor are placed and thus these pins are connected to respec
 | 5        | 3           | GPIO                 | SPI_SI (MOSI)          |
 | 6        | 0           | UART TX / GPIO       | SPI_SO (MISO) / CONFIG |
 | 18       | 14          | GPIO / I2C 1 SDA     | GPIO                   |
-| 17       | 15          | GPIO / I2C 1 SDA     | GPIO                   |
+| 17       | 15          | GPIO / I2C 1 SCL     | GPIO                   |
  
 </div>
+
+
+:::
+
+
+:::{tab-item} Shrike-fi
+
+<div align="center">
+
+ <img src="./images/shrike_fi_pinouts.svg" alt="shrike fi pinouts" width="100%">
+
+</div>
+
+
+## FPGA ESP32 Communication Pin-outs
+
+To make communication between ESP32 and FPGA simple we have connected a 4 bit IO bus on the PCB . 
+Its actually a 6 bit bus however 2 pin are always pre-occupied with EN and PWR pins these are used to reset and control the initialization of FPGA.
+
+These 4 pins are dual purpose which works both as configuration pins ( to program the fpga) and then IO bus. This pins are completely internally routed however test pads are available in the top of the board in case need arises to probe them. 
+
+
+### FPGA CPU Interconnect Pin-outs 
+
+<div align="center">
+
+
+| FPGA PIN | ESP32 PIN   | ESP32         |       FPGA             |
+|----------|-------------|---------------|------------------------|
+| EN       | 9           | GPIO          | EN (Enable)            |
+| PWR      | 8           | GPIO          | PWR                    |
+| 3        | 12          | GPIO          | SPI_SCLK               |
+| 4        | 10          | GPIO          | SPI_SS                 |
+| 5        | 11          | GPIO          | SPI_SI (MOSI)          |
+| 6        | 13          | GPIO          | SPI_SO (MISO) / CONFIG |
+ 
+</div>
+
+
+
+
+:::
+::::
+
