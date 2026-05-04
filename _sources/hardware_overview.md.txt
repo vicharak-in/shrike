@@ -105,7 +105,7 @@ The voltage on the PMOD connector is 3.3V.
 - FPGA User LED  
 - 24 MCU GPIO  
 - 14 FPGA GPIO's  
-- 6 Bit FPGA MCU Link  
+- 4 Bit FPGA MCU Link  
 - Bread Board Compatible  
 
 ---
@@ -142,17 +142,67 @@ The LED's are active high meaning that when the GPIO pin is set to high the LED 
 
 ---
 
+## WiFi and BLE
+
+The Shrike-fi dev board with ESP32S3 supports 2.4 GHz, 802.11 b/g/n Wi-Fi 4 and Bluetooth 5 (LE).
+These are on-chip features of ESP32S3.
+
 ## FLASH
 
 The Shrike Dev Board features a 32Mb/4MB QSPI based Flash memory which is connected to ESP32S3. The part number for which is W25Q32JV. This flash is used to store the fpga bitstream and firmware.
 
-The board also has 8MB in-package PSRAM in the ESP32S3.
+The board also has optional 8MB PSRAM in the ESP32S3.
 
 ---
+
+##  Optional Add-On
+
+The Shrike-fi Dev also has two optional add on's hardware features. 
+
+### 1. PSRAM
+
+Shrike-fi can be equipped with an optional 8 MB PSRAM. Depending on the variant purchased, the PSRAM may come pre-soldered or left unpopulated. If you choose to buy without it soldered, you can add it later. The part number is **LY68L6400SLIT**, and the designator is **U10**.
+
+
+### 2. Batter Management System  
+
+Shrike-fi features an onboard battery management and charging circuit. However, in the base version, these parts are designated as do not place (DNP). A future version with these components pre-soldered will be available soon.
+
+In the meantime, we are providing the necessary details for all the parts if you wish to solder them yourself. 
+
+The complete BOM for the BMS and charging circuit is available in the table below. 
+
+
+| Designator        | Description                                                                 | Value     | Manufacturer Part Number | Case/Package | Quantity | Type       |
+|------------------|-----------------------------------------------------------------------------|-----------|--------------------------|--------------|----------|------------|
+| C9               | 100nF, 10V, X7R, ±10%, 0402, MLCC | 100nF     | CC0402KRX7R6BB104           |0402         | 1        | Capacitor  |
+| C10, C11, C12    | 10uF, 10V, X5R, ±10%, 0603, MLCC | 10uF      | CL10A106KP8NNNC          | 0603         | 3        | Capacitor  |
+| D9               | LED ORANGE 0603                                                             | ORANGE LED| XL-1608UOC-06            |0603         | 1        | LED        |
+| D10              | GREEN LED (LED)                       | GREEN LED | XL-1608UGC-04    |0603         | 1        | LED        |
+| J3               | 2P 1x2P 2.5mm 2.2A 1 Right Angle Through Hole ,P=2.5mm Headers| — | XY-XHB2.54-2A21        |  TH, P=2.5mm |  1        | Connector  |
+| R5               | Resistor - 100 ohm, 1%, 0402                                                | 100R      | RC0402FR-07100RL           |0402         | 1        | Resistor   |
+| R6, R7, R11, R12 | Resistor - 1 kohm, 1%, 0402                                                 | 1K        | RC0402FR-071KL           |0402         | 4        | Resistor   |
+| R8               | 402Ohm, ±1%, 62.5mW, 0402, Chip Resistor                                    | 402R      | 0402WGF4020TCE           |0402         | 1        | Resistor   |
+| R9               | Resistor - 0 ohm, 1%, 0402                                                  | 0R        | RC0402FR-070RL             |0402         | 1        | Resistor   |
+| R10              | 0Ohm,125mW, ±1%, 0805, Resistor                                             | 0R        | 0805W8F0000T5E           | 0805         | 1        | Resistor   |
+| U2               | Lithium Battery protection IC, SOT23-6 (4911) (DW01A) (C436931)             | DW01A     | DW01A                    |SOT23-6      | 1        | IC         |
+| U3               | POWER SWITCH IC [TPS2113ADRBR] (C354512)                                    | —         | TPS2113ADRBR             | VSON-8       | 1        | IC         |
+| U4               | Lithium Battery Charger, 1A, 5V, (3656) [TP4056] (SOP8)                     | —         | TP4056                   | SOP8         | 1        | IC         |
+| U5               | Dual N-Channel -20V 6A 1V @ 250uA [FS8205A]                                 | —         | FS8205A                  | TSSOP-8      | 1        | IC         |
+
+
+---
+
+> **Note:** Both of these add-ons are not placed in the base version of Shrike-fi. We will launch a board with these components pre-soldered soon. In the meantime, you can solder them yourself if you want these features.
+
+---
+
+
 
 ## Programming
 
 Both the IC on the board have separate programming models. The ESP32S3 can be programmed using MicroPython, Arduino or ESP-SDK whereas the FPGA needs to be programmed using Verilog in the Renesas Go Configure hub.
+
 
 ---
 

@@ -13,7 +13,7 @@
 </div>
 
 
-## FPGA RP2040 Communication Pin-outs
+## FPGA RP2040/RP2350 Communication Pin-outs
 
 To make communication between RP2040/RP2350 and FPGA simple we have connected a 6 bit IO bus on the PCB . 
 Its actually a 8 bit bus however 2 pin are always pre-occupied with EN and PWR pins these are used to reset and control the initialization of FPGA.
@@ -24,6 +24,13 @@ The remaining 2 pins  FPGA PIN 17 , 18 are both internally connected and routed 
 
 In default these resistor are placed and thus these pins are connected to respective RP2040/RP2350 IO (see table below) internally. Thus in this case it is recommended to NOT use them as IO on header even tho they are present. Same goes for RP2040 pin number 14 , 15.
 
+
+### User LED's 
+
+The Shrike/Shrike-lite has two user LED's one each for FPGA and MCU. The Pin Number for the same are
+
+ * MCU LED - RP2040/RP2350 - GPIO04
+ * FPGA                      GPIO16
 
 ### FPGA CPU Interconnect Pin-outs 
 
@@ -63,6 +70,13 @@ Its actually a 6 bit bus however 2 pin are always pre-occupied with EN and PWR p
 
 These 4 pins are dual purpose which works both as configuration pins ( to program the fpga) and then IO bus. This pins are completely internally routed however test pads are available in the top of the board in case need arises to probe them. 
 
+
+### User LED's 
+
+The Shrike-fi has two user LED's one each for FPGA and MCU. The Pin Number for the same are
+
+ * MCU LED - ESP32S3 - GPIO21
+ * FPGA                GPIO16
 
 ### FPGA CPU Interconnect Pin-outs 
 

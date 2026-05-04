@@ -182,7 +182,7 @@ Shrike-fi</label><div class="sd-tab-content docutils">
 <li><p>FPGA User LED</p></li>
 <li><p>24 MCU GPIO</p></li>
 <li><p>14 FPGA GPIO’s</p></li>
-<li><p>6 Bit FPGA MCU Link</p></li>
+<li><p>4 Bit FPGA MCU Link</p></li>
 <li><p>Bread Board Compatible</p></li>
 </ul>
 <hr class="docutils"/>
@@ -205,9 +205,151 @@ Connect the board to a host PC using a type c cable and you are good to go.</p>
 The ESP32S3 LED is connected to GPIO 21 and the FPGA LED is connected to GPIO 16.</p>
 <p>The LED’s are active high meaning that when the GPIO pin is set to high the LED will turn on and when the GPIO pin is set to low the LED will turn off.</p>
 <hr class="docutils"/>
+<p class="rubric" id="wifi-and-ble">WiFi and BLE</p>
+<p>The Shrike-fi dev board with ESP32S3 supports 2.4 GHz, 802.11 b/g/n Wi-Fi 4 and Bluetooth 5 (LE).
+These are on-chip features of ESP32S3.</p>
 <p class="rubric" id="id6">FLASH</p>
 <p>The Shrike Dev Board features a 32Mb/4MB QSPI based Flash memory which is connected to ESP32S3. The part number for which is W25Q32JV. This flash is used to store the fpga bitstream and firmware.</p>
-<p>The board also has 8MB in-package PSRAM in the ESP32S3.</p>
+<p>The board also has optional 8MB PSRAM in the ESP32S3.</p>
+<hr class="docutils"/>
+<p class="rubric" id="optional-add-on">Optional Add-On</p>
+<p>The Shrike-fi Dev also has two optional add on’s hardware features.</p>
+<p class="rubric" id="psram">1. PSRAM</p>
+<p>Shrike-fi can be equipped with an optional 8 MB PSRAM. Depending on the variant purchased, the PSRAM may come pre-soldered or left unpopulated. If you choose to buy without it soldered, you can add it later. The part number is <strong>LY68L6400SLIT</strong>, and the designator is <strong>U10</strong>.</p>
+<p class="rubric" id="batter-management-system">2. Batter Management System</p>
+<p>Shrike-fi features an onboard battery management and charging circuit. However, in the base version, these parts are designated as do not place (DNP). A future version with these components pre-soldered will be available soon.</p>
+<p>In the meantime, we are providing the necessary details for all the parts if you wish to solder them yourself.</p>
+<p>The complete BOM for the BMS and charging circuit is available in the table below.</p>
+<table class="docutils align-default">
+<thead>
+<tr class="row-odd"><th class="head"><p>Designator</p></th>
+<th class="head"><p>Description</p></th>
+<th class="head"><p>Value</p></th>
+<th class="head"><p>Manufacturer Part Number</p></th>
+<th class="head"><p>Case/Package</p></th>
+<th class="head"><p>Quantity</p></th>
+<th class="head"><p>Type</p></th>
+</tr>
+</thead>
+<tbody>
+<tr class="row-even"><td><p>C9</p></td>
+<td><p>100nF, 10V, X7R, ±10%, 0402, MLCC</p></td>
+<td><p>100nF</p></td>
+<td><p>CC0402KRX7R6BB104</p></td>
+<td><p>0402</p></td>
+<td><p>1</p></td>
+<td><p>Capacitor</p></td>
+</tr>
+<tr class="row-odd"><td><p>C10, C11, C12</p></td>
+<td><p>10uF, 10V, X5R, ±10%, 0603, MLCC</p></td>
+<td><p>10uF</p></td>
+<td><p>CL10A106KP8NNNC</p></td>
+<td><p>0603</p></td>
+<td><p>3</p></td>
+<td><p>Capacitor</p></td>
+</tr>
+<tr class="row-even"><td><p>D9</p></td>
+<td><p>LED ORANGE 0603</p></td>
+<td><p>ORANGE LED</p></td>
+<td><p>XL-1608UOC-06</p></td>
+<td><p>0603</p></td>
+<td><p>1</p></td>
+<td><p>LED</p></td>
+</tr>
+<tr class="row-odd"><td><p>D10</p></td>
+<td><p>GREEN LED (LED)</p></td>
+<td><p>GREEN LED</p></td>
+<td><p>XL-1608UGC-04</p></td>
+<td><p>0603</p></td>
+<td><p>1</p></td>
+<td><p>LED</p></td>
+</tr>
+<tr class="row-even"><td><p>J3</p></td>
+<td><p>2P 1x2P 2.5mm 2.2A 1 Right Angle Through Hole ,P=2.5mm Headers</p></td>
+<td><p>—</p></td>
+<td><p>XY-XHB2.54-2A21</p></td>
+<td><p>TH, P=2.5mm</p></td>
+<td><p>1</p></td>
+<td><p>Connector</p></td>
+</tr>
+<tr class="row-odd"><td><p>R5</p></td>
+<td><p>Resistor - 100 ohm, 1%, 0402</p></td>
+<td><p>100R</p></td>
+<td><p>RC0402FR-07100RL</p></td>
+<td><p>0402</p></td>
+<td><p>1</p></td>
+<td><p>Resistor</p></td>
+</tr>
+<tr class="row-even"><td><p>R6, R7, R11, R12</p></td>
+<td><p>Resistor - 1 kohm, 1%, 0402</p></td>
+<td><p>1K</p></td>
+<td><p>RC0402FR-071KL</p></td>
+<td><p>0402</p></td>
+<td><p>4</p></td>
+<td><p>Resistor</p></td>
+</tr>
+<tr class="row-odd"><td><p>R8</p></td>
+<td><p>402Ohm, ±1%, 62.5mW, 0402, Chip Resistor</p></td>
+<td><p>402R</p></td>
+<td><p>0402WGF4020TCE</p></td>
+<td><p>0402</p></td>
+<td><p>1</p></td>
+<td><p>Resistor</p></td>
+</tr>
+<tr class="row-even"><td><p>R9</p></td>
+<td><p>Resistor - 0 ohm, 1%, 0402</p></td>
+<td><p>0R</p></td>
+<td><p>RC0402FR-070RL</p></td>
+<td><p>0402</p></td>
+<td><p>1</p></td>
+<td><p>Resistor</p></td>
+</tr>
+<tr class="row-odd"><td><p>R10</p></td>
+<td><p>0Ohm,125mW, ±1%, 0805, Resistor</p></td>
+<td><p>0R</p></td>
+<td><p>0805W8F0000T5E</p></td>
+<td><p>0805</p></td>
+<td><p>1</p></td>
+<td><p>Resistor</p></td>
+</tr>
+<tr class="row-even"><td><p>U2</p></td>
+<td><p>Lithium Battery protection IC, SOT23-6 (4911) (DW01A) (C436931)</p></td>
+<td><p>DW01A</p></td>
+<td><p>DW01A</p></td>
+<td><p>SOT23-6</p></td>
+<td><p>1</p></td>
+<td><p>IC</p></td>
+</tr>
+<tr class="row-odd"><td><p>U3</p></td>
+<td><p>POWER SWITCH IC [TPS2113ADRBR] (C354512)</p></td>
+<td><p>—</p></td>
+<td><p>TPS2113ADRBR</p></td>
+<td><p>VSON-8</p></td>
+<td><p>1</p></td>
+<td><p>IC</p></td>
+</tr>
+<tr class="row-even"><td><p>U4</p></td>
+<td><p>Lithium Battery Charger, 1A, 5V, (3656) [TP4056] (SOP8)</p></td>
+<td><p>—</p></td>
+<td><p>TP4056</p></td>
+<td><p>SOP8</p></td>
+<td><p>1</p></td>
+<td><p>IC</p></td>
+</tr>
+<tr class="row-odd"><td><p>U5</p></td>
+<td><p>Dual N-Channel -20V 6A 1V @ 250uA [FS8205A]</p></td>
+<td><p>—</p></td>
+<td><p>FS8205A</p></td>
+<td><p>TSSOP-8</p></td>
+<td><p>1</p></td>
+<td><p>IC</p></td>
+</tr>
+</tbody>
+</table>
+<hr class="docutils"/>
+<blockquote>
+<div><p><strong>Note:</strong> Both of these add-ons are not placed in the base version of Shrike-fi. We will launch a board with these components pre-soldered soon. In the meantime, you can solder them yourself if you want these features.</p>
+</div></blockquote>
 <hr class="docutils"/>
 <p class="rubric" id="id7">Programming</p>
 <p>Both the IC on the board have separate programming models. The ESP32S3 can be programmed using MicroPython, Arduino or ESP-SDK whereas the FPGA needs to be programmed using Verilog in the Renesas Go Configure hub.</p>

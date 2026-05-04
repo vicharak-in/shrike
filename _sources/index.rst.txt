@@ -13,7 +13,7 @@
 ##############################################
 
 Shrike is a family of low cost affordable FPGA development board along with a host microcontroller. 
-Currently the family features these two members -: 
+Currently the family features these three members -: 
 
 1. Shrike-lite (FPGA with RP2040) 
 2. Shrike      (FPGA with RP2350)
