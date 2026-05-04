@@ -28,7 +28,7 @@ Shrike-lite the RP2040 version of the family is available at our store for world
 
 #### 2. [Shrike](https://www.crowdsupply.com/vicharak/shrike)
 
-#### 3. Shrike-fi (Launching Soon)
+#### 3. [Shrike-fi](https://store.vicharak.in/?product=v002743) (Launching Soon)
 
 ### Board level Block Diagram
 
