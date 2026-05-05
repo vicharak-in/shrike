@@ -6,7 +6,7 @@ from serial.tools import list_ports
 
 # Configuration
 BAUDRATE = 115200
-CHUNK_SIZE = 8000   # reduced from 46408 → prevents overflow
+CHUNK_SIZE = 8000   #Ajustable
 
 # -------- Get file(s) --------
 if len(sys.argv) > 1:

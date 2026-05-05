@@ -27,31 +27,55 @@ pip3 install pyserial
 
 Clone the repository using the following command:
 ```bash
-git clone <repository_url>
+git clone https://github.com/vicharak-in/shrike.git
 ```
 Explanation:
 This command downloads the project files from the remote Git repository to your local system.
 
 ### Repository Contents
 
-After cloning, ensure the following essential files and folder are present in the project directory:
+After cloning, ensure the following essential files and folder are present in the project directory and their functions.
 ```bash
 flash_test.sh
-test_firmware.bin
-bootloder.bin
-partition-table.bin
-pc_script
 ```
+### function
+- Flashes firmware to multiple Shrike-Fi (ESP32-S3) boards
+- Performs LED blink test to verify GPIO functionality
+- Reads .bin file and converts it to byte data
+- read data from PC over UART.
+- Supports FPGA flashing through ESP32-S3
+- Handles multiple boards in a single run
+
+```bash
+test_firmware.bin
+```
+### function
+- Initializes the ESP32-S3 at startup
+
+```bash
+bootloder.bin
+```
+### function
+- Initializes the ESP32-S3 at startup
+
+```bash
+partition-table.bin
+```
+### function
+- Defines memory layout (flash partitions)
+
+``` bash
+bin_streamer.py
+```
+### function
+- Reads .bin file data from the PC and sends it over serial (UART) to all active ports.
+
 ### Nevigate the project directory 
 ``` bash
-cd <repository_folder>
+cd test/shrike-fi/
 ```
 ### Follow the below steps to run the script on a Linux system terminal:
 1. Make the Script Executable
-```bash
-chmod +x <script_name>.sh
-```
-Example:
 ```bash
 chmod +x flash_test.sh
 ```
@@ -59,10 +83,6 @@ Explanation:
 The chmod +x command adds execute permission to the script file, allowing it to be run as a program.
 
 2. Run the Script
-```bash
-./<script_name>.sh
-```
-Example:
 ```bash
 ./flash_test.sh
 ```
@@ -77,14 +97,9 @@ newgrp dialout
 Then open new terminal it allow the permission. 
 
 ## After Run the Script successfully
-Open pc_script folder 
-and run Command
+Open serial_flash_tool folder and add FPGA .bin file in the folder then run Command
 
-```bash 
-python3 <File_name.py> <File_name.bin>
-```
-Example: 
 ```bash
-python3 pc_serial.py FPGA_bitstream_MCU.bin 
+python3 bin_streamer.py blink_all.bin 
 ```
 Wait until all .bin file (bytes) are fully send on UART; only after the entire transfer is complete FPGA flashing process begin.
