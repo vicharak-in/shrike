@@ -40,7 +40,7 @@ cd test/shrike-fi/
 
 After cloning, ensure the following essential files and folder are present in the project directory and their functions.
 
-1. 
+ 
 ``` bash
  flash_test.sh
 ```
@@ -52,20 +52,21 @@ Explanation:
 - Supports FPGA flashing through ESP32-S3
 - Handles multiple boards in a single run
 
-2. 
-```bash test_firmware.bin
+ 
+``` bash
+ test_firmware.bin
 ```
 Explanation:
 - Initializes the ESP32-S3 at startup
 
-3.
+
 ```bash
  bootloder.bin
 ```
 Explanation:
 - Initializes the ESP32-S3 at startup
 
-4.
+
 ```bash 
  partition-table.bin
 ```
@@ -73,7 +74,7 @@ Explanation:
 Explanation:
 - Defines memory layout (flash partitions)
 
-5.
+
 ```bash
  bin_streamer.py
 ```
