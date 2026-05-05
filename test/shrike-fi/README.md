@@ -32,13 +32,18 @@ git clone https://github.com/vicharak-in/shrike.git
 Explanation:
 This command downloads the project files from the remote Git repository to your local system.
 
+### Nevigate the project directory 
+``` bash
+cd test/shrike-fi/
+```
 ### Repository Contents
 
 After cloning, ensure the following essential files and folder are present in the project directory and their functions.
-```bash
-flash_test.sh
-```
-### function
+
+1. ```bash
+ flash_test.sh
+ ```
+Explanation:
 - Flashes firmware to multiple Shrike-Fi (ESP32-S3) boards
 - Performs LED blink test to verify GPIO functionality
 - Reads .bin file and converts it to byte data
@@ -46,34 +51,29 @@ flash_test.sh
 - Supports FPGA flashing through ESP32-S3
 - Handles multiple boards in a single run
 
-```bash
-test_firmware.bin
-```
-### function
+2. ```bash test_firmware.bin
+ ```
+Explanation:
 - Initializes the ESP32-S3 at startup
 
-```bash
-bootloder.bin
-```
-### function
+3. ```bash
+ bootloder.bin
+ ```
+Explanation:
 - Initializes the ESP32-S3 at startup
 
-```bash
-partition-table.bin
-```
-### function
+4. ```bash 
+ partition-table.bin
+ ```
+Explanation:
 - Defines memory layout (flash partitions)
 
-``` bash
-bin_streamer.py
-```
-### function
+5. ```bash
+ bin_streamer.py
+ ```
+Explanation:
 - Reads .bin file data from the PC and sends it over serial (UART) to all active ports.
 
-### Nevigate the project directory 
-``` bash
-cd test/shrike-fi/
-```
 ### Follow the below steps to run the script on a Linux system terminal:
 1. Make the Script Executable
 ```bash
