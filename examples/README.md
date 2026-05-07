@@ -23,10 +23,11 @@
 | 17 | 7-Segment Display Clock | `seven_seg_clock` | Signal & Timing | 🟡 Intermediate | BCD conversion, multiplexed display drive |
 | 18 | Ultrasonic Sensor | `ultrasonic_sensor` | Sensors & Peripherals | 🟡 Intermediate | Pulse timing, echo measurement FSM |
 | 19 | WS2812 LED | `ws2812_led` | Sensors & Peripherals | 🟡 Intermediate | Precise bit-bang timing, serial protocol |
-| 20 | ASK Modulator | `ask_modulator` | Signal & Timing | 🔴 Advanced | RF modulation concepts, carrier + data mixing |
-| 21 | Stack Processor | `stack_processor` | Processors & CPUs | 🔴 Advanced | Custom ISA, stack-based execution, SPI host |
-| 22 | Vector-4 CPU | `vector4_cpu` | Processors & CPUs | 🔴 Advanced | Full 4-bit SAP CPU: ALU, PC, registers, decode |
-| 23 | Vector-8 CPU | `vector8_cpu` | Processors & CPUs | 🔴 Advanced | Full 8-bit SAP CPU: wider datapath, more opcodes |
+| 20 | Quadrature Decoder | `quadrature_decoder` | Sensors & Peripherals | 🟡 Intermediate | Quadrature decoding, direction detection, signed position/speed tracking |
+| 21 | ASK Modulator | `ask_modulator` | Signal & Timing | 🔴 Advanced | RF modulation concepts, carrier + data mixing |
+| 22 | Stack Processor | `stack_processor` | Processors & CPUs | 🔴 Advanced | Custom ISA, stack-based execution, SPI host |
+| 23 | Vector-4 CPU | `vector4_cpu` | Processors & CPUs | 🔴 Advanced | Full 4-bit SAP CPU: ALU, PC, registers, decode |
+| 24 | Vector-8 CPU | `vector8_cpu` | Processors & CPUs | 🔴 Advanced | Full 8-bit SAP CPU: wider datapath, more opcodes |
 
 ---
 
@@ -35,7 +36,7 @@
 | Difficulty | Count | Examples |
 |------------|-------|---------|
 | 🟢 Beginner | 6 | `led_blink`, `breathing_led`, `button_debouncer`, `pmod_led_blink`, `logic_gates`, `counter_4bit` |
-| 🟡 Intermediate | 13 | `pmod_patterns`, `gpio_extender_8pin`, `gpio_extender_14pin`, `i2c_led`, `spi_loopback_led`, `uart_led`, `morse_blink`, `uart_alu`, `pll_oscillator`, `pwm_4ch`, `seven_seg_clock`, `ultrasonic_sensor`, `ws2812_led` |
+| 🟡 Intermediate | 13 | `pmod_patterns`, `gpio_extender_8pin`, `gpio_extender_14pin`, `i2c_led`, `spi_loopback_led`, `uart_led`, `morse_blink`, `uart_alu`, `pll_oscillator`, `pwm_4ch`, `seven_seg_clock`, `ultrasonic_sensor`, `ws2812_led`, `quadrature_decoder` |
 | 🔴 Advanced | 4 | `ask_modulator`, `stack_processor`, `vector4_cpu`, `vector8_cpu` |
 
 ---
