@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Shrike-fi WebFlash</title>
+<style>
+  :root {
+    --bg: #f5f2ed;
+    --surface: #ffffff;
+    --border: #d6d0c8;
+    --text: #1a1a1a;
+    --dim: #6b6560;
+    --accent: #c45427;
+    --accent-light: rgba(196, 84, 39, 0.08);
+    --accent-border: rgba(196, 84, 39, 0.25);
+    --success: #2e7d32;
+    --success-light: rgba(46, 125, 50, 0.08);
+    --error: #b71c1c;
+    --error-light: rgba(183, 28, 28, 0.08);
+    --mono: "SF Mono", "Fira Code", "JetBrains Mono", "Cascadia Code", monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: var(--mono);
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem 1.5rem;
+  }
+
+  .container {
+    width: 100%;
+    max-width: 480px;
+  }
+
+  /* Header */
+  .header {
+    margin-bottom: 1.5rem;
+  }
+
+  .header h1 {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: var(--accent);
+  }
+
+  .header p {
+    font-size: 0.7rem;
+    color: var(--dim);
+    margin-top: 0.25rem;
+  }
+
+  /* Drop zone */
+  .dropzone {
+    border: 1.5px dashed var(--border);
+    padding: 2rem 1.5rem;
+    text-align: center;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    background: var(--surface);
+  }
+
+  .dropzone:hover { border-color: var(--accent); }
+
+  .dropzone.drag-over {
+    border-color: var(--accent);
+    background: var(--accent-light);
+  }
+
+  .drop-label {
+    font-size: 0.78rem;
+    color: var(--dim);
+    line-height: 1.7;
+  }
+
+  .drop-label strong {
+    color: var(--accent);
+    cursor: pointer;
+  }
+
+  .file-input { display: none; }
+
+  /* Mode toggle */
+  .mode-toggle {
+    display: flex;
+    gap: 0;
+    margin-top: 0.75rem;
+    font-size: 0.7rem;
+  }
+
+  .mode-toggle button {
+    flex: 1;
+    padding: 0.45rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--dim);
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .mode-toggle button:first-child { border-right: none; }
+
+  .mode-toggle button.active {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+  }
+
+  /* Progress */
+  .progress-wrap {
+    margin-top: 0.75rem;
+    height: 3px;
+    background: var(--border);
+    overflow: hidden;
+    display: none;
+  }
+
+  .progress-wrap.visible { display: block; }
+
+  .progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    transition: width 0.15s ease;
+  }
+
+  /* Status */
+  .status {
+    margin-top: 0.75rem;
+    padding: 0.55rem 0.75rem;
+    font-size: 0.7rem;
+    line-height: 1.5;
+    display: none;
+  }
+
+  .status.visible { display: block; }
+
+  .status.info {
+    background: var(--accent-light);
+    border: 1px solid var(--accent-border);
+    color: var(--accent);
+  }
+
+  .status.success {
+    background: var(--success-light);
+    border: 1px solid rgba(46, 125, 50, 0.2);
+    color: var(--success);
+  }
+
+  .status.error {
+    background: var(--error-light);
+    border: 1px solid rgba(183, 28, 28, 0.2);
+    color: var(--error);
+  }
+
+  .status .status-title { font-weight: 700; }
+  .status .status-msg { margin-top: 0.1rem; }
+
+  /* Stored files section */
+  .section-title {
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--accent);
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .file-list {
+    border: 1px solid var(--border);
+    background: var(--surface);
+  }
+
+  .file-list.empty {
+    padding: 1.25rem;
+    text-align: center;
+    font-size: 0.7rem;
+    color: var(--dim);
+  }
+
+  .file-row {
+    display: flex;
+    align-items: center;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.7rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .file-row:last-child { border-bottom: none; }
+
+  .file-row .fname {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .file-row .fsize {
+    color: var(--dim);
+    margin: 0 0.75rem;
+    white-space: nowrap;
+  }
+
+  .file-row button {
+    font-family: var(--mono);
+    font-size: 0.65rem;
+    padding: 0.2rem 0.5rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-left: 0.3rem;
+  }
+
+  .file-row button:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .file-row button.btn-flash {
+    border-color: var(--accent);
+    color: var(--accent);
+  }
+
+  .file-row button.btn-flash:hover {
+    background: var(--accent);
+    color: #fff;
+  }
+
+  .file-row button.btn-delete:hover {
+    border-color: var(--error);
+    color: var(--error);
+  }
+
+  .file-row.active {
+    background: var(--accent-light);
+    border-left: 3px solid var(--accent);
+  }
+
+  .file-row .active-tag {
+    font-size: 0.55rem;
+    color: var(--accent);
+    margin-left: 0.4rem;
+    font-weight: 700;
+  }
+
+  /* Reset button */
+  .reset-wrap {
+    margin-top: 2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .btn-reset {
+    font-family: var(--mono);
+    font-size: 0.7rem;
+    padding: 0.4rem 0.75rem;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--dim);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+
+  .btn-reset:hover {
+    border-color: var(--error);
+    color: var(--error);
+  }
+
+  /* Footer */
+  .footer {
+    margin-top: 2rem;
+    font-size: 0.6rem;
+    color: var(--dim);
+  }
+
+  .footer a {
+    color: var(--accent);
+    text-decoration: none;
+  }
+
+  /* Spinner */
+  .spinner {
+    display: inline-block;
+    width: 11px;
+    height: 11px;
+    border: 1.5px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    vertical-align: middle;
+    margin-right: 0.3rem;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>shrike-fi webflash</h1>
+    <p>OTA bitstream flasher for Shrike-fi</p>
+  </div>
+
+  <!-- Drop zone -->
+  <div class="dropzone" id="dropzone">
+    <div class="drop-label">
+      drop .bin file here or <strong onclick="document.getElementById('fileInput').click()">browse</strong>
+    </div>
+    <input type="file" class="file-input" id="fileInput" accept=".bin">
+  </div>
+
+  <!-- Upload mode toggle -->
+  <div class="mode-toggle">
+    <button id="modeFlash" class="active" onclick="setMode('flash')">save + flash</button>
+    <button id="modeSave" onclick="setMode('save')">save only</button>
+  </div>
+
+  <!-- Progress + status -->
+  <div class="progress-wrap" id="progressWrap">
+    <div class="progress-bar" id="progressBar"></div>
+  </div>
+
+  <div class="status" id="status">
+    <div class="status-title" id="statusTitle"></div>
+    <div class="status-msg" id="statusMsg"></div>
+  </div>
+
+  <!-- Stored bitstreams -->
+  <div class="section-title">stored bitstreams</div>
+  <div class="file-list" id="fileList">
+    <div class="file-list empty">loading...</div>
+  </div>
+
+  <div class="reset-wrap">
+    <button class="btn-reset" onclick="resetFPGA()">reset fpga</button>
+  </div>
+
+  <div class="footer">
+    vicharak / esp32-s3 + slg47910 / 1120 lut
+    — <a href="/status" target="_blank">/status</a>
+  </div>
+</div>
+
+<script>
+  const dropzone    = document.getElementById("dropzone");
+  const fileInput   = document.getElementById("fileInput");
+  const progressWrap= document.getElementById("progressWrap");
+  const progressBar = document.getElementById("progressBar");
+  const statusEl    = document.getElementById("status");
+  const statusTitle = document.getElementById("statusTitle");
+  const statusMsg   = document.getElementById("statusMsg");
+  const fileList    = document.getElementById("fileList");
+
+  let uploadMode = "flash"; // "flash" or "save"
+
+  function setMode(mode) {
+    uploadMode = mode;
+    document.getElementById("modeFlash").classList.toggle("active", mode === "flash");
+    document.getElementById("modeSave").classList.toggle("active", mode === "save");
+  }
+
+  // ── Drag and drop ──
+  ["dragenter", "dragover"].forEach(e =>
+    dropzone.addEventListener(e, ev => { ev.preventDefault(); dropzone.classList.add("drag-over"); })
+  );
+  ["dragleave", "drop"].forEach(e =>
+    dropzone.addEventListener(e, ev => { ev.preventDefault(); dropzone.classList.remove("drag-over"); })
+  );
+
+  dropzone.addEventListener("drop", ev => {
+    const file = ev.dataTransfer.files[0];
+    if (file) handleFile(file);
+  });
+
+  fileInput.addEventListener("change", () => {
+    if (fileInput.files[0]) handleFile(fileInput.files[0]);
+    fileInput.value = "";
+  });
+
+  // ── File handling ──
+  function handleFile(file) {
+    if (file.size === 0) return showStatus("error", "empty file", "select a valid .bin bitstream.");
+    if (file.size > 48 * 1024) return showStatus("error", "file too large", "max 48 KB, yours: " + formatBytes(file.size));
+    uploadFile(file);
+  }
+
+  function uploadFile(file) {
+    const endpoint = uploadMode === "flash" ? "/flash" : "/upload";
+    const action = uploadMode === "flash" ? "flashing" : "saving";
+
+    showStatus("info",
+      '<span class="spinner"></span>' + action + '...',
+      file.name + " (" + formatBytes(file.size) + ")"
+    );
+    progressWrap.classList.add("visible");
+    progressBar.style.width = "0%";
+
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", endpoint, true);
+    xhr.setRequestHeader("Content-Type", "application/octet-stream");
+    xhr.setRequestHeader("X-Filename", file.name);
+
+    xhr.upload.onprogress = (e) => {
+      if (e.lengthComputable) {
+        progressBar.style.width = Math.round((e.loaded / e.total) * 100) + "%";
+      }
+    };
+
+    xhr.onload = () => {
+      progressBar.style.width = "100%";
+      setTimeout(() => progressWrap.classList.remove("visible"), 400);
+      try {
+        const resp = JSON.parse(xhr.responseText);
+        if (resp.ok) {
+          const msg = uploadMode === "flash" ? "flash complete" : "saved to board";
+          showStatus("success", msg, resp.name + " — " + formatBytes(file.size));
+          refreshFiles();
+        } else {
+          showStatus("error", "failed", resp.error || "unknown error");
+        }
+      } catch {
+        showStatus("error", "bad response", xhr.responseText);
+      }
+    };
+
+    xhr.onerror = () => {
+      setTimeout(() => progressWrap.classList.remove("visible"), 400);
+      showStatus("error", "connection lost", "could not reach shrike-fi. connected to the AP?");
+    };
+
+    file.arrayBuffer().then(data => xhr.send(data));
+  }
+
+  // ── Stored files ──
+  function refreshFiles() {
+    fetch("/files")
+      .then(r => r.json())
+      .then(data => {
+        if (!data.ok || data.files.length === 0) {
+          fileList.innerHTML = '<div class="file-list empty">no bitstreams stored</div>';
+          return;
+        }
+        const active = data.last_flashed || "";
+        fileList.innerHTML = data.files.map(f => {
+          const isActive = f.name === active;
+          return '<div class="file-row' + (isActive ? ' active' : '') + '">' +
+            '<span class="fname">' + esc(f.name) + (isActive ? '<span class="active-tag">running</span>' : '') + '</span>' +
+            '<span class="fsize">' + formatBytes(f.size) + '</span>' +
+            '<button class="btn-flash" onclick="flashStored(\'' + esc(f.name) + '\')">flash</button>' +
+            '<button class="btn-delete" onclick="deleteStored(\'' + esc(f.name) + '\')">delete</button>' +
+          '</div>';
+        }).join("");
+      })
+      .catch(() => {
+        fileList.innerHTML = '<div class="file-list empty">could not load files</div>';
+      });
+  }
+
+  function flashStored(name) {
+    showStatus("info", '<span class="spinner"></span>flashing...', name);
+    fetch("/flash/" + encodeURIComponent(name), { method: "POST" })
+      .then(r => r.json())
+      .then(resp => {
+        if (resp.ok) {
+          showStatus("success", "flash complete", name);
+          refreshFiles();
+        } else {
+          showStatus("error", "flash failed", resp.error || "unknown error");
+        }
+      })
+      .catch(() => showStatus("error", "connection lost", "could not reach shrike-fi."));
+  }
+
+  function deleteStored(name) {
+    if (!confirm("delete " + name + "?")) return;
+    fetch("/files/" + encodeURIComponent(name), { method: "DELETE" })
+      .then(r => r.json())
+      .then(resp => {
+        if (resp.ok) {
+          showStatus("success", "deleted", name);
+          refreshFiles();
+        } else {
+          showStatus("error", "delete failed", resp.error || "unknown error");
+        }
+      })
+      .catch(() => showStatus("error", "connection lost", "could not reach shrike-fi."));
+  }
+
+  function resetFPGA() {
+    if (!confirm("reset the FPGA?")) return;
+    showStatus("info", '<span class="spinner"></span>resetting...', "sending reset to FPGA");
+    fetch("/reset", { method: "POST" })
+      .then(r => r.json())
+      .then(resp => {
+        if (resp.ok) {
+          showStatus("success", "fpga reset", "");
+        } else {
+          showStatus("error", "reset failed", resp.error || "unknown error");
+        }
+      })
+      .catch(() => showStatus("error", "connection lost", "could not reach shrike-fi."));
+  }
+
+  // ── Helpers ──
+  function showStatus(type, title, msg) {
+    statusEl.className = "status visible " + type;
+    statusTitle.innerHTML = title;
+    statusMsg.textContent = msg;
+  }
+
+  function formatBytes(b) {
+    if (b < 1024) return b + " B";
+    return (b / 1024).toFixed(1) + " KB";
+  }
+
+  function esc(s) {
+    return s.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#039;");
+  }
+
+  // Load file list on page load — small delay so ESP32 finishes serving the page first
+  setTimeout(refreshFiles, 500);
+</script>
+
+</body>
+</html>
