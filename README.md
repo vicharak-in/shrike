@@ -28,7 +28,7 @@ Shrike-lite the RP2040 version of the family is available at our store for world
 
 #### 2. [Shrike](https://www.crowdsupply.com/vicharak/shrike)
 
-#### 3. [Shrike-fi](https://store.vicharak.in/?product=v002743) (Launching Soon)
+#### 3. [Shrike-fi](https://store.vicharak.in/?product=v002743)
 
 ### Board level Block Diagram
 
@@ -54,13 +54,14 @@ Shrike-lite the RP2040 version of the family is available at our store for world
 | WiFi                                | ❌                      | ❌                     | ✅                 |
 | BLE                                 | ❌                      | ❌                     | ✅                 |
 | Optional Add-on Features                                                                                    |
-| PSRAM (QSPI) ( Optional )           | ❌                      | ❌                     | Upto 8 MB          |
-| BMS On Board                        | ❌                      | ❌                     | ✅                 | 
+| PSRAM (QSPI) ( Optional )           | ❌                      | ❌                     | Upto 16 MB         |
+| BMS On Board ( Optional )           | ❌                      | ❌                     | ✅                 | 
 
 
+#### **Note**
 
-
-### Documentation for Shrike-fi is work in Progress. 
+The optional add on for the Shrike-fi are not soldered in the base version , board version with these part soldered will be launched at later date.
+However you can solder them yourself in the base version as well read more [here](https://vicharak-in.github.io/shrike/hardware_overview.html#shrike-hardware-overview).
 
 ### Check out 
  1. [Documentation](https://vicharak-in.github.io/shrike/index.html)
