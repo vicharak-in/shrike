@@ -47,6 +47,18 @@ No external hardware required.
 | 0          | MISO        | Input     | Master input              |
 | 14         | Reset       | Output    | Reset signal (active low) |
 
+
+
+### ESP32 S3 Connections
+
+| RP2040 Pin | Signal Name | Direction | Description               |
+| ---------- | ----------- | --------- | ------------------------- |
+| 12          | SCK         | Output    | SPI clock                 |
+| 10          | CS          | Output    | Chip select               |
+| 11          | MOSI        | Output    | Master output             |
+| 13          | MISO        | Input     | Master input              |
+| 14         | Reset       | Output    | Reset signal (active low) |
+
 > Ensure pin mapping in FPGA constraints matches firmware configuration.
 
 ---
