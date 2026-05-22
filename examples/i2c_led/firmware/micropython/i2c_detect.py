@@ -1,11 +1,12 @@
 # I2C Scanner MicroPython
+import machine
 from machine import Pin, I2C
 
 
 #reset pin for active low reset 
 # pin value low is reset
 reset = machine.Pin(3, machine.Pin.OUT)
-reset.high()   
+reset.value(1)   
 
 
 # You can choose any other combination of I2C pins
