@@ -54,7 +54,7 @@ Shrike-lite the RP2040 version of the family is available at our store for world
 | WiFi                                | ❌                      | ❌                     | ✅                 |
 | BLE                                 | ❌                      | ❌                     | ✅                 |
 | Optional Add-on Features                                                                                    |
-| PSRAM (QSPI) ( Optional )           | ❌                      | ❌                     | Upto 16 MB         |
+| PSRAM (QSPI) ( Optional )           | ❌                      | ❌                     | Upto 8 MB          |
 | BMS On Board ( Optional )           | ❌                      | ❌                     | ✅                 | 
 
 
