@@ -191,6 +191,13 @@ The complete BOM for the BMS and charging circuit is available in the table belo
 | U5               | Dual N-Channel -20V 6A 1V @ 250uA [FS8205A]                                 | —         | FS8205A                  | TSSOP-8      | 1        | IC         |
 
 
+
+---
+
+#### Part Designators 
+
+The complete out and pcb file's aren't open for Shrike-fi yet they will be open mid june. However to solder the above mentionded parts you can use this part Designators file available [here](./images/Shrike_fi_designator.pdf).
+
 ---
 
 > **Note:** Both of these add-ons are not placed in the base version of Shrike-fi. We will launch a board with these components pre-soldered soon. In the meantime, you can solder them yourself if you want these features.
