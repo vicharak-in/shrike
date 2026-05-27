@@ -17,7 +17,7 @@ This project verifies whether the PSRAM is being detected in the Shrike-Fi board
 1. Open `PSRAM_test.ino`.
 2. In the Tools menu, select ESP32S3 Dev Module as the board [**Tools > Board**].
 3. In the Tools menu, select the port to which the Shrike-Fi is connected [**Tools > Port**].
-4. In the Tools menu, if PSRAM is disabled by default. Click on **PSRAM and select QSPI PSRAM**[**Tools > PSRAM**].
+4. In the Tools menu, if PSRAM is disabled by default. Click on **PSRAM and select QSPI PSRAM** [**Tools > PSRAM**].
 5. Upload the sketch.
 
 ## How to Run
