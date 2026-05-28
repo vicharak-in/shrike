@@ -23,7 +23,7 @@ No external hardware required.
 
 ## Quick Start
 
-1. Connect your Shrike-fi board via USB.
+1. Connect your Shrike-fi board via USB.    
 2. Open `PSRAM_test.ino` in Arduino IDE.
 3. In **Tools > Board**, select **ESP32S3 Dev Module**.
 4. In **Tools > Port**, select the connected device port.
