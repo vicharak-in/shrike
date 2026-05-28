@@ -11,11 +11,11 @@ You will learn how to enable PSRAM in Arduino IDE, check availability using `psr
 
 ## Compatibility
 
-|       Board          |       Firmware          |   Status    |
-|----------------------|-------------------------|-------------|
-| Shrike-Lite (RP2040) | `firmware/arduino-ide/` | ⬜ Untested |
-| Shrike (RP2350)      | `firmware/arduino-ide/` | ⬜ Untested |
-| Shrike-fi (ESP32-S3) | `firmware/arduino-ide/` | ✅ Tested   |
+|       Board          |       Firmware          |     Status      |
+|----------------------|-------------------------|-----------------|
+| Shrike-Lite (RP2040) | `firmware/arduino-ide/` |Does not Support |
+| Shrike (RP2350)      | `firmware/arduino-ide/` |Does not support |
+| Shrike-fi (ESP32-S3) | `firmware/arduino-ide/` |    Tested       |
 
 ## Hardware Setup
 
