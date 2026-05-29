@@ -5,10 +5,10 @@ void setup()
     Serial.begin(115200);
 
     if (psramFound()) {
-        Serial.printf("PSRAM Found\n");
+        Serial.printf("PSRAM Found\n");   // PSRAM is found, continue with the rest of the code
     } 
     else {
-        Serial.println("PSRAM NOT Found");
+        Serial.println("PSRAM NOT Found"); // PSRAM is not found, print a message and stop the execution
         return;
     }
 

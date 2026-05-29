@@ -1,31 +1,48 @@
-# PSRAM Test (Shrike fi)
+# PSRAM_test (Shrike-fi)
 
-This project verifies whether the PSRAM is being detected in the Shrike-Fi board.
+**Difficulty:** Beginner  
+**Uses MCU:** Yes  
+**External Hardware:** None
 
-## What `PSRAM_test.ino` does
+## Overview
 
-1. Starts serial communication at `115200` baud.
-2. Checks PSRAM availability using `psramFound()`.
-3. Prints total PSRAM size using `ESP.getPsramSize()`.
+This example verifies whether PSRAM is detected on the Shrike-fi (ESP32-S3) board.  
+You will learn how to enable PSRAM in Arduino IDE, check availability using `psramFound()`, and print total PSRAM size using `ESP.getPsramSize()`.
 
-## Requirements
+## Compatibility
 
-- Arduino IDE
-- ESP32 board package installed
-## Arduino IDE Setup
+|       Board          |       Firmware          |     Status      |
+|----------------------|-------------------------|-----------------|
+| Shrike-Lite (RP2040) | `firmware/arduino-ide/` |Does not Support |
+| Shrike (RP2350)      | `firmware/arduino-ide/` |Does not support |
+| Shrike-fi (ESP32-S3) | `firmware/arduino-ide/` |    Tested       |
 
-1. Open `PSRAM_test.ino`.
-2. In the Tools menu, select ESP32S3 Dev Module as the board [**Tools > Board**].
-3. In the Tools menu, select the port to which the Shrike-Fi is connected [**Tools > Port**].
-4. In the Tools menu, if PSRAM is disabled by default. Click on **PSRAM and select QSPI PSRAM** [**Tools > PSRAM**].
-5. Upload the sketch.
+## Hardware Setup
 
-## How to Run
+No external hardware required.
 
-1. Open **Serial Monitor**.
-2. Set baud rate to **115200**.
-3. Press reset.
-4. Check the printed output.
+## Quick Start
+
+1. Connect your Shrike-fi board via USB.    
+2. Open `PSRAM_test.ino` in Arduino IDE.
+3. In **Tools > Board**, select **ESP32S3 Dev Module**.
+4. In **Tools > Port**, select the connected device port.
+5. In **Tools > PSRAM**, select **QSPI PSRAM** (if not already enabled).
+6. Upload the sketch.
+7. Open Serial Monitor at `115200` baud.
+8. Expected result: PSRAM detection status and size are printed.
+
+### Firmware (Arduino)
+
+1. Open `PSRAM_test.ino` in Arduino IDE.
+2. Select **ESP32S3 Dev Module**.
+3. Enable **QSPI PSRAM** in **Tools > PSRAM**.
+4. Upload to Shrike-fi.
+
+## How It Works
+
+The sketch initializes serial communication at `115200` baud, then calls `psramFound()` to check if external PSRAM is available.  
+If found, it reads and prints the PSRAM size in bytes using `ESP.getPsramSize()`. This confirms both detection and usable memory capacity.
 
 ## Expected Output
 
@@ -41,4 +58,3 @@ If PSRAM is not available:
 ```text
 PSRAM NOT Found
 ```
-
