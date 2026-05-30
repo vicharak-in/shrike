@@ -18,7 +18,7 @@ You will learn how to implement an SPI target (slave) in FPGA and perform bidire
 | -------------------- | ----------------------- | ------------- |
 | Shrike-Lite (RP2040) | `firmware/micropython/` | ✅ Tested      |
 | Shrike (RP2350)      | `firmware/micropython/` | ✅ Tested      |
-| Shrike-fi (ESP32-S3) | `firmware/micropython/` | ⬜ Untested    |
+| Shrike-fi (ESP32-S3) | `firmware/micropython/` | ✅ Tested    |
 
 > FPGA bitstream is the same across all boards.
 
@@ -45,6 +45,18 @@ No external hardware required.
 | 1          | CS          | Output    | Chip select               |
 | 3          | MOSI        | Output    | Master output             |
 | 0          | MISO        | Input     | Master input              |
+| 14         | Reset       | Output    | Reset signal (active low) |
+
+
+
+### ESP32 S3 Connections
+
+| ESP32 Pin | Signal Name | Direction | Description               |
+| ---------- | ----------- | --------- | ------------------------- |
+| 12          | SCK         | Output    | SPI clock                 |
+| 10          | CS          | Output    | Chip select               |
+| 11          | MOSI        | Output    | Master output             |
+| 13          | MISO        | Input     | Master input              |
 | 14         | Reset       | Output    | Reset signal (active low) |
 
 > Ensure pin mapping in FPGA constraints matches firmware configuration.
