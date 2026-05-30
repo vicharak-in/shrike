@@ -51,7 +51,7 @@ No external hardware required.
 
 ### ESP32 S3 Connections
 
-| RP2040 Pin | Signal Name | Direction | Description               |
+| ESP32 Pin | Signal Name | Direction | Description               |
 | ---------- | ----------- | --------- | ------------------------- |
 | 12          | SCK         | Output    | SPI clock                 |
 | 10          | CS          | Output    | Chip select               |
