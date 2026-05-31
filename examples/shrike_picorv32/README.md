@@ -9,24 +9,39 @@
 ## Overview
 
 This example runs Claire Wolf's [PicoRV32](https://github.com/YosysHQ/picorv32)
-RV32I soft CPU on the SLG47910 ForgeFPGA of a Shrike-lite board. The CPU
-executes a hardcoded 6-instruction program (`1 + 2 = 3`) out of a `case()`
-based ROM, writes the result to a memory-mapped GPIO latch, and drives two
-FPGA pins that are hardwired to RP2040 GPIO14/15 through PCB 0-ohm resistors.
-The RP2040 reads the result and prints it over USB serial.
+**RV32I** soft CPU on the SLG47910 ForgeFPGA of a Shrike-lite board. The point
+of the example is that a *general-purpose, full 32-register RV32I CPU* fits
+inside a 1K-LUT-class ForgeFPGA at all.
 
-The point of the example is not the arithmetic -- it is that a general-purpose
-RV32I CPU fits inside a 1K-LUT-class ForgeFPGA at all. Reaching that fit
-required carry-chain restructuring and several CLB-packing rewrites; every
-modification from upstream PicoRV32 is tagged `SHRIKE PATCH` in
-`ffpga/src/picorv32.v` so the deltas are greppable.
+The CPU executes a baked-in **instruction-variety self-test** out of a `case()`
+based ROM. A single accumulator (`x10`) is threaded through 27 distinct RV32I
+opcodes; the final value is written to a memory-mapped GPIO latch, which drives
+two FPGA pins hardwired to RP2040 GPIO14/15 through PCB 0-ohm resistors. The
+RP2040 reads those two bits and prints PASS/FAIL over USB serial.
+
+**A correct RV32I core leaves the result at exactly 3** (both bits high). Any
+other value means an instruction misbehaved.
+
+Fitting a full RV32I core in this fabric required two things:
+
+1. **Area work** — the register file is moved out of fabric flip-flops into the
+   on-die BRAM (`picorv32_regs_bram.v`), and the adder/compare/shift datapaths
+   are restructured to suit the SLG47910's 4-bit carry chains. Every change
+   from upstream PicoRV32 is tagged `SHRIKE PATCH` in `ffpga/src/picorv32.v` so
+   the deltas are greppable.
+2. **A correctness fix** — the SLG47910 BRAM read is *synchronous* (data valid
+   one cycle after the address), but PicoRV32's register-file interface assumes
+   a combinational read. Without a fix, register reads return stale data and the
+   CPU computes garbage. Correctness fix `CF1` adds a read-latency wait-state
+   (`RS_READ_LATENCY = 2`) that stalls until the BRAM read data is valid. This
+   is why the self-test passes here.
 
 ## Expected Output
 
 ```
 Flashing PicoRV32 bitstream to FPGA...
 [shrike_flash] FPGA programming done.
-PicoRV32 RISC-V computed: 1 + 2 = 3
+PicoRV32 RV32I self-test result = 3 -> PASS (all 27 opcodes correct)
 ```
 
 ---
@@ -39,27 +54,70 @@ PicoRV32 RISC-V computed: 1 + 2 = 3
 | Shrike | RP2350 | Untested |
 | Shrike-fi | ESP32-S3 | Untested |
 
+> The FPGA bitstream is the same across all boards; only the MCU firmware pin
+> map differs.
+
 ---
 
-## Setup
+## Hardware Setup
 
-### Step 1 -- Open in Go Configure
+No external hardware required. The two result pins (FPGA GPIO17/18) are already
+wired to RP2040 GPIO15/14 on the Shrike-lite PCB.
 
-Launch Go Configure Software Hub, **New Project**, target chip **SLG47910 (BB)**.
+---
 
-Or, open the included `shrike_picorv32.ffpga` directly to skip manual setup.
+## System Architecture
 
-If rebuilding from scratch, add Verilog files in this order:
 ```
-ffpga/src/picorv32.v
+picorv32 ---mem bus---> nuclear_rom        (instruction fetch, 1-cycle ack)
+picorv32 ---mem bus---> GPIO decode         (store to 0x40000000 -> latch)
+picorv32 <--BRAMx_*---> 8x on-die BRAM      (register file via PICORV32_REGS)
+gpio_latch -----------> GPIO17 / GPIO18 --> RP2040 GPIO15 / GPIO14
+```
+
+- **Instruction ROM** (`nuclear_rom.v`): a combinational `case (mem_addr[6:2])`
+  block returning one 32-bit RV32I instruction per word. No `$readmemh`, so
+  there is no RAM-inference fallback for Yosys to choke on.
+- **Register file** (`picorv32_regs_bram.v`): all 32 registers live in eight
+  512x8 BRAM slices instead of fabric FFs. The 32 registers are split low/high
+  (BRAM0-3 = `x0..x15`, BRAM4-7 = `x16..x31`); see the file header for the
+  addressing scheme.
+- **GPIO result latch**: a store to any `0x4xxxxxxx` address latches the low 2
+  bits of the stored word onto `result_bit0/1`.
+
+---
+
+## Quick Start (Pre-Built Bitstream)
+
+1. Connect the Shrike-lite board via USB.
+2. Copy `bitstream/shrike_picorv32.bin` to the board filesystem (e.g. via the
+   Thonny file panel).
+3. Run `firmware/micropython/shrike_picorv32.py`.
+4. Observe `... result = 3 -> PASS` over USB serial.
+
+---
+
+## Build From Source
+
+### Step 1 — Open in Go Configure
+
+Launch Go Configure Software Hub, **New Project**, target chip **SLG47910 (BB)**
+— or open the included `shrike_picorv32.ffpga` directly to skip manual setup.
+
+If rebuilding from scratch, add the Verilog files:
+```
 ffpga/src/picorv32_regs_bram.v
+ffpga/src/picorv32.v
 ffpga/src/nuclear_rom.v
 ffpga/src/shrike_picorv32_top.v
 ```
 
-Save the project as `shrike_picorv32.ffpga` in the example root.
+### Step 2 — Enable BRAM
 
-### Step 2 -- IO Planner
+The register file uses all **8 BRAM slices**, so enable **both** BRAM banks
+(North = BRAM0-3, South = BRAM4-7) in the project's BRAM configuration.
+
+### Step 3 — IO Planner
 
 Assign **ONLY** these two signals:
 
@@ -68,86 +126,80 @@ Assign **ONLY** these two signals:
 | `clk` | `OSC_CLK` |
 | `clk_en` | `OSC_EN` |
 
-Leave `result_bit0`, `result_bit0_en`, `result_bit1`, `result_bit1_en`
-**unassigned**. Yosys auto-routes them to FPGA GPIO17/18, which are the
-only pins hardwired to RP2040 GPIO14/15 via PCB 0-ohm resistors. Manually
-assigning them in IO Planner conflicts with that auto-routing and silently
-breaks the connection.
+Leave `result_bit0/1`, `result_bit0/1_en`, and all `BRAMx_*` ports
+**unassigned**. Yosys auto-routes the result bits to FPGA GPIO17/18 (the only
+pins hardwired to RP2040 GPIO14/15 via PCB 0-ohm resistors) and the `BRAMx_*`
+ports to the on-die BRAM. Manually assigning them conflicts with that
+auto-routing and silently breaks the connection.
 
-### Step 3 -- Synthesize and generate bitstream
+### Step 4 — Synthesize and generate bitstream
 
 Click **Synthesize** then **Generate Bitstream**. Copy the produced
 `FPGA_bitstream_MCU.bin` to `bitstream/shrike_picorv32.bin`.
 
-### Step 4 -- Flash and run
+---
 
-Copy `bitstream/shrike_picorv32.bin` to the board via Thonny file panel,
-then run `firmware/micropython/shrike_picorv32.py`.
+## The Self-Test Program
+
+The ROM (`nuclear_rom.v`, with each word commented) runs 27 distinct RV32I
+opcodes in exactly 32 instruction words:
+
+```
+addi add sub  and or xor  andi ori xori  sll srl sra  slli srli srai
+slt sltu slti  lui  beq bne blt bge bltu bgeu  jal  sw
+```
+
+It first threads `x10` through the arithmetic / logic / shift / set-less-than
+ops (in both register and immediate forms), then exercises **every branch type
+as a "must-not-take" gate**: if any branch wrongly fires, control jumps to the
+halt loop and *skips* the result store, leaving the GPIO result at 0 (fail).
+The final `jal` must jump over a poison instruction. If everything executed
+correctly, `x10 == 3`, it is stored to `0x40000000`, and both result bits read
+high.
+
+This is what makes the example a discriminating test rather than a demo: a core
+with the read-latency, branch, or register bugs that a naive port exhibits will
+*not* land on 3.
 
 ---
 
 ## How to Change the Computation
 
-Each entry in `nuclear_rom.v`'s `case()` block is one 32-bit RV32I
-instruction. The default program is:
-
-```asm
-addi  x1, x0, 1        # x1 = 1
-addi  x2, x0, 2        # x2 = 2
-add   x3, x1, x2       # x3 = 3
-lui   x4, 0x40000      # x4 = 0x40000000  (GPIO MMIO base)
-sw    x3, 0(x4)        # store result -> latches GPIO17=1, GPIO18=1
-jal   x0, 0            # halt (jump to self)
-```
-
-### Example -- compute 4 + 5 = 9
-
-Open `ffpga/src/nuclear_rom.v` and change the program:
+Each entry in `nuclear_rom.v`'s `case (mem_addr[6:2])` block is one 32-bit
+RV32I instruction word. To run your own program, replace the entries. For a
+trivial example that drives result = 1:
 
 ```verilog
 always @(*) begin
-  case (i_adr[4:2])
-    3'd0 : o_dat = 32'h00400093;   // addi x1, x0, 4
-    3'd1 : o_dat = 32'h00500113;   // addi x2, x0, 5
-    3'd2 : o_dat = 32'h002081B3;   // add  x3, x1, x2  -> x3 = 9
-    3'd3 : o_dat = 32'h40000237;   // lui  x4, 0x40000
-    3'd4 : o_dat = 32'h00322023;   // sw   x3, 0(x4)
-    3'd5 : o_dat = 32'h0000006F;   // jal  x0, 0       (halt)
-    default : o_dat = 32'h00000013; // nop
+  case (mem_addr[6:2])
+    5'd0 : rom_data = 32'h00100513;   // addi x10, x0, 1   -> x10 = 1
+    5'd1 : rom_data = 32'h400004B7;   // lui  x9, 0x40000  (GPIO base)
+    5'd2 : rom_data = 32'h00A4A023;   // sw   x10, 0(x9)   -> latch bit0 = 1
+    5'd3 : rom_data = 32'h0000006F;   // jal  x0, 0        (halt)
+    default : rom_data = 32'h00000013; // nop
   endcase
 end
 ```
 
-### Encoding your own `addi` instruction
+The easiest workflow is to write RV32I assembly, assemble it with a `riscv*-elf`
+toolchain (`-march=rv32i -mabi=ilp32`), and paste the resulting word encodings
+into the `case`. After editing, re-synthesise, regenerate the bitstream, and
+copy the new `FPGA_bitstream_MCU.bin` to the board as `shrike_picorv32.bin`.
 
-`addi xD, x0, N` puts `N` into register `xD`. Rather than hand-encoding
-the RV32I bit fields, the table below covers the common cases for the
-first two registers (RV32E supports x1-x15):
+### Program-size limit (important)
 
-| Value | `addi x1, x0, N` | `addi x2, x0, N` |
-|---|---|---|
-| 1  | `32'h00100093` | `32'h00100113` |
-| 2  | `32'h00200093` | `32'h00200113` |
-| 3  | `32'h00300093` | `32'h00300113` |
-| 4  | `32'h00400093` | `32'h00400113` |
-| 5  | `32'h00500093` | `32'h00500113` |
-| 10 | `32'h00A00093` | `32'h00A00113` |
-| 20 | `32'h01400093` | `32'h01400113` |
-
-After editing, re-synthesise in Go Configure, regenerate the bitstream,
-and copy the new `FPGA_bitstream_MCU.bin` to the board as
-`shrike_picorv32.bin`.
+The program counter is narrowed to **7 bits** (`localparam PC_W = 7` in
+`picorv32.v`) — an area optimisation that costs nothing for small programs but
+caps the program at **128 bytes = 32 instruction words**. The ROM's `case`
+decodes `mem_addr[6:2]` accordingly. Programs longer than 32 words will wrap;
+keep yours within the budget.
 
 ### Result output width
 
-The design exposes 2 result bits (`result_bit0`, `result_bit1`), so the
-readable range is 0-3. For wider results, add more `result_bit*` pins to
-`shrike_picorv32_top.v`, extend the GPIO MMIO latch width to match, and
-update `firmware/micropython/shrike_picorv32.py` to read the extra
-RP2040 GPIOs. See the Shrike pinout doc for available pins.
-
-Programs are limited to the x1-x15 register range (RV32E -- the small
-config disables x16-x31 to halve regfile cost).
+The design exposes 2 result bits (`result_bit0`, `result_bit1`), so the readable
+range is 0-3. For wider results, add more `result_bit*` pins to
+`shrike_picorv32_top.v`, widen the GPIO latch to match, and update the firmware
+to read the extra RP2040 GPIOs. See the Shrike pinout doc for available pins.
 
 ---
 
@@ -157,12 +209,12 @@ Locked parameters in `shrike_picorv32_top.v`:
 
 | Parameter | Value | Reason |
 |---|---|---|
-| `ENABLE_REGS_16_31`    | 0 | RV32E (16 registers) -- halves regfile FFs |
-| `ENABLE_REGS_DUALPORT` | 0 | single read port -- saves a 16:1 mux |
+| `ENABLE_REGS_16_31`    | 1 | **Full RV32I** — all 32 registers (`x0..x31`) |
+| `ENABLE_REGS_DUALPORT` | 0 | single read port — matches the BRAM regfile, saves a mux |
 | `LATCHED_MEM_RDATA`    | 1 | saves an internal capture flop |
-| `TWO_CYCLE_ALU`        | 0 | single-cycle ALU collapses 1-CLB carry clusters (P11) |
-| `TWO_CYCLE_COMPARE`    | 0 | single-cycle compare path (P11) |
-| `BARREL_SHIFTER`       | 0 | serial shift -- avoids 32-bit mux tree |
+| `TWO_CYCLE_ALU`        | 0 | single-cycle ALU collapses 1-CLB carry clusters |
+| `TWO_CYCLE_COMPARE`    | 0 | single-cycle compare path |
+| `BARREL_SHIFTER`       | 0 | serial shift — avoids a 32-bit mux tree |
 | `TWO_STAGE_SHIFT`      | 0 | further shrink |
 | `COMPRESSED_ISA`       | 0 | no RVC decoder |
 | `CATCH_MISALIGN`       | 0 | no trap logic |
@@ -173,9 +225,12 @@ Locked parameters in `shrike_picorv32_top.v`:
 | `ENABLE_PCPI`          | 0 | no coprocessor interface |
 | `ENABLE_TRACE`         | 0 | no trace port |
 
-The default `1+2=3` program uses x1-x4, well within the RV32E x1-x15
-range. See [Result output width](#result-output-width) above for the
-register-range note.
+In addition to these stock parameters, the core in `ffpga/src/picorv32.v`
+carries the `SHRIKE PATCH` modifications (numbered P1–P13) — the BRAM register
+file, the carry-split / shared adder datapath, and the 7-bit PC — plus two
+correctness fixes (CF1 read-latency wait-state, CF2 ECALL/EBREAK halt). A
+legend at the top of the file lists them; `grep "SHRIKE PATCH"` or
+`grep "CORRECTNESS FIX"` in `ffpga/src/picorv32.v` finds every site.
 
 ---
 
@@ -191,5 +246,6 @@ register-range note.
 ## Licence
 
 PicoRV32 retains its original ISC licence (header preserved at the top of
-`picorv32.v`). All Shrike-specific additions (carry-split patches, ROM,
-top wrapper, firmware, docs) are GPL-2.0 to match the rest of this repo.
+`picorv32.v`). All Shrike-specific additions (the `SHRIKE PATCH` optimisations,
+BRAM register file, ROM, top wrapper, firmware, docs) are GPL-2.0 to match the
+rest of this repo.

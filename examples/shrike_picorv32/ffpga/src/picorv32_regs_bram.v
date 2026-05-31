@@ -3,41 +3,44 @@
 // Board    : Shrike-lite  (SLG47910 Forge FPGA)
 // License  : GPL-2.0
 //
-// BRAM-backed PICORV32_REGS implementation. Replaces the 16x32 register file
-// (stored as 512 FFs in upstream picorv32) with the SLG47910's on-die BRAM,
-// freeing FFs and eliminating the 16:1 read mux for cpuregs.
+// BRAM-backed PICORV32_REGS implementation. Replaces the full 32x32 register
+// file (stored as ~1024 FFs in upstream picorv32) with the SLG47910's on-die
+// BRAM, freeing the FFs and eliminating the 32:1 read mux for cpuregs. This is
+// what lets a full RV32I core (all 32 registers) fit the fabric.
 //
-// DUAL-BANK DESIGN
-//   The SLG47910 BRAM is synchronous with 1-cycle read latency, while
-//   picorv32's PICORV32_REGS interface expects combinational reads (set
-//   raddr -> get rdata same cycle). A single BRAM port cannot satisfy this.
+// The SLG47910 BRAM read is SYNCHRONOUS (1-cycle registered read), but
+// picorv32's PICORV32_REGS interface expects a combinational read (set raddr
+// -> get rdata the same cycle). The core's read-latency wait-state
+// (RS_READ_LATENCY=2 in picorv32.v, correctness fix CF1) bridges that gap by
+// stalling until the registered read data is valid; this module just exposes
+// the regfile as eight 512x8 BRAM slices.
 //
-//   Two banks of 4 BRAM slices each (32-bit wide via byte-lane parallelism):
-//     Bank A (BRAM0..3): continuously reads at raddr1 (= decoded_rs1)
-//     Bank B (BRAM4..7): continuously reads at raddr2 (= decoded_rs2)
+// LOW/HIGH SPLIT (32 registers, 4-bit-addressed)
+//   The 32 registers are split across two sets of 4 slices each, every slice
+//   contributing one byte lane of the 32-bit word:
+//     Low  set (BRAM0..3): x0 .. x15   (selected when addr bit [4] == 0)
+//     High set (BRAM4..7): x16 .. x31  (selected when addr bit [4] == 1)
 //
-//   Picorv32 patch P6 ensures cpuregs_raddr2 is always decoded_rs2 (not
-//   gated by ENABLE_REGS_DUALPORT), so Bank B always holds rs2's value.
+//   READ : both sets are addressed by raddr1[3:0] every cycle; the output mux
+//          picks the low or high set on raddr1[4]. picorv32 sequences the rs1
+//          and rs2 reads on raddr1 across cycles (DUALPORT=0), so a single
+//          read address feeds both. raddr2 is exposed for completeness and
+//          drives rdata2 with the same low/high mux on raddr2[4].
+//   WRITE : waddr[3:0] addresses both sets; waddr[4] gates which set's WEN
+//          fires, so only the targeted half is written.
 //
-//   With DUALPORT=0, picorv32 routes both rs1 (cpu_state_ld_rs1) and rs2
-//   (cpu_state_ld_rs2) reads through cpuregs_rdata1. When in ld_rs2 the
-//   raddr1 input is muxed to decoded_rs2 (== raddr2), so an equality test
-//   on raddr1==raddr2 cleanly selects Bank B's value:
-//
-//     raddr1 == raddr2 -> ld_rs2 case -> return Bank B value
-//     raddr1 != raddr2 -> ld_rs1 case -> return Bank A value
-//
-//   When decoded_rs1==decoded_rs2 by coincidence, both banks hold the same
-//   value so either selection is correct.
+//   All BRAM addresses are 4 bits [3:0] -- the design never relies on the
+//   synthesiser routing address bit [4] into the BRAM; bit [4] only steers
+//   the fabric write-enable gating and the read output mux.
 //
 // X0 HANDLING
-//   RISC-V x0 must read as zero. Reads where raddr==0 are forced to 32'd0
+//   RISC-V x0 must read as zero. Reads where raddr[4:0]==0 are forced to 32'd0
 //   at the output. Writes to x0 are prevented upstream by picorv32 (wen is
 //   gated by `latched_rd` being non-zero).
 //
 // RESOURCE BUDGET
-//   8 BRAM slices @ 512x8 each (RATIO=00). 16 register entries used out of
-//   512 per slice. 32-bit width from 4 slices in parallel per bank.
+//   8 BRAM slices @ 512x8 each (RATIO=00). 32 register entries used out of the
+//   512 per slice; 32-bit width comes from 4 slices in parallel per set.
 // =============================================================================
 
 module picorv32_regs_bram (
@@ -50,7 +53,7 @@ module picorv32_regs_bram (
     output wire [31:0] rdata1,
     output wire [31:0] rdata2,
 
-    // Bank A - reads raddr1 continuously
+    // Low set (x0..x15) - byte lanes 0..3, addressed by raddr1[3:0]
     output wire [1:0] BRAM0_RATIO,
     output wire [7:0] BRAM0_DATA_IN,
     output wire       BRAM0_WEN,
@@ -91,7 +94,7 @@ module picorv32_regs_bram (
     output wire       BRAM3_RCLKEN,
     output wire [8:0] BRAM3_READ_ADDR,
 
-    // Bank B - reads raddr2 continuously
+    // High set (x16..x31) - byte lanes 0..3, addressed by raddr1[3:0]
     output wire [1:0] BRAM4_RATIO,
     output wire [7:0] BRAM4_DATA_IN,
     output wire       BRAM4_WEN,
@@ -144,31 +147,35 @@ module picorv32_regs_bram (
             BRAM0_REN,    BRAM1_REN,    BRAM2_REN,    BRAM3_REN,
             BRAM4_REN,    BRAM5_REN,    BRAM6_REN,    BRAM7_REN} = {24{1'b0}};
 
-    // --- Read addresses (9 bits; we only use low 4 for 16 entries) ---
-    wire [8:0] raddr1_v = {5'b0, raddr1[3:0]};
-    wire [8:0] raddr2_v = {5'b0, raddr2[3:0]};
-    wire [8:0] waddr_v  = {5'b0, waddr[3:0]};
+    // --- 32-register split: BRAM0-3 = x0-x15 (low), BRAM4-7 = x16-x31 (high).
+    // All BRAM addresses are 4-bit [3:0] — avoids relying on the synthesiser routing bit[4].
+    // raddr[4] selects which physical bank set to read; fabric mux selects output.
+    // In DUALPORT=0, both rs1 and rs2 reads come through raddr1 (different cycles);
+    // raddr2 only selects the rdata2 output mux below.
+    wire [8:0] raddr1_4b = {5'b0, raddr1[3:0]};  // 4-bit address, low half
+    wire [8:0] waddr_4b  = {5'b0, waddr[3:0]};
 
-    assign BRAM0_READ_ADDR = raddr1_v;
-    assign BRAM1_READ_ADDR = raddr1_v;
-    assign BRAM2_READ_ADDR = raddr1_v;
-    assign BRAM3_READ_ADDR = raddr1_v;
-    assign BRAM4_READ_ADDR = raddr2_v;
-    assign BRAM5_READ_ADDR = raddr2_v;
-    assign BRAM6_READ_ADDR = raddr2_v;
-    assign BRAM7_READ_ADDR = raddr2_v;
+    // Both sets read at raddr1[3:0]; output mux selects based on raddr1[4]
+    assign BRAM0_READ_ADDR = raddr1_4b;  // x0-x15 reads
+    assign BRAM1_READ_ADDR = raddr1_4b;
+    assign BRAM2_READ_ADDR = raddr1_4b;
+    assign BRAM3_READ_ADDR = raddr1_4b;
+    assign BRAM4_READ_ADDR = raddr1_4b;  // x16-x31 reads (same slot, different WEN)
+    assign BRAM5_READ_ADDR = raddr1_4b;
+    assign BRAM6_READ_ADDR = raddr1_4b;
+    assign BRAM7_READ_ADDR = raddr1_4b;
 
-    // --- Writes: same waddr/wdata to BOTH banks to keep them coherent ---
-    assign BRAM0_WRITE_ADDR = waddr_v;
-    assign BRAM1_WRITE_ADDR = waddr_v;
-    assign BRAM2_WRITE_ADDR = waddr_v;
-    assign BRAM3_WRITE_ADDR = waddr_v;
-    assign BRAM4_WRITE_ADDR = waddr_v;
-    assign BRAM5_WRITE_ADDR = waddr_v;
-    assign BRAM6_WRITE_ADDR = waddr_v;
-    assign BRAM7_WRITE_ADDR = waddr_v;
+    // Write: only the correct half gets written based on waddr[4]
+    assign BRAM0_WRITE_ADDR = waddr_4b;
+    assign BRAM1_WRITE_ADDR = waddr_4b;
+    assign BRAM2_WRITE_ADDR = waddr_4b;
+    assign BRAM3_WRITE_ADDR = waddr_4b;
+    assign BRAM4_WRITE_ADDR = waddr_4b;
+    assign BRAM5_WRITE_ADDR = waddr_4b;
+    assign BRAM6_WRITE_ADDR = waddr_4b;
+    assign BRAM7_WRITE_ADDR = waddr_4b;
 
-    // Byte-lane split of 32-bit wdata
+    // Write data (same for both halves; WEN gates which half is written)
     assign BRAM0_DATA_IN = wdata[ 7: 0];
     assign BRAM1_DATA_IN = wdata[15: 8];
     assign BRAM2_DATA_IN = wdata[23:16];
@@ -178,20 +185,21 @@ module picorv32_regs_bram (
     assign BRAM6_DATA_IN = wdata[23:16];
     assign BRAM7_DATA_IN = wdata[31:24];
 
-    // Write enables (active-low)
-    assign {BRAM0_WEN, BRAM1_WEN, BRAM2_WEN, BRAM3_WEN,
-            BRAM4_WEN, BRAM5_WEN, BRAM6_WEN, BRAM7_WEN} = {8{~wen}};
+    // Write enables: BRAM0-3 for x0-x15 (waddr[4]=0), BRAM4-7 for x16-x31 (waddr[4]=1)
+    wire wen_lo = wen && !waddr[4];  // write to low half
+    wire wen_hi = wen &&  waddr[4];  // write to high half
+    assign {BRAM0_WEN, BRAM1_WEN, BRAM2_WEN, BRAM3_WEN} = {4{~wen_lo}};
+    assign {BRAM4_WEN, BRAM5_WEN, BRAM6_WEN, BRAM7_WEN} = {4{~wen_hi}};
 
-    // --- Read data: combine 8-bit slices into 32-bit per bank ---
-    wire [31:0] bank_a = {BRAM3_DATA_OUT, BRAM2_DATA_OUT, BRAM1_DATA_OUT, BRAM0_DATA_OUT};
-    wire [31:0] bank_b = {BRAM7_DATA_OUT, BRAM6_DATA_OUT, BRAM5_DATA_OUT, BRAM4_DATA_OUT};
+    // Read data from each physical half
+    wire [31:0] bank_lo = {BRAM3_DATA_OUT, BRAM2_DATA_OUT, BRAM1_DATA_OUT, BRAM0_DATA_OUT};
+    wire [31:0] bank_hi = {BRAM7_DATA_OUT, BRAM6_DATA_OUT, BRAM5_DATA_OUT, BRAM4_DATA_OUT};
 
-    // Dual-bank select: raddr1==raddr2 means ld_rs2 case (use Bank B)
-    wire same = (raddr1[3:0] == raddr2[3:0]);
-    wire [31:0] mux_out = same ? bank_b : bank_a;
+    // Select the rs1 read output: raddr1[4] picks which physical half holds the result
+    wire [31:0] mux_out = raddr1[4] ? bank_hi : bank_lo;
 
-    // x0 hardwired to zero per RISC-V spec
-    assign rdata1 = (raddr1[3:0] == 4'd0) ? 32'd0 : mux_out;
-    assign rdata2 = (raddr2[3:0] == 4'd0) ? 32'd0 : bank_b;
+    // x0 hardwired to zero per RISC-V spec; use raddr1[4:0]==0 check
+    assign rdata1 = (raddr1[4:0] == 5'd0) ? 32'd0 : mux_out;
+    assign rdata2 = (raddr2[4:0] == 5'd0) ? 32'd0 : (raddr2[4] ? bank_hi : bank_lo);
 
 endmodule
