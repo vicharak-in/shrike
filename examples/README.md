@@ -28,6 +28,7 @@
 | 22 | Stack Processor | `stack_processor` | Processors & CPUs | 🔴 Advanced | Custom ISA, stack-based execution, SPI host |
 | 23 | Vector-4 CPU | `vector4_cpu` | Processors & CPUs | 🔴 Advanced | Full 4-bit SAP CPU: ALU, PC, registers, decode |
 | 24 | Vector-8 CPU | `vector8_cpu` | Processors & CPUs | 🔴 Advanced | Full 8-bit SAP CPU: wider datapath, more opcodes |
+| 25 | PicoRV32 RISC-V | `shrike_picorv32` | Processors & CPUs | 🔴 Advanced | Full RV32I soft CPU: BRAM register file, carry-split datapath, fits the 1K-LUT fabric |
 
 ---
 
@@ -37,6 +38,6 @@
 |------------|-------|---------|
 | 🟢 Beginner | 6 | `led_blink`, `breathing_led`, `button_debouncer`, `pmod_led_blink`, `logic_gates`, `counter_4bit` |
 | 🟡 Intermediate | 13 | `pmod_patterns`, `gpio_extender_8pin`, `gpio_extender_14pin`, `i2c_led`, `spi_loopback_led`, `uart_led`, `morse_blink`, `uart_alu`, `pll_oscillator`, `pwm_4ch`, `seven_seg_clock`, `ultrasonic_sensor`, `ws2812_led`, `quadrature_decoder` |
-| 🔴 Advanced | 4 | `ask_modulator`, `stack_processor`, `vector4_cpu`, `vector8_cpu` |
+| 🔴 Advanced | 5 | `ask_modulator`, `stack_processor`, `vector4_cpu`, `vector8_cpu`, `shrike_picorv32` |
 
 ---

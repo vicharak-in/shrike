@@ -47,18 +47,46 @@
   `define assert(assert_expr) empty_statement
 `endif
 
+// SHRIKE PATCH (P1): synth-only (* keep *) macro (skipped in simulation), used on
+// the carry-split adder halves so synth does not re-fuse them into one carry chain.
+`ifdef SIMULATION
+  `define SYNTH_KEEP
+`else
+  `define SYNTH_KEEP (* keep = "true" *)
+`endif
+
+// SHRIKE PATCH (P2): register file moved to on-die BRAM -- frees ~1024 FFs and the
+// 32:1 read mux. See picorv32_regs_bram.v.
+`define PICORV32_REGS picorv32_regs_bram
+
 // uncomment this for register file in extra module
 // `define PICORV32_REGS picorv32_regs
-
-// SHRIKE PATCH (P4): use BRAM-backed regfile to free 512 FFs and eliminate
-// the 16:1 read mux for cpuregs. Dual-bank design (8 BRAM slices) hides the
-// chip's 1-cycle BRAM read latency. See picorv32_regs_bram.v.
-`define PICORV32_REGS picorv32_regs_bram
 
 // this macro can be used to check if the verilog files in your
 // design are read in the correct order.
 `define PICORV32_V
 
+// =============================================================================
+// SHRIKE PATCHES (all deltas from upstream PicoRV32). Resource/hardware patches
+// are numbered P1..P13; logical-correctness fixes are tagged CF1/CF2.
+// Grep "SHRIKE PATCH" or "CORRECTNESS FIX" to list them.
+//   P1  carry-split 32-bit adder -- splits the add to fit the 10-CLB carry chain
+//   P2  register file moved to on-die BRAM -- frees ~1024 FFs and the 32:1 read mux
+//   P3  trap state exposed as a halt wire (trap = cpu_state[7]) -- drops a flop
+//   P4  7-bit program counter -- upper 25 PC bits are provably zero, so narrowed
+//   P5  ram_style="registers" on the fallback in-core regfile -- avoids RAMSRL
+//   P6  sub-word load extract reuses one 4:1 byte mux + masked concat (no 3:1 mux)
+//   P7  serial 1-bit AND/OR/XOR -- removes the parallel 32-bit logic arms
+//   P8  inline JAL fast-path -- handled in fetch, skips ld_rs1/exec
+//   P9  one shared adder time-multiplexed: ALU add/sub, branch target, ld/st addr
+//   P10 compare flags lt/ltu/eq derived from that shared subtract -- no comparators
+//   P11 serial shifter -- barrel shifter tied off and deleted
+//   P12 structural PC+4 link incrementer for JAL/JALR -- no full 32-bit adder
+//   P13 folded PC-advance and JAL-target into one PC_W-bit adder, muxed addend
+// CORRECTNESS FIXES:
+//   CF1 BRAM read-latency wait-state -- the SLG47910 BRAM read is synchronous
+//   CF2 ECALL/EBREAK halts the core via the terminal trap state
+// =============================================================================
 
 /***************************************************************
  * picorv32
@@ -93,7 +121,9 @@ module picorv32 #(
 	parameter [31:0] STACKADDR = 32'h ffff_ffff
 ) (
 	input clk, resetn,
-	output reg trap,
+	// CORRECTNESS FIX (CF2): ECALL/EBREAK halt the core by entering the terminal
+	// trap state (cpu_state holds, fetch/decode stop). Exposed as a wire by P3.
+	output wire trap,
 
 	output reg        mem_valid,
 	output reg        mem_instr,
@@ -163,50 +193,60 @@ module picorv32 #(
 	output reg        trace_valid,
 	output reg [35:0] trace_data,
 
-	// SHRIKE PATCH (P4): BRAM regfile ports.
-	// 8 BRAM slices (Bank A: BRAM0..3 read rs1; Bank B: BRAM4..7 read rs2).
-	// These bubble up through picorv32's signature so top.v can route them
-	// to the SLG47910's on-die BRAM via iopad_external_pin.
-	output [1:0] BRAM0_RATIO, output [7:0] BRAM0_DATA_IN, output BRAM0_WEN,
-	output       BRAM0_WCLKEN, output [8:0] BRAM0_WRITE_ADDR,
-	input  [7:0] BRAM0_DATA_OUT, output BRAM0_REN, output BRAM0_RCLKEN,
-	output [8:0] BRAM0_READ_ADDR,
+	// SHRIKE PATCH (P2): BRAM register-file pass-through ports -- threaded up to
+	// shrike_picorv32_top.v where they are exposed as top-level pins for the IO
+	// planner to auto-route to on-die BRAM.
+	output wire [1:0] BRAM0_RATIO,
+	output wire [7:0] BRAM0_DATA_IN, output wire BRAM0_WEN, output wire BRAM0_WCLKEN,
+	output wire [8:0] BRAM0_WRITE_ADDR,
+	input  wire [7:0] BRAM0_DATA_OUT, output wire BRAM0_REN, output wire BRAM0_RCLKEN,
+	output wire [8:0] BRAM0_READ_ADDR,
 
-	output [1:0] BRAM1_RATIO, output [7:0] BRAM1_DATA_IN, output BRAM1_WEN,
-	output       BRAM1_WCLKEN, output [8:0] BRAM1_WRITE_ADDR,
-	input  [7:0] BRAM1_DATA_OUT, output BRAM1_REN, output BRAM1_RCLKEN,
-	output [8:0] BRAM1_READ_ADDR,
+	output wire [1:0] BRAM1_RATIO,
+	output wire [7:0] BRAM1_DATA_IN, output wire BRAM1_WEN, output wire BRAM1_WCLKEN,
+	output wire [8:0] BRAM1_WRITE_ADDR,
+	input  wire [7:0] BRAM1_DATA_OUT, output wire BRAM1_REN, output wire BRAM1_RCLKEN,
+	output wire [8:0] BRAM1_READ_ADDR,
 
-	output [1:0] BRAM2_RATIO, output [7:0] BRAM2_DATA_IN, output BRAM2_WEN,
-	output       BRAM2_WCLKEN, output [8:0] BRAM2_WRITE_ADDR,
-	input  [7:0] BRAM2_DATA_OUT, output BRAM2_REN, output BRAM2_RCLKEN,
-	output [8:0] BRAM2_READ_ADDR,
+	output wire [1:0] BRAM2_RATIO,
+	output wire [7:0] BRAM2_DATA_IN, output wire BRAM2_WEN, output wire BRAM2_WCLKEN,
+	output wire [8:0] BRAM2_WRITE_ADDR,
+	input  wire [7:0] BRAM2_DATA_OUT, output wire BRAM2_REN, output wire BRAM2_RCLKEN,
+	output wire [8:0] BRAM2_READ_ADDR,
 
-	output [1:0] BRAM3_RATIO, output [7:0] BRAM3_DATA_IN, output BRAM3_WEN,
-	output       BRAM3_WCLKEN, output [8:0] BRAM3_WRITE_ADDR,
-	input  [7:0] BRAM3_DATA_OUT, output BRAM3_REN, output BRAM3_RCLKEN,
-	output [8:0] BRAM3_READ_ADDR,
+	output wire [1:0] BRAM3_RATIO,
+	output wire [7:0] BRAM3_DATA_IN, output wire BRAM3_WEN, output wire BRAM3_WCLKEN,
+	output wire [8:0] BRAM3_WRITE_ADDR,
+	input  wire [7:0] BRAM3_DATA_OUT, output wire BRAM3_REN, output wire BRAM3_RCLKEN,
+	output wire [8:0] BRAM3_READ_ADDR,
 
-	output [1:0] BRAM4_RATIO, output [7:0] BRAM4_DATA_IN, output BRAM4_WEN,
-	output       BRAM4_WCLKEN, output [8:0] BRAM4_WRITE_ADDR,
-	input  [7:0] BRAM4_DATA_OUT, output BRAM4_REN, output BRAM4_RCLKEN,
-	output [8:0] BRAM4_READ_ADDR,
+	output wire [1:0] BRAM4_RATIO,
+	output wire [7:0] BRAM4_DATA_IN, output wire BRAM4_WEN, output wire BRAM4_WCLKEN,
+	output wire [8:0] BRAM4_WRITE_ADDR,
+	input  wire [7:0] BRAM4_DATA_OUT, output wire BRAM4_REN, output wire BRAM4_RCLKEN,
+	output wire [8:0] BRAM4_READ_ADDR,
 
-	output [1:0] BRAM5_RATIO, output [7:0] BRAM5_DATA_IN, output BRAM5_WEN,
-	output       BRAM5_WCLKEN, output [8:0] BRAM5_WRITE_ADDR,
-	input  [7:0] BRAM5_DATA_OUT, output BRAM5_REN, output BRAM5_RCLKEN,
-	output [8:0] BRAM5_READ_ADDR,
+	output wire [1:0] BRAM5_RATIO,
+	output wire [7:0] BRAM5_DATA_IN, output wire BRAM5_WEN, output wire BRAM5_WCLKEN,
+	output wire [8:0] BRAM5_WRITE_ADDR,
+	input  wire [7:0] BRAM5_DATA_OUT, output wire BRAM5_REN, output wire BRAM5_RCLKEN,
+	output wire [8:0] BRAM5_READ_ADDR,
 
-	output [1:0] BRAM6_RATIO, output [7:0] BRAM6_DATA_IN, output BRAM6_WEN,
-	output       BRAM6_WCLKEN, output [8:0] BRAM6_WRITE_ADDR,
-	input  [7:0] BRAM6_DATA_OUT, output BRAM6_REN, output BRAM6_RCLKEN,
-	output [8:0] BRAM6_READ_ADDR,
+	output wire [1:0] BRAM6_RATIO,
+	output wire [7:0] BRAM6_DATA_IN, output wire BRAM6_WEN, output wire BRAM6_WCLKEN,
+	output wire [8:0] BRAM6_WRITE_ADDR,
+	input  wire [7:0] BRAM6_DATA_OUT, output wire BRAM6_REN, output wire BRAM6_RCLKEN,
+	output wire [8:0] BRAM6_READ_ADDR,
 
-	output [1:0] BRAM7_RATIO, output [7:0] BRAM7_DATA_IN, output BRAM7_WEN,
-	output       BRAM7_WCLKEN, output [8:0] BRAM7_WRITE_ADDR,
-	input  [7:0] BRAM7_DATA_OUT, output BRAM7_REN, output BRAM7_RCLKEN,
-	output [8:0] BRAM7_READ_ADDR
+	output wire [1:0] BRAM7_RATIO,
+	output wire [7:0] BRAM7_DATA_IN, output wire BRAM7_WEN, output wire BRAM7_WCLKEN,
+	output wire [8:0] BRAM7_WRITE_ADDR,
+	input  wire [7:0] BRAM7_DATA_OUT, output wire BRAM7_REN, output wire BRAM7_RCLKEN,
+	output wire [8:0] BRAM7_READ_ADDR
 );
+	// SHRIKE PATCH (P3): trap is a wire tap of the one-hot trap state (cpu_state[7]) -- no dedicated flop, no trap<=0/1 logic.
+	assign trap = cpu_state[7];
+
 	localparam integer irq_timer = 0;
 	localparam integer irq_ebreak = 1;
 	localparam integer irq_buserror = 2;
@@ -221,8 +261,14 @@ module picorv32 #(
 	localparam [35:0] TRACE_ADDR   = {4'b 0010, 32'b 0};
 	localparam [35:0] TRACE_IRQ    = {4'b 1000, 32'b 0};
 
+	// SHRIKE PATCH (P4): narrow the PC datapath to PC_W bits -- the instruction ROM
+	// is 128 bytes (32 words) so the upper 25 PC bits are provably zero. Data
+	// addresses (lw/sw, MMIO) keep the full 32-bit path via reg_op1+imm; ISA unchanged.
+	localparam PC_W = 7;
+
 	reg [63:0] count_cycle, count_instr;
-	reg [31:0] reg_pc, reg_next_pc, reg_op1, reg_op2, reg_out;
+	reg [PC_W-1:0] reg_pc, reg_next_pc;
+	reg [31:0] reg_op1, reg_op2, reg_out;
 	reg [4:0] reg_sh;
 
 	reg [31:0] next_insn_opcode;
@@ -240,7 +286,8 @@ module picorv32 #(
 	assign pcpi_rs1 = reg_op1;
 	assign pcpi_rs2 = reg_op2;
 
-	wire [31:0] next_pc;
+	wire [PC_W-1:0] next_pc;
+	wire [31:0] next_pc_full = {{(32-PC_W){1'b0}}, next_pc};  // zero-extended for the 32-bit mem-address path
 
 	reg irq_delay;
 	reg irq_active;
@@ -249,11 +296,9 @@ module picorv32 #(
 	reg [31:0] timer;
 
 `ifndef PICORV32_REGS
-	// SHRIKE PATCH (P1): ram_style="registers" forces DFFs. Without this,
-	// Yosys infers $mem -> RAMSRL on the Forge toolchain, which PnR accepts
-	// but silently fails to route (CPU runs but every register reads 0).
-	// Inactive when PICORV32_REGS is defined (the external regfile module
-	// is used instead).
+	// SHRIKE PATCH (P5): force ram_style="registers" on the fallback in-core regfile
+	// so Yosys infers DFFs instead of RAMSRL primitives (which PnR fails to route).
+	// Inactive here -- the BRAM regfile (P2) is used instead.
 	(* ram_style = "registers" *) reg [31:0] cpuregs [0:regfile_size-1];
 
 	integer i;
@@ -264,41 +309,6 @@ module picorv32 #(
 		end
 	end
 `endif
-
-	// ====================================================================
-	// SHRIKE PATCH (P2): carry-split 32-bit adder primitive
-	//
-	// The Renesas SLG47910 enforces a hard 10-CLB max carry chain. A native
-	// 32-bit ripple add produces a 16-CLB chain and PnR fails with:
-	//   "ERROR (PnR): FPGA-1K tile support a maximum carry length of 10
-	//    CLBs. But current design requires a carry length of 16 CLBs."
-	//
-	// Carry-propagate split: 20-bit low half (10-CLB chain, exactly at the
-	// limit) + 12-bit high half (6-CLB chain) with an explicit boundary
-	// carry. (* keep *) on `lo` prevents Yosys/ABC from re-fusing the two
-	// halves back into a single 32-bit ripple chain (which would re-trigger
-	// the original error).
-	//
-	// Returns 33 bits: {carry_out, sum[31:0]}. The carry-out bit is used by
-	// patch P5 to derive alu_ltu (unsigned less-than) from the same shared
-	// subtraction without a separate comparator.
-	// ====================================================================
-	function automatic [32:0] add32_cs;
-		input [31:0] a;
-		input [31:0] b;
-		input        sub;
-		reg [19:0] b_lo;
-		reg [11:0] b_hi;
-		(* keep = "true" *) reg [20:0] lo;  // 21-bit: 20-bit sum + carry
-		reg [12:0] hi;                       // 13-bit: 12-bit sum + carry-out
-		begin
-			b_lo = sub ? ~b[19:0]  : b[19:0];
-			b_hi = sub ? ~b[31:20] : b[31:20];
-			lo   = {1'b0, a[19:0]} + {1'b0, b_lo} + {20'd0, sub};
-			hi   = {1'b0, a[31:20]} + {1'b0, b_hi} + {12'd0, lo[20]};
-			add32_cs = {hi[12], hi[11:0], lo[19:0]};
-		end
-	endfunction
 
 	task empty_statement;
 		// This task is used by the `assert directive in non-formal mode to
@@ -468,7 +478,7 @@ module picorv32 #(
 	assign mem_la_write = resetn && !mem_state && mem_do_wdata;
 	assign mem_la_read = resetn && ((!mem_la_use_prefetched_high_word && !mem_state && (mem_do_rinst || mem_do_prefetch || mem_do_rdata)) ||
 			(COMPRESSED_ISA && mem_xfer && (!last_mem_valid ? mem_la_firstword : mem_la_firstword_reg) && !mem_la_secondword && &mem_rdata_latched[1:0]));
-	assign mem_la_addr = (mem_do_prefetch || mem_do_rinst) ? {next_pc[31:2] + mem_la_firstword_xfer, 2'b00} : {reg_op1[31:2], 2'b00};
+	assign mem_la_addr = (mem_do_prefetch || mem_do_rinst) ? {next_pc_full[31:2] + mem_la_firstword_xfer, 2'b00} : {reg_op1[31:2], 2'b00};
 
 	assign mem_rdata_latched_noshuffle = (mem_xfer || LATCHED_MEM_RDATA) ? mem_rdata : mem_rdata_q;
 
@@ -487,33 +497,35 @@ module picorv32 #(
 		end
 	end
 
+	// SHRIKE PATCH (P6): restructure the sub-word LOAD extract -- reuse one 4:1 byte
+	// mux as the low byte of both byte- and half-loads, and assemble mem_rdata_word
+	// by width-masked concatenation instead of a 32-bit 3:1 mux on mem_wordsize.
+	wire       hsel = reg_op1[1];                // addressed half-word (0=lo,1=hi)
+	// addressed byte: balanced 4:1 mux, low byte of both byte- and half-loads
+	wire [7:0] ld_b0 = reg_op1[1] ? (reg_op1[0] ? mem_rdata[31:24] : mem_rdata[23:16])
+	                              : (reg_op1[0] ? mem_rdata[15: 8] : mem_rdata[ 7: 0]);
+	// second byte: high byte of a half-load (and byte 1 of a word) -- 2:1 on hsel.
+	wire [7:0] ld_b1 = hsel ? mem_rdata[31:24] : mem_rdata[15: 8];
 	always @* begin
 		(* full_case *)
 		case (mem_wordsize)
 			0: begin
 				mem_la_wdata = reg_op2;
 				mem_la_wstrb = 4'b1111;
-				mem_rdata_word = mem_rdata;
 			end
 			1: begin
 				mem_la_wdata = {2{reg_op2[15:0]}};
-				mem_la_wstrb = reg_op1[1] ? 4'b1100 : 4'b0011;
-				case (reg_op1[1])
-					1'b0: mem_rdata_word = {16'b0, mem_rdata[15: 0]};
-					1'b1: mem_rdata_word = {16'b0, mem_rdata[31:16]};
-				endcase
+				mem_la_wstrb = hsel ? 4'b1100 : 4'b0011;             // P6: store byte-strobe via hsel
 			end
 			2: begin
 				mem_la_wdata = {4{reg_op2[7:0]}};
 				mem_la_wstrb = 4'b0001 << reg_op1[1:0];
-				case (reg_op1[1:0])
-					2'b00: mem_rdata_word = {24'b0, mem_rdata[ 7: 0]};
-					2'b01: mem_rdata_word = {24'b0, mem_rdata[15: 8]};
-					2'b10: mem_rdata_word = {24'b0, mem_rdata[23:16]};
-					2'b11: mem_rdata_word = {24'b0, mem_rdata[31:24]};
-				endcase
 			end
 		endcase
+		// P6: width-masked concat -- no 32-bit 3:1 mux (word=full, half={16'b0,hi,lo}, byte={24'b0,lo})
+		mem_rdata_word = { (mem_wordsize == 2'd0 ? mem_rdata[31:16] : 16'b0),
+		                   (mem_wordsize == 2'd2 ? 8'b0            : ld_b1),
+		                   ld_b0 };
 	end
 
 	always @(posedge clk) begin
@@ -737,6 +749,11 @@ module picorv32 #(
 	reg instr_lb, instr_lh, instr_lw, instr_lbu, instr_lhu, instr_sb, instr_sh, instr_sw;
 	reg instr_addi, instr_slti, instr_sltiu, instr_xori, instr_ori, instr_andi, instr_slli, instr_srli, instr_srai;
 	reg instr_add, instr_sub, instr_sll, instr_slt, instr_sltu, instr_xor, instr_srl, instr_sra, instr_or, instr_and;
+	// SHRIKE PATCH (P7): pack the six logical-op decode flags into is_logic_op + 2-bit
+	// logic_op (funct3[1:0]); the serial bitwise path (also P7) reads only this pair,
+	// so the per-instruction xor/or/and flags become dead and are DCE'd.
+	reg       is_logic_op;
+	reg [1:0] logic_op;   // funct3[1:0]: xor=00, or=10, and=11
 	reg instr_rdcycle, instr_rdcycleh, instr_rdinstr, instr_rdinstrh, instr_ecall_ebreak, instr_fence;
 	reg instr_getq, instr_setq, instr_retirq, instr_maskirq, instr_waitirq, instr_timer;
 	wire instr_trap;
@@ -1149,6 +1166,13 @@ module picorv32 #(
 			instr_xori  <= is_alu_reg_imm && mem_rdata_q[14:12] == 3'b100;
 			instr_ori   <= is_alu_reg_imm && mem_rdata_q[14:12] == 3'b110;
 			instr_andi  <= is_alu_reg_imm && mem_rdata_q[14:12] == 3'b111;
+			// SHRIKE PATCH (P7): packed logical-op decode -- fires when funct3 is XOR/OR/AND
+			// and the op is reg-imm or reg-reg with funct7=0 (so SUB/SRA do not trip it).
+			is_logic_op <= (is_alu_reg_imm || (is_alu_reg_reg && mem_rdata_q[31:25] == 7'b0000000))
+			               && (mem_rdata_q[14:12] == 3'b100 ||
+			                   mem_rdata_q[14:12] == 3'b110 ||
+			                   mem_rdata_q[14:12] == 3'b111);
+			logic_op    <= mem_rdata_q[13:12];   // funct3[1:0]
 
 			instr_slli  <= is_alu_reg_imm && mem_rdata_q[14:12] == 3'b001 && mem_rdata_q[31:25] == 7'b0000000;
 			instr_srli  <= is_alu_reg_imm && mem_rdata_q[14:12] == 3'b101 && mem_rdata_q[31:25] == 7'b0000000;
@@ -1207,8 +1231,10 @@ module picorv32 #(
 
 			(* parallel_case *)
 			case (1'b1)
-				instr_jal:
-					decoded_imm <= decoded_imm_j;
+				// SHRIKE PATCH (P8): JAL is handled inline in the fetch state (PC+imm_j,
+				// latched_branch), never entering ld_rs1/exec, so the upstream
+				// "decoded_imm <= decoded_imm_j" write here is dropped as dead -- removing
+				// the only full-width reader of decoded_imm_j lets synth DCE its high bits.
 				|{instr_lui, instr_auipc}:
 					decoded_imm <= mem_rdata_q[31:12] << 12;
 				|{instr_jalr, is_lb_lh_lw_lbu_lhu, is_alu_reg_imm}:
@@ -1250,6 +1276,7 @@ module picorv32 #(
 			instr_sra   <= 0;
 			instr_or    <= 0;
 			instr_and   <= 0;
+			is_logic_op <= 0;   // P7 (logic_op is don't-care when 0)
 
 			instr_fence <= 0;
 		end
@@ -1258,6 +1285,9 @@ module picorv32 #(
 
 	// Main State Machine
 
+	// cpu_state_trap is the terminal halt state; with CATCH_ILLINSN=0 the only path
+	// into it is the ECALL/EBREAK transition (CORRECTNESS FIX CF2 near the bottom of
+	// the state machine).
 	localparam cpu_state_trap   = 8'b10000000;
 	localparam cpu_state_fetch  = 8'b01000000;
 	localparam cpu_state_ld_rs1 = 8'b00100000;
@@ -1267,6 +1297,13 @@ module picorv32 #(
 	localparam cpu_state_stmem  = 8'b00000010;
 	localparam cpu_state_ldmem  = 8'b00000001;
 
+	// CORRECTNESS FIX (CF1): the SLG47910 BRAM read is synchronous (data valid the
+	// cycle after the address), but upstream PicoRV32 captures the register read in
+	// the same cycle. Hold each ld_rs1/ld_rs2 state RS_READ_LATENCY cycles so the read
+	// data is valid before capture (the address is held stable, so over-waiting is safe).
+	localparam [1:0] RS_READ_LATENCY = 2'd2;
+	reg [1:0] rs_rd_wait;
+
 	reg [7:0] cpu_state;
 	reg [1:0] irq_state;
 
@@ -1274,7 +1311,7 @@ module picorv32 #(
 
 	always @* begin
 		dbg_ascii_state = "";
-		if (cpu_state == cpu_state_trap)   dbg_ascii_state = "trap";
+		if (cpu_state == cpu_state_trap)   dbg_ascii_state = "trap";  // terminal halt state
 		if (cpu_state == cpu_state_fetch)  dbg_ascii_state = "fetch";
 		if (cpu_state == cpu_state_ld_rs1) dbg_ascii_state = "ld_rs1";
 		if (cpu_state == cpu_state_ld_rs2) dbg_ascii_state = "ld_rs2";
@@ -1298,8 +1335,10 @@ module picorv32 #(
 	reg latched_is_lb;
 	reg [regindex_bits-1:0] latched_rd;
 
-	reg [31:0] current_pc;
-	assign next_pc = latched_store && latched_branch ? reg_out & ~1 : reg_next_pc;
+	reg [PC_W-1:0] current_pc;
+	// P4: reg_out holds a jump/branch target; the low PC_W bits are the in-range
+	// instruction address, so truncate next_pc to the PC width.
+	assign next_pc = latched_store && latched_branch ? (reg_out[PC_W-1:0] & ~1'b1) : reg_next_pc;
 
 	reg [3:0] pcpi_timeout_counter;
 	reg pcpi_timeout;
@@ -1315,90 +1354,101 @@ module picorv32 #(
 	reg [31:0] alu_shl, alu_shr;
 	reg alu_eq, alu_ltu, alu_lts;
 
-	// ====================================================================
-	// SHRIKE PATCH (P3): shared 32-bit adder across all 5 add sites.
-	//
-	// PicoRV32 has 5 cycle-disjoint 32-bit additions:
-	//   cpu_state_fetch  : current_pc + decoded_imm_j   (jal target)
-	//   cpu_state_exec   : reg_pc     + decoded_imm     (auipc result)
-	//   cpu_state_ldmem  : reg_op1    + decoded_imm     (load address)
-	//   cpu_state_stmem  : reg_op1    + decoded_imm     (store address)
-	//   cpu_state_ld_rs2 : reg_op1 +/- reg_op2          (ALU add/sub/cmp)
-	//
-	// Because these states are mutually exclusive in time, they can share
-	// a single adder via a 5-way operand mux driven by cpu_state. The ld_rs2
-	// case uses sub=1 for SUB or any compare instruction (so the same
-	// subtraction feeds P5's eq/ltu/lts derivations).
-	//
-	// SHRIKE PATCH (P5): derive compare flags from the shared subtraction
-	// instead of three standalone 32-bit comparators. Valid only when
-	// shared_add_sub_w=1 (compare or SUB instr); in other cycles the
-	// compare flags get "garbage" values that are never read.
-	//   alu_eq  = (a-b == 0)
-	//   alu_ltu = NOT carry_out      (no carry from a+~b+1 means a<b)
-	//   alu_lts = result_sign XOR signed_overflow
-	//   where signed_overflow = (a[31]^b[31]) & (a[31]^result[31])
-	// ====================================================================
-	reg [31:0] shared_add_a;
-	reg [31:0] shared_add_b;
-	reg        shared_add_sub_w;
+	// SHRIKE PATCH (P1): carry-split 32-bit add helper. The SLG47910 caps carry chains
+	// at 10 CLBs; a native 32-bit ripple add needs 16 and PnR fails. Split into a
+	// 20-bit low half and a 12-bit high half with an explicit boundary carry; SYNTH_KEEP
+	// on lo stops ABC re-fusing them. (add32_cs is superseded by the shared add33_cs.)
+	function automatic [31:0] add32_cs;
+		input [31:0] a;
+		input [31:0] b;
+		input        sub;
+		reg [19:0] b_lo;
+		reg [11:0] b_hi;
+		`SYNTH_KEEP reg [20:0] lo;
+		reg [12:0] hi;
+		begin
+			b_lo = sub ? ~b[19:0]  : b[19:0];
+			b_hi = sub ? ~b[31:20] : b[31:20];
+			lo   = {1'b0, a[19:0]} + {1'b0, b_lo} + {20'd0, sub};
+			hi   = {1'b0, a[31:20]} + {1'b0, b_hi} + {12'd0, lo[20]};
+			add32_cs = {hi[11:0], lo[19:0]};
+		end
+	endfunction
 
+	// SHRIKE PATCH (P9): one physical carry-split adder time-multiplexed across the
+	// ALU add/sub (exec), the branch target reg_pc+imm (ld_rs2), and the load/store
+	// address reg_op1+imm (ldmem/stmem). These uses fire in disjoint cpu_states -- the
+	// branch target is computed a cycle early in ld_rs2 so exec needs only the ALU
+	// adder -- so one add33_cs (defined below) serves all three. addr_add_sum and
+	// alu_sub_full are both views of its result.
+
+	// SHRIKE PATCH (P10): derive the compare flags from the shared subtract instead of
+	// separate 32-bit comparators. alu_do_sub forces a subtract for SUB and every
+	// compare/branch; from reg_op1 + ~reg_op2 + 1, alu_ltu = ~carry_out and
+	// alu_lts = sum[31] ^ signed_overflow. add33_cs is the carry-split adder plus its
+	// carry-out bit; alu_eq stays a direct zero-detect.
+	function automatic [32:0] add33_cs;
+		input [31:0] a;
+		input [31:0] b;
+		input        sub;
+		reg [19:0] b_lo;
+		reg [11:0] b_hi;
+		`SYNTH_KEEP reg [20:0] lo;
+		reg [12:0] hi;
+		begin
+			b_lo = sub ? ~b[19:0]  : b[19:0];
+			b_hi = sub ? ~b[31:20] : b[31:20];
+			lo   = {1'b0, a[19:0]} + {1'b0, b_lo} + {20'd0, sub};
+			hi   = {1'b0, a[31:20]} + {1'b0, b_hi} + {12'd0, lo[20]};
+			add33_cs = {hi[12], hi[11:0], lo[19:0]};  // {carry_out, sum[31:0]}
+		end
+	endfunction
+
+	wire alu_do_sub = instr_sub || is_beq_bne_blt_bge_bltu_bgeu ||
+	                  is_slti_blt_slt || is_sltiu_bltu_sltu;
+
+	// SHRIKE PATCH (P9): operand muxes for the shared adder -- opA = reg_pc in ld_rs2
+	// else reg_op1; opB = reg_op2 in exec else decoded_imm; sub asserted only in exec
+	// (target/address adds are never subtracts).
+	reg [31:0] sh_opA, sh_opB;
+	reg        sh_sub;
 	always @* begin
-		shared_add_a = 32'b0;
-		shared_add_b = 32'b0;
-		shared_add_sub_w = 1'b0;
-		case (cpu_state)
-			// SHRIKE PATCH (P15a): ld_rs1 was idle on the shared adder. Use
-			// it to compute reg_pc + 4 (the link value / next-PC). Removes
-			// the dedicated 32-bit `reg_next_pc <= current_pc + 4` adder,
-			// freeing one ChainLen=8 carry chain.
-			cpu_state_ld_rs1: begin shared_add_a = reg_pc;     shared_add_b = 32'd4;        end
-			cpu_state_fetch:  begin shared_add_a = current_pc; shared_add_b = decoded_imm_j; end
-			cpu_state_exec:   begin shared_add_a = reg_pc;     shared_add_b = decoded_imm;   end
-			cpu_state_ldmem,
-			cpu_state_stmem:  begin shared_add_a = reg_op1;    shared_add_b = decoded_imm;   end
-			cpu_state_ld_rs2: begin
-				shared_add_a = reg_op1;
-				shared_add_b = reg_op2;
-				shared_add_sub_w = instr_sub || is_compare;
-			end
-			default: begin shared_add_a = 32'b0; shared_add_b = 32'b0; shared_add_sub_w = 1'b0; end
-		endcase
+		sh_opA = (cpu_state == cpu_state_ld_rs2) ? {{(32-PC_W){1'b0}}, reg_pc} : reg_op1;
+		sh_opB = (cpu_state == cpu_state_exec)   ? reg_op2 : decoded_imm;
+		sh_sub = (cpu_state == cpu_state_exec)   ? alu_do_sub : 1'b0;
 	end
+	wire [32:0] shared_sum  = add33_cs(sh_opA, sh_opB, sh_sub);
+	wire [31:0] addr_add_sum = shared_sum[31:0];  // ld_rs2 target / ldmem-stmem address
+	wire [32:0] alu_sub_full = shared_sum;        // exec ALU result + compare flags
+	wire _alu_sgn_ovf = (reg_op1[31] ^ reg_op2[31]) & (reg_op1[31] ^ alu_sub_full[31]);
 
-	wire [32:0] _shared_add_full = add32_cs(shared_add_a, shared_add_b, shared_add_sub_w);
-	wire [31:0] shared_add_sum   = _shared_add_full[31:0];
-	wire        shared_add_carry = _shared_add_full[32];
+	// SHRIKE PATCH (P7): 1-bit AND/OR/XOR gate for the serial bitwise path -- logic
+	// ops run bit-by-bit in cpu_state_shift (reusing the shift datapath), one result
+	// bit per cycle, removing the parallel 32-bit xor/or/and arms (logic_op: 00=xor,
+	// 10=or, 11=and).
+	wire logic_bit_serial = logic_op[1] ? (logic_op[0] ? (reg_op1[0] & reg_op2[0])
+	                                                    : (reg_op1[0] | reg_op2[0]))
+	                                     :                (reg_op1[0] ^ reg_op2[0]);
 
-	// P5: derivations used by the ALU block below
-	wire _signed_overflow = (shared_add_a[31] ^ shared_add_b[31])
-	                      & (shared_add_a[31] ^ shared_add_sum[31]);
-	wire _alu_eq_w  = ~|shared_add_sum;
-	wire _alu_ltu_w = ~shared_add_carry;
-	wire _alu_lts_w = shared_add_sum[31] ^ _signed_overflow;
-
-	// SHRIKE PATCH (P7): barrel-shifter is dead with BARREL_SHIFTER=0.
-	// The case branches reading alu_shl/alu_shr in alu_out below are
-	// guarded by `BARREL_SHIFTER && ...`, which constant-folds to 0.
-	// Tie alu_shl/alu_shr to 0 so Yosys/GCH eliminate the full 32-bit
-	// barrel-shifter that was being computed each cycle in upstream code.
 	generate if (TWO_CYCLE_ALU) begin
 		always @(posedge clk) begin
-			alu_add_sub <= shared_add_sum;  // P3
-			alu_eq  <= _alu_eq_w;           // P5
-			alu_lts <= _alu_lts_w;          // P5
-			alu_ltu <= _alu_ltu_w;          // P5
-			alu_shl <= 32'b0;               // P7: dead with BARREL_SHIFTER=0
-			alu_shr <= 32'b0;               // P7: dead with BARREL_SHIFTER=0
+			alu_add_sub <= alu_sub_full[31:0];                 // P9/P10
+			alu_eq <= ~|alu_sub_full[31:0];                     // P10: eq from the shared subtract zero-detect
+			alu_lts <= alu_sub_full[31] ^ _alu_sgn_ovf;        // P10
+			alu_ltu <= ~alu_sub_full[32];                      // P10
+			// SHRIKE PATCH (P11): BARREL_SHIFTER=0 -- tie alu_shl/alu_shr to 0 so synth
+			// deletes the barrel shifter (shifts run serially in cpu_state_shift).
+			alu_shl <= 32'b0;
+			alu_shr <= 32'b0;
 		end
 	end else begin
 		always @* begin
-			alu_add_sub = shared_add_sum;   // P3
-			alu_eq  = _alu_eq_w;            // P5
-			alu_lts = _alu_lts_w;           // P5
-			alu_ltu = _alu_ltu_w;           // P5
-			alu_shl = 32'b0;                // P7
-			alu_shr = 32'b0;                // P7
+			alu_add_sub = alu_sub_full[31:0];                  // P9/P10
+			alu_eq = ~|alu_sub_full[31:0];                      // P10: eq via shared-subtract zero-detect (read only by beq/bne)
+			alu_lts = alu_sub_full[31] ^ _alu_sgn_ovf;         // P10
+			alu_ltu = ~alu_sub_full[32];                       // P10
+			alu_shl = 32'b0;   // P11
+			alu_shr = 32'b0;   // P11
 		end
 	end endgenerate
 
@@ -1427,12 +1477,9 @@ module picorv32 #(
 				alu_out = alu_add_sub;
 			is_compare:
 				alu_out = alu_out_0;
-			instr_xori || instr_xor:
-				alu_out = reg_op1 ^ reg_op2;
-			instr_ori || instr_or:
-				alu_out = reg_op1 | reg_op2;
-			instr_andi || instr_and:
-				alu_out = reg_op1 & reg_op2;
+			// SHRIKE PATCH (P7): the parallel 32-bit xor/or/and arms are removed here --
+			// logic ops compute serially in cpu_state_shift (result lands in reg_op1 ->
+			// reg_out) and never read alu_out, so the per-instruction logic flags are DCE'd.
 			BARREL_SHIFTER && (instr_sll || instr_slli):
 				alu_out = alu_shl;
 			BARREL_SHIFTER && (instr_srl || instr_srli || instr_sra || instr_srai):
@@ -1470,27 +1517,19 @@ module picorv32 #(
 			(* parallel_case *)
 			case (1'b1)
 				latched_branch: begin
-					// SHRIKE PATCH (P14): use reg_next_pc as the link value
-					// instead of a separate `reg_pc + 4` adder. reg_next_pc is
-					// already set to PC+4 of the current instruction by the
-					// fetch state's `reg_next_pc <= current_pc + 4` line, so
-					// we can reuse it and eliminate the second 32-bit adder
-					// (saving a carry chain of 5-8 CLBs in GCH).
-					//
-					// PRECONDITION: instr_jal must NOT override reg_next_pc
-					// to the target -- the JAL target now goes through reg_out
-					// (see the modified instr_jal handler in cpu_state_fetch).
-					cpuregs_wrdata = reg_next_pc;
+					// SHRIKE PATCH (P12): the JAL/JALR link value is PC+4. reg_pc is
+					// word-aligned and COMPRESSED_ISA=0, so PC+4 is computed structurally as
+					// a small incrementer on reg_pc[PC_W-1:2] with the low 2 bits hardwired 0
+					// (zero-extended to 32) -- no full 32-bit adder.
+					cpuregs_wrdata = {{(32-PC_W-1){1'b0}}, ({1'b0, reg_pc[PC_W-1:2]} + 1'b1), 2'b00};  // P12
 					cpuregs_write = 1;
 				end
 				latched_store && !latched_branch: begin
-					// SHRIKE PATCH (P13): use reg_out unconditionally (was
-					// latched_stalu ? alu_out_q : reg_out).
-					cpuregs_wrdata = reg_out;
+					cpuregs_wrdata = latched_stalu ? alu_out_q : reg_out;
 					cpuregs_write = 1;
 				end
 				ENABLE_IRQ && irq_state[0]: begin
-					cpuregs_wrdata = reg_next_pc | latched_compr;
+					cpuregs_wrdata = {{(32-PC_W){1'b0}}, reg_next_pc} | latched_compr;
 					cpuregs_write = 1;
 				end
 				ENABLE_IRQ && irq_state[1]: begin
@@ -1539,11 +1578,8 @@ module picorv32 #(
 
 	wire [5:0] cpuregs_waddr = latched_rd;
 	wire [5:0] cpuregs_raddr1 = ENABLE_REGS_DUALPORT ? decoded_rs1 : decoded_rs;
-	// SHRIKE PATCH (P6): always expose decoded_rs2 on raddr2 so the external
-	// BRAM regfile (Phase P4) can continuously read both rs1 and rs2 values
-	// in parallel, hiding BRAM's 1-cycle read latency via the dual-bank
-	// trick. DUALPORT=0 picorv32 only uses raddr1 internally; raddr2 is
-	// purely informational for the external regfile module.
+	// SHRIKE PATCH (P2): always expose decoded_rs2 on raddr2 so the BRAM regfile can
+	// drive rdata2 from rs2 directly (keeps DUALPORT=0 with rs2 available, no extra cycle).
 	wire [5:0] cpuregs_raddr2 = decoded_rs2;
 
 	`PICORV32_REGS cpuregs (
@@ -1555,49 +1591,44 @@ module picorv32 #(
 		.wdata(cpuregs_wrdata),
 		.rdata1(cpuregs_rdata1),
 		.rdata2(cpuregs_rdata2),
-		// SHRIKE PATCH (P4): pass BRAM ports through to the external regfile
+		// SHRIKE PATCH (P2): pass through the 8-slice BRAM port group; the external
+		// picorv32_regs_bram module owns the I/O attributes so the IO planner can
+		// auto-route them to on-die BRAM.
 		.BRAM0_RATIO(BRAM0_RATIO), .BRAM0_DATA_IN(BRAM0_DATA_IN),
 		.BRAM0_WEN(BRAM0_WEN), .BRAM0_WCLKEN(BRAM0_WCLKEN),
 		.BRAM0_WRITE_ADDR(BRAM0_WRITE_ADDR), .BRAM0_DATA_OUT(BRAM0_DATA_OUT),
 		.BRAM0_REN(BRAM0_REN), .BRAM0_RCLKEN(BRAM0_RCLKEN),
 		.BRAM0_READ_ADDR(BRAM0_READ_ADDR),
-
 		.BRAM1_RATIO(BRAM1_RATIO), .BRAM1_DATA_IN(BRAM1_DATA_IN),
 		.BRAM1_WEN(BRAM1_WEN), .BRAM1_WCLKEN(BRAM1_WCLKEN),
 		.BRAM1_WRITE_ADDR(BRAM1_WRITE_ADDR), .BRAM1_DATA_OUT(BRAM1_DATA_OUT),
 		.BRAM1_REN(BRAM1_REN), .BRAM1_RCLKEN(BRAM1_RCLKEN),
 		.BRAM1_READ_ADDR(BRAM1_READ_ADDR),
-
 		.BRAM2_RATIO(BRAM2_RATIO), .BRAM2_DATA_IN(BRAM2_DATA_IN),
 		.BRAM2_WEN(BRAM2_WEN), .BRAM2_WCLKEN(BRAM2_WCLKEN),
 		.BRAM2_WRITE_ADDR(BRAM2_WRITE_ADDR), .BRAM2_DATA_OUT(BRAM2_DATA_OUT),
 		.BRAM2_REN(BRAM2_REN), .BRAM2_RCLKEN(BRAM2_RCLKEN),
 		.BRAM2_READ_ADDR(BRAM2_READ_ADDR),
-
 		.BRAM3_RATIO(BRAM3_RATIO), .BRAM3_DATA_IN(BRAM3_DATA_IN),
 		.BRAM3_WEN(BRAM3_WEN), .BRAM3_WCLKEN(BRAM3_WCLKEN),
 		.BRAM3_WRITE_ADDR(BRAM3_WRITE_ADDR), .BRAM3_DATA_OUT(BRAM3_DATA_OUT),
 		.BRAM3_REN(BRAM3_REN), .BRAM3_RCLKEN(BRAM3_RCLKEN),
 		.BRAM3_READ_ADDR(BRAM3_READ_ADDR),
-
 		.BRAM4_RATIO(BRAM4_RATIO), .BRAM4_DATA_IN(BRAM4_DATA_IN),
 		.BRAM4_WEN(BRAM4_WEN), .BRAM4_WCLKEN(BRAM4_WCLKEN),
 		.BRAM4_WRITE_ADDR(BRAM4_WRITE_ADDR), .BRAM4_DATA_OUT(BRAM4_DATA_OUT),
 		.BRAM4_REN(BRAM4_REN), .BRAM4_RCLKEN(BRAM4_RCLKEN),
 		.BRAM4_READ_ADDR(BRAM4_READ_ADDR),
-
 		.BRAM5_RATIO(BRAM5_RATIO), .BRAM5_DATA_IN(BRAM5_DATA_IN),
 		.BRAM5_WEN(BRAM5_WEN), .BRAM5_WCLKEN(BRAM5_WCLKEN),
 		.BRAM5_WRITE_ADDR(BRAM5_WRITE_ADDR), .BRAM5_DATA_OUT(BRAM5_DATA_OUT),
 		.BRAM5_REN(BRAM5_REN), .BRAM5_RCLKEN(BRAM5_RCLKEN),
 		.BRAM5_READ_ADDR(BRAM5_READ_ADDR),
-
 		.BRAM6_RATIO(BRAM6_RATIO), .BRAM6_DATA_IN(BRAM6_DATA_IN),
 		.BRAM6_WEN(BRAM6_WEN), .BRAM6_WCLKEN(BRAM6_WCLKEN),
 		.BRAM6_WRITE_ADDR(BRAM6_WRITE_ADDR), .BRAM6_DATA_OUT(BRAM6_DATA_OUT),
 		.BRAM6_REN(BRAM6_REN), .BRAM6_RCLKEN(BRAM6_RCLKEN),
 		.BRAM6_READ_ADDR(BRAM6_READ_ADDR),
-
 		.BRAM7_RATIO(BRAM7_RATIO), .BRAM7_DATA_IN(BRAM7_DATA_IN),
 		.BRAM7_WEN(BRAM7_WEN), .BRAM7_WCLKEN(BRAM7_WCLKEN),
 		.BRAM7_WRITE_ADDR(BRAM7_WRITE_ADDR), .BRAM7_DATA_OUT(BRAM7_DATA_OUT),
@@ -1621,18 +1652,14 @@ module picorv32 #(
 	assign launch_next_insn = cpu_state == cpu_state_fetch && decoder_trigger && (!ENABLE_IRQ || irq_delay || irq_active || !(irq_pending & ~irq_mask));
 
 	always @(posedge clk) begin
-		trap <= 0;
 		reg_sh <= 'bx;
 		reg_out <= 'bx;
 		set_mem_do_rinst = 0;
 		set_mem_do_rdata = 0;
 		set_mem_do_wdata = 0;
 
-		// SHRIKE PATCH (P13): alu_out_q and alu_out_0_q register stages
-		// removed. With TWO_CYCLE_ALU=0 + TWO_CYCLE_COMPARE=0, the consumers
-		// of *_q are rewritten to use the unregistered alu_out / alu_out_0
-		// directly (via reg_out for the cross-cycle case). Eliminates 33 FFs
-		// + the 32-bit latched_stalu mux feeding writeback (~30 LUTs).
+		alu_out_0_q <= alu_out_0;
+		alu_out_q <= alu_out;
 
 		alu_wait <= 0;
 		alu_wait_2 <= 0;
@@ -1679,8 +1706,8 @@ module picorv32 #(
 			trace_data <= 'bx;
 
 		if (!resetn) begin
-			reg_pc <= PROGADDR_RESET;
-			reg_next_pc <= PROGADDR_RESET;
+			reg_pc <= PROGADDR_RESET[PC_W-1:0];
+			reg_next_pc <= PROGADDR_RESET[PC_W-1:0];
 			if (ENABLE_COUNTERS)
 				count_instr <= 0;
 			latched_store <= 0;
@@ -1705,11 +1732,11 @@ module picorv32 #(
 				reg_out <= STACKADDR;
 			end
 			cpu_state <= cpu_state_fetch;
+			rs_rd_wait <= RS_READ_LATENCY;   // CF1: arm the read-latency wait
 		end else
 		(* parallel_case, full_case *)
 		case (cpu_state)
-			cpu_state_trap: begin
-				trap <= 1;
+			cpu_state_trap: begin   // terminal halt state (P3 wire-tap); cpu_state holds, no transition out
 			end
 
 			cpu_state_fetch: begin
@@ -1721,16 +1748,14 @@ module picorv32 #(
 				(* parallel_case *)
 				case (1'b1)
 					latched_branch: begin
-						// SHRIKE PATCH (P13): use reg_out unconditionally;
-						// alu_out_q/latched_stalu eliminated.
-						current_pc = latched_store ? reg_out & ~1 : reg_next_pc;
+						current_pc = latched_store ? ((latched_stalu ? alu_out_q[PC_W-1:0] : reg_out[PC_W-1:0]) & ~1'b1) : reg_next_pc;
 						`debug($display("ST_RD:  %2d 0x%08x, BRANCH 0x%08x", latched_rd, reg_pc + (latched_compr ? 2 : 4), current_pc);)
 					end
 					latched_store && !latched_branch: begin
 						`debug($display("ST_RD:  %2d 0x%08x", latched_rd, latched_stalu ? alu_out_q : reg_out);)
 					end
 					ENABLE_IRQ && irq_state[0]: begin
-						current_pc = PROGADDR_IRQ;
+						current_pc = PROGADDR_IRQ[PC_W-1:0];
 						irq_active <= 1;
 						mem_do_rinst <= 1;
 					end
@@ -1783,28 +1808,26 @@ module picorv32 #(
 				if (decoder_trigger) begin
 					`debug($display("-- %-0t", $time);)
 					irq_delay <= irq_active;
-					// SHRIKE PATCH (P15a): reg_next_pc <= current_pc + 4 moved
-					// to cpu_state_ld_rs1 where the shared adder is otherwise
-					// idle. fetch's shared adder still drives JAL target via
-					// shared_add_a = current_pc, shared_add_b = decoded_imm_j.
+					// SHRIKE PATCH (P13): fold the sequential advance (PC+4) and the JAL
+					// target (PC+imm_j) into one PC_W-bit adder with a muxed addend
+					// (instr_jal ? imm_j : 4), instead of two separate adds to reg_next_pc.
+					// Behaviourally identical: jal gets PC+imm_j, everything else PC+4.
+					reg_next_pc <= current_pc + (instr_jal ? decoded_imm_j[PC_W-1:0] : (compressed_instr ? 2 : 4));  // P13
 					if (ENABLE_TRACE)
 						latched_trace <= 1;
 					if (ENABLE_COUNTERS) begin
 						count_instr <= count_instr + 1;
 						if (!ENABLE_COUNTERS64) count_instr[63:32] <= 0;
 					end
-					// SHRIKE PATCH (P15a): JAL no longer stays in fetch. It
-					// goes through ld_rs1 -> exec like other instructions.
-					// In exec, the shared adder produces reg_pc + decoded_imm
-					// = reg_pc + decoded_imm_j (per decoded_imm <= decoded_imm_j
-					// at decode time, line ~1211) = JAL target, captured into
-					// reg_out by the P13 path. The latched_branch <= ... in
-					// exec's else branch is extended to include instr_jal.
-					// JAL prefetch is disabled to avoid reading at the wrong
-					// (PC+4) address while we transit ld_rs1 + exec.
-					mem_do_rinst <= 0;
-					mem_do_prefetch <= !instr_jalr && !instr_retirq && !instr_jal;
-					cpu_state <= cpu_state_ld_rs1;
+					if (instr_jal) begin
+						mem_do_rinst <= 1;
+						// P13: jal target folded into the single add above
+						latched_branch <= 1;
+					end else begin
+						mem_do_rinst <= 0;
+						mem_do_prefetch <= !instr_jalr && !instr_retirq;
+						cpu_state <= cpu_state_ld_rs1;
+					end
 				end
 			end
 
@@ -1812,15 +1835,11 @@ module picorv32 #(
 				reg_op1 <= 'bx;
 				reg_op2 <= 'bx;
 
-				// SHRIKE PATCH (P15a): compute reg_pc + 4 via the shared adder
-				// here (in ld_rs1 the shared adder is otherwise idle). This
-				// replaces the dedicated 32-bit `current_pc + 4` adder that
-				// used to live in fetch's decoder_trigger block. By the time
-				// fetch revisits (next instruction or via latched_branch),
-				// reg_next_pc holds PC+4 of the current insn for either the
-				// straight-line PC advance or the JAL/JALR link writeback.
-				reg_next_pc <= shared_add_sum;
-
+				// CORRECTNESS FIX (CF1): stall until the BRAM read reflects mem[raddr1=rs1] (synchronous read latency).
+				if (rs_rd_wait != 0) begin
+					rs_rd_wait <= rs_rd_wait - 1'b1;
+				end else begin
+				rs_rd_wait <= RS_READ_LATENCY;   // re-arm for ld_rs2 / next instr
 				(* parallel_case *)
 				case (1'b1)
 					(CATCH_ILLINSN || WITH_PCPI) && instr_trap: begin
@@ -1880,7 +1899,7 @@ module picorv32 #(
 						cpu_state <= cpu_state_fetch;
 					end
 					is_lui_auipc_jal: begin
-						reg_op1 <= instr_lui ? 0 : reg_pc;
+						reg_op1 <= instr_lui ? 0 : {{(32-PC_W){1'b0}}, reg_pc};  // P4: AUIPC base, zero-extended
 						reg_op2 <= decoded_imm;
 						if (TWO_CYCLE_ALU)
 							alu_wait <= 1;
@@ -1950,7 +1969,20 @@ module picorv32 #(
 						reg_sh <= decoded_rs2;
 						cpu_state <= cpu_state_shift;
 					end
-					is_jalr_addi_slti_sltiu_xori_ori_andi, is_slli_srli_srai && BARREL_SHIFTER: begin
+					// SHRIKE PATCH (P7): reg-imm logic (xori/ori/andi) dispatched to
+					// cpu_state_shift as a serial bitwise op (no prefetch, so the next
+					// instruction is not re-decoded mid-loop). reg_sh=31 -> 32 iterations;
+					// excluded from the I-type branch below via !is_logic_op.
+					is_logic_op && is_alu_reg_imm: begin
+						`debug($display("LD_RS1: %2d 0x%08x", decoded_rs1, cpuregs_rs1);)
+						reg_op1 <= cpuregs_rs1;
+						dbg_rs1val <= cpuregs_rs1;
+						dbg_rs1val_valid <= 1;
+						reg_op2 <= decoded_imm;
+						reg_sh <= 5'd31;
+						cpu_state <= cpu_state_shift;
+					end
+					(is_jalr_addi_slti_sltiu_xori_ori_andi && !is_logic_op), is_slli_srli_srai && BARREL_SHIFTER: begin
 						`debug($display("LD_RS1: %2d 0x%08x", decoded_rs1, cpuregs_rs1);)
 						reg_op1 <= cpuregs_rs1;
 						dbg_rs1val <= cpuregs_rs1;
@@ -1995,14 +2027,27 @@ module picorv32 #(
 							cpu_state <= cpu_state_ld_rs2;
 					end
 				endcase
+				end   // close the read-latency-wait else
 			end
 
 			cpu_state_ld_rs2: begin
+				// CORRECTNESS FIX (CF1): stall until the BRAM read reflects mem[raddr1=rs2] (synchronous read latency).
+				if (rs_rd_wait != 0) begin
+					rs_rd_wait <= rs_rd_wait - 1'b1;
+				end else begin
+				rs_rd_wait <= RS_READ_LATENCY;   // re-arm for next instr
 				`debug($display("LD_RS2: %2d 0x%08x", decoded_rs2, cpuregs_rs2);)
 				reg_sh <= cpuregs_rs2;
 				reg_op2 <= cpuregs_rs2;
 				dbg_rs2val <= cpuregs_rs2;
 				dbg_rs2val_valid <= 1;
+
+				// SHRIKE PATCH (P9): precompute the conditional-branch target (reg_pc +
+				// decoded_imm) here, one cycle early, via the shared adder (opA = reg_pc in
+				// ld_rs2). Latch its low PC_W bits into reg_out; exec preserves reg_out and
+				// a taken branch reads it for next_pc.
+				if (is_beq_bne_blt_bge_bltu_bgeu)
+					reg_out <= {{(32-PC_W){1'b0}}, addr_add_sum[PC_W-1:0]};  // P9
 
 				(* parallel_case *)
 				case (1'b1)
@@ -2032,6 +2077,13 @@ module picorv32 #(
 					is_sll_srl_sra && !BARREL_SHIFTER: begin
 						cpu_state <= cpu_state_shift;
 					end
+					// SHRIKE PATCH (P7): reg-reg logic (xor/or/and) dispatched to
+					// cpu_state_shift as a serial bitwise op; reg_op2=rs2 is already latched
+					// above, set reg_sh<=31 (32 iterations). No prefetch, no mid-loop re-decode.
+					is_logic_op: begin
+						reg_sh <= 5'd31;
+						cpu_state <= cpu_state_shift;
+					end
 					default: begin
 						if (TWO_CYCLE_ALU || (TWO_CYCLE_COMPARE && is_beq_bne_blt_bge_bltu_bgeu)) begin
 							alu_wait_2 <= TWO_CYCLE_ALU && (TWO_CYCLE_COMPARE && is_beq_bne_blt_bge_bltu_bgeu);
@@ -2041,22 +2093,20 @@ module picorv32 #(
 						cpu_state <= cpu_state_exec;
 					end
 				endcase
+				end   // close the read-latency-wait else
 			end
 
 			cpu_state_exec: begin
-				// SHRIKE PATCH (P13): for branches, capture shared_add_sum
-				// (the branch target). For everything else (ALU r-r, AUIPC,
-				// JALR, SLT/SLTU), capture alu_out -- which equals
-				// shared_add_sum for arith ops and equals the XOR/OR/AND/etc.
-				// result for logical ops. This unifies what alu_out_q used to
-				// hold separately, so latched_stalu and alu_out_q are no
-				// longer needed.
-				reg_out <= is_beq_bne_blt_bge_bltu_bgeu ? shared_add_sum : alu_out;
+				// SHRIKE PATCH (P9): exec no longer writes the branch target -- it is
+				// computed a cycle earlier in ld_rs2, so exec needs no address adder. For
+				// non-branch ops the exec reg_out write was always dead (writeback uses
+				// alu_out_q), and taken branches read the target ld_rs2 latched into reg_out.
 				if ((TWO_CYCLE_ALU || TWO_CYCLE_COMPARE) && (alu_wait || alu_wait_2)) begin
 					mem_do_rinst <= mem_do_prefetch && !alu_wait_2;
 					alu_wait <= alu_wait_2;
 				end else
 				if (is_beq_bne_blt_bge_bltu_bgeu) begin
+					reg_out <= reg_out;   // P9: hold the branch target latched in ld_rs2
 					latched_rd <= 0;
 					latched_store <= TWO_CYCLE_COMPARE ? alu_out_0_q : alu_out_0;
 					latched_branch <= TWO_CYCLE_COMPARE ? alu_out_0_q : alu_out_0;
@@ -2067,19 +2117,29 @@ module picorv32 #(
 						set_mem_do_rinst = 1;
 					end
 				end else begin
-					// SHRIKE PATCH (P15a): JAL now routes through exec too
-					// (was fetch-only). Include instr_jal in latched_branch
-					// so that fetch's latched_branch case fires for JAL and
-					// uses reg_out (= JAL target via P13) as the next PC.
-					latched_branch <= instr_jalr || instr_jal;
+					latched_branch <= instr_jalr;
 					latched_store <= 1;
-					// SHRIKE PATCH (P13): latched_stalu <= 1 removed.
+					latched_stalu <= 1;
 					cpu_state <= cpu_state_fetch;
 				end
 			end
 
 			cpu_state_shift: begin
 				latched_store <= 1;
+				if (is_logic_op) begin
+					// SHRIKE PATCH (P7): serial bitwise AND/OR/XOR, 1 bit/cycle, reusing the
+					// shift datapath -- each cycle a new result bit shifts into reg_op1[31]
+					// while reg_op2 shifts right to expose its next bit. 32 iterations
+					// (reg_sh 31..0; processes at reg_sh==0 too).
+					reg_op1 <= {logic_bit_serial, reg_op1[31:1]};
+					reg_op2 <= reg_op2 >> 1;
+					if (reg_sh == 0) begin
+						reg_out <= {logic_bit_serial, reg_op1[31:1]};
+						mem_do_rinst <= mem_do_prefetch;
+						cpu_state <= cpu_state_fetch;
+					end else
+						reg_sh <= reg_sh - 1;
+				end else
 				if (reg_sh == 0) begin
 					reg_out <= reg_op1;
 					mem_do_rinst <= mem_do_prefetch;
@@ -2093,6 +2153,7 @@ module picorv32 #(
 					endcase
 					reg_sh <= reg_sh - 4;
 				end else begin
+					// shift one bit: sll / srl / sra
 					(* parallel_case, full_case *)
 					case (1'b1)
 						instr_slli || instr_sll: reg_op1 <= reg_op1 << 1;
@@ -2118,7 +2179,7 @@ module picorv32 #(
 							trace_valid <= 1;
 							trace_data <= (irq_active ? TRACE_IRQ : 0) | TRACE_ADDR | ((reg_op1 + decoded_imm) & 32'hffffffff);
 						end
-						reg_op1 <= shared_add_sum;  // P3: cpu_state_ldmem/stmem -> reg_op1 + decoded_imm
+						reg_op1 <= addr_add_sum;  // P9: load/store address from the shared adder
 						set_mem_do_wdata = 1;
 					end
 					if (!mem_do_prefetch && mem_done) begin
@@ -2146,7 +2207,7 @@ module picorv32 #(
 							trace_valid <= 1;
 							trace_data <= (irq_active ? TRACE_IRQ : 0) | TRACE_ADDR | ((reg_op1 + decoded_imm) & 32'hffffffff);
 						end
-						reg_op1 <= shared_add_sum;  // P3: cpu_state_ldmem/stmem -> reg_op1 + decoded_imm
+						reg_op1 <= addr_add_sum;  // P9: load/store address from the shared adder
 						set_mem_do_rdata = 1;
 					end
 					if (!mem_do_prefetch && mem_done) begin
@@ -2194,6 +2255,9 @@ module picorv32 #(
 			end else
 				cpu_state <= cpu_state_trap;
 		end
+		// CORRECTNESS FIX (CF2): ECALL/EBREAK -> trap transition. With CATCH_ILLINSN=0
+		// this is the only path into cpu_state_trap, so ECALL/EBREAK halt the core
+		// (trap held 1).
 		if (!CATCH_ILLINSN && decoder_trigger_q && !decoder_pseudo_trigger_q && instr_ecall_ebreak) begin
 			cpu_state <= cpu_state_trap;
 		end
