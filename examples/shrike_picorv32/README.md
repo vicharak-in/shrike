@@ -12,21 +12,27 @@ This example runs Claire Wolf's [PicoRV32](https://github.com/YosysHQ/picorv32)
 **RV32I** soft CPU on the SLG47910 ForgeFPGA of a Shrike-lite board, and makes it
 **runtime-programmable**: the host MCU streams an RV32I program into the FPGA
 over SPI and starts the CPU — **no re-synthesis, no new bitstream**. Flash the
-bitstream once, then load and run as many programs as you like.
+bitstream once, then load and run any number of programs.
 
-The point of the example is twofold: that a *general-purpose, full 32-register
-RV32I CPU* fits inside a 1K-LUT-class ForgeFPGA at all, and that its program
-memory lives in on-die BRAM you can rewrite at runtime over SPI.
+The example demonstrates two results: that a *general-purpose, full 32-register
+RV32I CPU* fits inside a 1K-LUT-class ForgeFPGA, and that its program memory
+lives in on-die BRAM that can be rewritten at runtime over SPI.
 
-The bundled program is an **instruction-variety self-test**. A single
-accumulator (`x10`) is threaded through 27 distinct RV32I opcodes; the final
-value is written to a memory-mapped GPIO latch driving two FPGA pins hardwired
-to RP2040 GPIO14/15. The MCU reads those two bits and prints PASS/FAIL over USB.
+The firmware ships an **RV32I conformance suite**: several themed, self-checking
+≤32-word programs (`TESTS` in `shrike_picorv32.py`) that *together cover the
+complete RV32I base ISA — all 37 instructions*. Each program writes its verdict
+to a memory-mapped GPIO latch driving two FPGA pins hardwired to RP2040
+GPIO14/15; the MCU reads those two bits and prints PASS/FAIL over USB. You pick
+which program runs by uncommenting one `ACTIVE = ...` line.
 
-**A correct RV32I core leaves the result at exactly 3** (both bits high). Any
-other value means an instruction misbehaved.
+**A passing program latches exactly 3** (both bits high). `1` means it ran but a
+tested instruction computed the wrong value; `0` means the CPU never reached its
+store (trap / illegal / hang — the latch clears on every reload). Each program
+was validated so that injecting a fault into any instruction it tests makes it
+stop returning 3; a passing result therefore confirms those instructions are
+correct.
 
-Three things make this fit *and* stay programmable:
+Three design choices make the core fit and stay programmable:
 
 1. **Register file in BRAM.** All 32 registers live in **4** BRAM slices
    (`picorv32_regs_bram.v`) instead of ~1024 fabric flip-flops, 5-bit addressed.
@@ -44,8 +50,8 @@ Three things make this fit *and* stay programmable:
 ```
 Flashing PicoRV32 bitstream to FPGA...
 [shrike_flash] FPGA programming done.
-Loading 32-word program over SPI...
-PicoRV32 result = 3 -> PASS (RV32I instruction-variety self-test)
+regalu: testing add sub sll srl sra and or xor slt sltu
+result = 3 -> PASS  (verified: add sub sll srl sra and or xor slt sltu)
 ```
 
 ---
@@ -124,10 +130,69 @@ Each byte is sent as its own chip-select frame.
 2. Copy `bitstream/shrike_picorv32.bin` to the board filesystem (e.g. via the
    Thonny file panel).
 3. Run `firmware/micropython/shrike_picorv32.py`.
-4. Observe `... result = 3 -> PASS` over USB serial.
+4. Observe `result = 3 -> PASS` over USB serial.
 
-To run a different program, edit the `PROGRAM` list in the firmware and re-run —
-the same bitstream executes whatever you load.
+To run a different part of the suite, uncomment a different `ACTIVE = ...` line
+near the top of the firmware and re-run — the same bitstream executes whatever
+you load. To run your own program, add it to `TESTS` (see below).
+
+---
+
+## Running & Editing Programs
+
+### File locations
+
+| File | Location | Purpose |
+|---|---|---|
+| `shrike_picorv32.bin` | board filesystem | The bitstream. `shrike.flash()` opens it by filename on the board, so it must be copied to the board once. It does not change when programs are edited. |
+| `shrike_picorv32.py` | your computer | The programs and driver. Edit this file here; it is the source of truth. |
+
+At run time the CPU fetches instructions from on-die BRAM, streamed in over SPI.
+The host computer only flashes the bitstream and loads the selected program.
+
+### Which copy of `shrike_picorv32.py` runs
+
+| Command | Copy executed |
+|---|---|
+| `mpremote ... run shrike_picorv32.py` | The file on your computer. mpremote streams it to the board's RAM and runs it; the board's stored copy is not used. |
+| `mpremote ... exec "import shrike_picorv32"`, or running the board's copy in Thonny, or saving it as `main.py` | The copy stored on the board. |
+
+### Development workflow
+
+Copy the bitstream once:
+
+```bash
+uvx mpremote connect <PORT> fs cp bitstream/shrike_picorv32.bin :shrike_picorv32.bin
+```
+
+Then edit `firmware/micropython/shrike_picorv32.py` on your computer and run it:
+
+```bash
+uvx mpremote connect <PORT> run firmware/micropython/shrike_picorv32.py
+```
+
+Because `run` executes the local file, no copy step is needed when editing
+programs. To change what runs, edit the file and re-run:
+
+- to switch tests, uncomment a different `ACTIVE = ...` line;
+- to run your own program, add an entry to `TESTS` and set `ACTIVE` to it (see
+  *How to Change the Computation*).
+
+`<PORT>` is `/dev/cu.usbmodem*` on macOS/Linux or `COMx` on Windows;
+`uvx mpremote connect list` reports it. The name may change between connections.
+
+### Standalone operation
+
+To run without a host attached, copy the file to the board as `main.py`;
+MicroPython executes `main.py` at boot:
+
+```bash
+uvx mpremote connect <PORT> fs cp firmware/micropython/shrike_picorv32.py :main.py
+```
+
+The board's stored copy is then what runs, so re-copy it after each edit. The
+bitstream is volatile and must be re-flashed after every power cycle; `main.py`
+does this on boot via `flash_bitstream()`.
 
 ---
 
@@ -178,56 +243,67 @@ Click **Synthesize** then **Generate Bitstream**. Copy the produced
 
 ---
 
-## The Bundled Self-Test Program
+## The RV32I Conformance Suite
 
-The `PROGRAM` in the firmware runs 27 distinct RV32I opcodes in 32 words:
+`firmware/micropython/shrike_picorv32.py` holds several themed, self-checking
+≤32-word programs in a `TESTS` dictionary. **Together they cover the complete
+RV32I base ISA — all 37 instructions:**
 
-```
-addi add sub  and or xor  andi ori xori  sll srl sra  slli srli srai
-slt sltu slti  lui  beq bne blt bge bltu bgeu  jal  sw
-```
+| Program (`ACTIVE`) | Instructions tested |
+|---|---|
+| `regalu`   | add sub sll srl sra and or xor slt sltu |
+| `immalu`   | addi slli srli srai andi ori xori slti sltiu lui auipc |
+| `branch`   | beq bne blt bge bltu bgeu (each checked **both** taken and not-taken) |
+| `jumps`    | jal jalr (control transfer **and** link register) |
+| `loads`    | lw lh lhu lb lbu (with sign/zero-extension) |
+| `store_sw` / `store_sh` / `store_sb` | sw / sh / sb |
 
-It first threads `x10` through the arithmetic / logic / shift / set-less-than
-ops (in both register and immediate forms), then exercises **every branch type
-as a "must-not-take" gate**: if any branch wrongly fires, control jumps to the
-halt loop and *skips* the result store, leaving the GPIO result at 0 (fail).
-The final `jal` must jump over a poison instruction. If everything executed
-correctly, `x10 == 3`, it is stored to `0x40000000`, and both result bits read
-high.
+Pick one by uncommenting a single `ACTIVE = ...` line and running the file. The
+arithmetic programs **sum every operation's result and compare the 32-bit total**
+to a precomputed checksum, so a wrong answer in any one instruction shifts the
+sum and fails (no masking). The branch/jump programs use **poison instructions**:
+a missed or wrong transfer lands on a fail marker rather than passing silently.
 
-This is what makes the example a discriminating test rather than a demo: a core
-with the read-latency, branch, or register bugs that a naive port exhibits will
-*not* land on 3.
+Each program was machine-validated so that injecting a fault into any instruction
+it tests makes it stop returning 3, so a passing result confirms those
+instructions are implemented correctly.
+
+> **Why these encodings:** the SoC has no general data RAM (see *System
+> Architecture*). Stores are observable only through the GPIO result latch, so
+> each store width is tested as the sole store of a known value; loads read back
+> known words planted in the instruction RAM. The result encoding (3 = PASS,
+> 1 = FAIL, 0 = DEAD) fits the 2-bit latch.
 
 ---
 
 ## How to Change the Computation
 
-Edit the `PROGRAM` list in `firmware/micropython/shrike_picorv32.py` — a list of
-32-bit RV32I instruction words (up to 32) — and re-run the script. **No
-re-synthesis or new bitstream is needed.** For a trivial example that drives
-result = 1:
+Add your own entry to the `TESTS` dictionary in
+`firmware/micropython/shrike_picorv32.py` (a name → `(description, [words])`
+pair), point `ACTIVE` at it, and re-run. **No re-synthesis or new bitstream is
+needed.** A trivial program that drives result = 1:
 
 ```python
-PROGRAM = [
+"demo": ("addi sw", [
     0x00100513,   # addi x10, x0, 1   -> x10 = 1
     0x400004B7,   # lui  x9, 0x40000  (GPIO base)
-    0x00A4A023,   # sw   x10, 0(x9)   -> latch bit0 = 1
+    0x00A4A023,   # sw   x10, 0(x9)   -> latch bits = 1
     0x0000006F,   # jal  x0, 0        (halt)
-]
+]),
 ```
 
-The easiest workflow is to write RV32I assembly, assemble it with a `riscv*-elf`
+For larger programs, write RV32I assembly, assemble it with a `riscv*-elf`
 toolchain (`-march=rv32i -mabi=ilp32`), and paste the resulting word encodings
-into `PROGRAM`. The firmware pads the rest of the 32-word memory with `NOP`.
+in. The firmware pads the rest of the 32-word memory with `NOP`.
 
-### Program-size limit (important)
+### Program size limit
 
 The program counter is narrowed to **7 bits** (`localparam PC_W = 7` in
 `picorv32.v`) — an area optimisation that caps the program at **128 bytes = 32
 instruction words**, exactly the depth of the BRAM instruction RAM as wired.
-Programs longer than 32 words will wrap; keep yours within the budget. (Widening
-means bumping `PC_W` and widening the shared adder — a fabric/area trade-off.)
+Programs longer than 32 words wrap and must be kept within this limit. Raising it
+requires increasing `PC_W` and widening the shared adder, a fabric-area
+trade-off.
 
 ### Result output width
 
