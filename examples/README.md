@@ -28,7 +28,7 @@
 | 22 | Stack Processor | `stack_processor` | Processors & CPUs | 🔴 Advanced | Custom ISA, stack-based execution, SPI host |
 | 23 | Vector-4 CPU | `vector4_cpu` | Processors & CPUs | 🔴 Advanced | Full 4-bit SAP CPU: ALU, PC, registers, decode |
 | 24 | Vector-8 CPU | `vector8_cpu` | Processors & CPUs | 🔴 Advanced | Full 8-bit SAP CPU: wider datapath, more opcodes |
-| 25 | PicoRV32 RISC-V | `shrike_picorv32` | Processors & CPUs | 🔴 Advanced | Full RV32I soft CPU: BRAM register file, carry-split datapath, fits the 1K-LUT fabric |
+| 25 | PicoRV32 RISC-V | `shrike_picorv32` | Processors & CPUs | 🔴 Advanced | Full RV32I soft CPU, runtime-programmable over SPI; fits the 1K-LUT fabric |
 
 ---
 

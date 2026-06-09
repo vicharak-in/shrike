@@ -55,8 +55,9 @@
   `define SYNTH_KEEP (* keep = "true" *)
 `endif
 
-// SHRIKE PATCH (P2): register file moved to on-die BRAM -- frees ~1024 FFs and the
-// 32:1 read mux. See picorv32_regs_bram.v.
+// SHRIKE PATCH (P2): register file moved to on-die BRAM (4 slices, BRAM0..3) --
+// frees ~1024 FFs and the 32:1 read mux, and leaves BRAM4..7 free for the
+// SPI-loaded instruction RAM (picorv32_imem_bram.v). See picorv32_regs_bram.v.
 `define PICORV32_REGS picorv32_regs_bram
 
 // uncomment this for register file in extra module
@@ -71,7 +72,8 @@
 // are numbered P1..P13; logical-correctness fixes are tagged CF1/CF2.
 // Grep "SHRIKE PATCH" or "CORRECTNESS FIX" to list them.
 //   P1  carry-split 32-bit adder -- splits the add to fit the 10-CLB carry chain
-//   P2  register file moved to on-die BRAM -- frees ~1024 FFs and the 32:1 read mux
+//   P2  register file moved to on-die BRAM (4 slices) -- frees ~1024 FFs + the
+//       32:1 read mux, and frees BRAM4..7 for the SPI-loaded instruction RAM
 //   P3  trap state exposed as a halt wire (trap = cpu_state[7]) -- drops a flop
 //   P4  7-bit program counter -- upper 25 PC bits are provably zero, so narrowed
 //   P5  ram_style="registers" on the fallback in-core regfile -- avoids RAMSRL
@@ -193,9 +195,10 @@ module picorv32 #(
 	output reg        trace_valid,
 	output reg [35:0] trace_data,
 
-	// SHRIKE PATCH (P2): BRAM register-file pass-through ports -- threaded up to
-	// shrike_picorv32_top.v where they are exposed as top-level pins for the IO
-	// planner to auto-route to on-die BRAM.
+	// SHRIKE PATCH (P2): BRAM register-file pass-through ports (BRAM0..3 only --
+	// the 4-slice regfile). Threaded up to shrike_picorv32_top.v as top-level
+	// pins for the IO planner to auto-route to on-die BRAM. BRAM4..7 are freed
+	// for the SPI-loaded instruction RAM and wired at the top level instead.
 	output wire [1:0] BRAM0_RATIO,
 	output wire [7:0] BRAM0_DATA_IN, output wire BRAM0_WEN, output wire BRAM0_WCLKEN,
 	output wire [8:0] BRAM0_WRITE_ADDR,
@@ -218,31 +221,7 @@ module picorv32 #(
 	output wire [7:0] BRAM3_DATA_IN, output wire BRAM3_WEN, output wire BRAM3_WCLKEN,
 	output wire [8:0] BRAM3_WRITE_ADDR,
 	input  wire [7:0] BRAM3_DATA_OUT, output wire BRAM3_REN, output wire BRAM3_RCLKEN,
-	output wire [8:0] BRAM3_READ_ADDR,
-
-	output wire [1:0] BRAM4_RATIO,
-	output wire [7:0] BRAM4_DATA_IN, output wire BRAM4_WEN, output wire BRAM4_WCLKEN,
-	output wire [8:0] BRAM4_WRITE_ADDR,
-	input  wire [7:0] BRAM4_DATA_OUT, output wire BRAM4_REN, output wire BRAM4_RCLKEN,
-	output wire [8:0] BRAM4_READ_ADDR,
-
-	output wire [1:0] BRAM5_RATIO,
-	output wire [7:0] BRAM5_DATA_IN, output wire BRAM5_WEN, output wire BRAM5_WCLKEN,
-	output wire [8:0] BRAM5_WRITE_ADDR,
-	input  wire [7:0] BRAM5_DATA_OUT, output wire BRAM5_REN, output wire BRAM5_RCLKEN,
-	output wire [8:0] BRAM5_READ_ADDR,
-
-	output wire [1:0] BRAM6_RATIO,
-	output wire [7:0] BRAM6_DATA_IN, output wire BRAM6_WEN, output wire BRAM6_WCLKEN,
-	output wire [8:0] BRAM6_WRITE_ADDR,
-	input  wire [7:0] BRAM6_DATA_OUT, output wire BRAM6_REN, output wire BRAM6_RCLKEN,
-	output wire [8:0] BRAM6_READ_ADDR,
-
-	output wire [1:0] BRAM7_RATIO,
-	output wire [7:0] BRAM7_DATA_IN, output wire BRAM7_WEN, output wire BRAM7_WCLKEN,
-	output wire [8:0] BRAM7_WRITE_ADDR,
-	input  wire [7:0] BRAM7_DATA_OUT, output wire BRAM7_REN, output wire BRAM7_RCLKEN,
-	output wire [8:0] BRAM7_READ_ADDR
+	output wire [8:0] BRAM3_READ_ADDR
 );
 	// SHRIKE PATCH (P3): trap is a wire tap of the one-hot trap state (cpu_state[7]) -- no dedicated flop, no trap<=0/1 logic.
 	assign trap = cpu_state[7];
@@ -1591,9 +1570,9 @@ module picorv32 #(
 		.wdata(cpuregs_wrdata),
 		.rdata1(cpuregs_rdata1),
 		.rdata2(cpuregs_rdata2),
-		// SHRIKE PATCH (P2): pass through the 8-slice BRAM port group; the external
-		// picorv32_regs_bram module owns the I/O attributes so the IO planner can
-		// auto-route them to on-die BRAM.
+		// SHRIKE PATCH (P2): pass through the 4-slice BRAM port group (BRAM0..3).
+		// The top-level shrike_picorv32_top.v owns the (* iopad_external_pin *)
+		// attributes so the IO planner can auto-route them to on-die BRAM.
 		.BRAM0_RATIO(BRAM0_RATIO), .BRAM0_DATA_IN(BRAM0_DATA_IN),
 		.BRAM0_WEN(BRAM0_WEN), .BRAM0_WCLKEN(BRAM0_WCLKEN),
 		.BRAM0_WRITE_ADDR(BRAM0_WRITE_ADDR), .BRAM0_DATA_OUT(BRAM0_DATA_OUT),
@@ -1613,27 +1592,7 @@ module picorv32 #(
 		.BRAM3_WEN(BRAM3_WEN), .BRAM3_WCLKEN(BRAM3_WCLKEN),
 		.BRAM3_WRITE_ADDR(BRAM3_WRITE_ADDR), .BRAM3_DATA_OUT(BRAM3_DATA_OUT),
 		.BRAM3_REN(BRAM3_REN), .BRAM3_RCLKEN(BRAM3_RCLKEN),
-		.BRAM3_READ_ADDR(BRAM3_READ_ADDR),
-		.BRAM4_RATIO(BRAM4_RATIO), .BRAM4_DATA_IN(BRAM4_DATA_IN),
-		.BRAM4_WEN(BRAM4_WEN), .BRAM4_WCLKEN(BRAM4_WCLKEN),
-		.BRAM4_WRITE_ADDR(BRAM4_WRITE_ADDR), .BRAM4_DATA_OUT(BRAM4_DATA_OUT),
-		.BRAM4_REN(BRAM4_REN), .BRAM4_RCLKEN(BRAM4_RCLKEN),
-		.BRAM4_READ_ADDR(BRAM4_READ_ADDR),
-		.BRAM5_RATIO(BRAM5_RATIO), .BRAM5_DATA_IN(BRAM5_DATA_IN),
-		.BRAM5_WEN(BRAM5_WEN), .BRAM5_WCLKEN(BRAM5_WCLKEN),
-		.BRAM5_WRITE_ADDR(BRAM5_WRITE_ADDR), .BRAM5_DATA_OUT(BRAM5_DATA_OUT),
-		.BRAM5_REN(BRAM5_REN), .BRAM5_RCLKEN(BRAM5_RCLKEN),
-		.BRAM5_READ_ADDR(BRAM5_READ_ADDR),
-		.BRAM6_RATIO(BRAM6_RATIO), .BRAM6_DATA_IN(BRAM6_DATA_IN),
-		.BRAM6_WEN(BRAM6_WEN), .BRAM6_WCLKEN(BRAM6_WCLKEN),
-		.BRAM6_WRITE_ADDR(BRAM6_WRITE_ADDR), .BRAM6_DATA_OUT(BRAM6_DATA_OUT),
-		.BRAM6_REN(BRAM6_REN), .BRAM6_RCLKEN(BRAM6_RCLKEN),
-		.BRAM6_READ_ADDR(BRAM6_READ_ADDR),
-		.BRAM7_RATIO(BRAM7_RATIO), .BRAM7_DATA_IN(BRAM7_DATA_IN),
-		.BRAM7_WEN(BRAM7_WEN), .BRAM7_WCLKEN(BRAM7_WCLKEN),
-		.BRAM7_WRITE_ADDR(BRAM7_WRITE_ADDR), .BRAM7_DATA_OUT(BRAM7_DATA_OUT),
-		.BRAM7_REN(BRAM7_REN), .BRAM7_RCLKEN(BRAM7_RCLKEN),
-		.BRAM7_READ_ADDR(BRAM7_READ_ADDR)
+		.BRAM3_READ_ADDR(BRAM3_READ_ADDR)
 	);
 
 	always @* begin
