@@ -1,6 +1,6 @@
 # DSPI PIO Echo
 
-**Difficulty:** Intermediate  
+**Difficulty:**  
 **Uses MCU:** Yes  
 **External Hardware:** None  
 
