@@ -55,9 +55,9 @@ Each inference execution cycle reads the multi-dimensional vector array row corr
 
 To ensure varied text output structures, the firmware processes two additional optimization behaviors:
 
-            Interactive Randomness Modes: Rather than locking strictly into a single highest scoring prediction, the loop identifies the top 3 closest math matches. Depending on the runtime mode configuration, the                     processor filters its selection distributions to balance accurate math alongside creative variance.
+1. Interactive Randomness Modes: Rather than locking strictly into a single highest scoring prediction, the loop identifies the top 3 closest math matches. Depending on the runtime mode configuration, the processor filters its selection distributions to balance accurate math alongside creative variance.
 
-            Context Window Tracking Buffer: The script maintains a rolling history of the 5 last generated tokens. Active tokens stored within this memory track receive a specific dot-product penalty multiplier,                       preventing the system from falling into repetitive loops or phrasing patterns.
+2. Context Window Tracking Buffer: The script maintains a rolling history of the 5 last generated tokens. Active tokens stored within this memory track receive a specific dot-product penalty multiplier, preventing the system from falling into repetitive loops or phrasing patterns.
 
 ## Expected Output
 
