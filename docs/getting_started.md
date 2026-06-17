@@ -22,10 +22,7 @@ Let's follow the steps and get Shrike up and running!
 
 If you already know Arduino and love working with the Arduino IDE, you can continue using it with Shrike. You do not have to switch to MicroPython unless you want to.
 
-We will follow these steps to setup our arduino IDE for shrike. If you don't have arduino IDE already ,you can download it from [here](https://www.arduino.cc/en/software/) or if you are using linux(ubuntu)then just run 
-```
-sudo apt install arduino
-```
+We will follow these steps to setup our arduino IDE for shrike. If you don't have Arduino IDE already, you can download it from [here](https://www.arduino.cc/en/software/). If you are on Linux (Ubuntu), install the AppImage. You may need to install the `libfuse2` library. For Ubuntu 26.04, run this command `sudo apt install libfuse2t64`, before attempting to launch the AppImage.
 
 ### Step 1. Adding the board support for Shrike
 
@@ -110,12 +107,14 @@ To make this possible, we developed a simple mechanism: we store the FPGA bit-st
 
 The LittleFS library in Arduino allows you to store, load, and update the bitstream in the flash memory through the microcontroller.
 
-We need to add a Little-FS utility to bind a bin file (FPGA bitstream with code for Shrike). We can find the utility [here](https://github.com/earlephilhower/arduino-littlefs-upload/releases) download the latest release ZIP. 
+We need to add a Little-FS utility to bind a bin file (FPGA bitstream with code for Shrike). We can find the utility [here](https://github.com/earlephilhower/arduino-littlefs-upload/releases) download the latest release. 
 
 
 Now for setting up these tools for Arduino IDE version 2.x.x please follow [this](https://randomnerdtutorials.com/arduino-ide-2-install-esp32-littlefs/) guide and after proper setup please continue the below steps. 
 
-This works for both the RP2040 and ESP32-S3 based boards. ( even tho name says esp32).
+If you are on Linux (Ubuntu), Move the downloaded `.vsix` file to `~/.arduinoIDE/plugins/`.
+
+This works for both the RP2040 and ESP32-S3 based boards. (Even though the name says esp32).
 
 You will need to restart the Arduino IDE and you should see the Little FS tool like this in your Tools menu.
 
@@ -127,7 +126,7 @@ For more details on the LittleFS tool checkout this [repository](https://github.
 
 ### Step 3. Installing the Shrike Library 
 
-The Arduino library developed by Vicharak takes care of configuring the FPGA for you. You can install it directly from the Arduino IDE's Library Manager, just search for **"Shrike"** and install the **Shrike** library.
+The Arduino library developed by Vicharak takes care of configuring the FPGA for you. You can install it directly from the Arduino IDE's Library Manager (Top Menu Bar -> Tools -> Manage Libraries...), just search for **"Shrike"** and install the **Shrike** library.
 
 
 <!-- TODO: Update this image --> 
@@ -167,7 +166,7 @@ In the tools section select the Board as VICHARAK Shrike Lite / VICHARAK Shrike 
 ::::{tab-item} Shrike-fi
 :sync: Shrike-fi
 
-In the tools section select the Board as Generic ESP32-S3 based on your board version and flash size as 8MB Sketch:4MB and FS:4MB . 
+In the tools section, select the Board as "ESP32S3 Dev Module" based on your board version and flash size as 8MB Sketch:4MB and FS:4MB . 
 
 ::::
 
