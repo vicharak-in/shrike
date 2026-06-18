@@ -44,7 +44,7 @@ FPGA's `m_miso` input must be level-shifted from 5 V down to 3.3 V.
 | 16            | `led`       | Output    | LED (shows last byte)    |
 
 ### FPGA Connections (link to Arduino — FPGA is master)
-
+Here, GPIO8 is a PMOD Connector Pin.
 | FPGA GPIO Pin | Signal Name | Direction | Description                  |
 | ------------- | ----------- | --------- | ---------------------------- |
 | 0             | `m_sck`     | Output    | SPI clock to slave           |
