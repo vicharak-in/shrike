@@ -37,7 +37,7 @@ Wire the WS2812 matrix data-in to the `DO` pin. Each slide switch connects betwe
 ## Quick Start (Pre-Built Bitstream)
 
 1. Connect Shrike-Lite via USB
-2. Upload `bitstream/chaos.bin` using ShrikeFlash
+2. Upload bitstream.
 3. Wire up the 4×4 WS2812 matrix and four slide switches
 4. Power on — you should see a red chaotic pattern scrolling downward (Rule 30 is the default)
 5. Flip any slide switch to change the rule and colour in real time
