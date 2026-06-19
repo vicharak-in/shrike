@@ -1,4 +1,4 @@
-(* top *) module chaos (
+(* top *) module Cellular_automata (
     (* iopad_external_pin, clkbuf_inhibit *) input  clk,
     (* iopad_external_pin *)                 input  reset,
 

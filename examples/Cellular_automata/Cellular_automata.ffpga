@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GPDProject version="41" oldestCompatibleVersion="32" GPDVersion="6.54.002" lastChange="17 Jun 2026 10:05:41" projectChecksumState="1" projectChecksum="109fa471">
+<GPDProject version="41" oldestCompatibleVersion="32" GPDVersion="6.54.002" lastChange="19 Jun 2026 18:52:15" projectChecksumState="1" projectChecksum="0f9e0dd7">
     <Metadata>
         <LegalNotice>This Design was generated using Renesas' proprietary Go Configure Software Hub and is provided for use solely in connection with Renesas GreenPAK integrated circuits. Any unauthorized use, reproduction, distribution, or manufacture of this Design is prohibited. This Design is provided 'AS IS' without warranties of any kind.</LegalNotice>
     </Metadata>
@@ -647,6 +647,8 @@
         </settings>
         <openedTabs>
             <openedTab>I/O Planner</openedTab>
+            <openedTab>ws2812.v</openedTab>
+            <openedTab>Cellular_automata.v</openedTab>
         </openedTabs>
         <pipelineStagesStates>
             <pipelineStageState>
@@ -660,8 +662,8 @@
         </pipelineStagesStates>
         <modules>
             <scr>
-                <module filename="chaos.v"/>
                 <module filename="ws2812.v"/>
+                <module filename="Cellular_automata.v"/>
             </scr>
             <lib/>
             <sim/>
