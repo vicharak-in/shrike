@@ -154,6 +154,8 @@ RESULT: PASS  (loopback decode matches transmitted frame)
 | ![Full frame](images/nec_full_overview.png) | Whole frame — leader, 32 bits, stop, gap |
 | ![Decode success](images/nec_decode_success.png) | Decode success — `addr=0x12`, `cmd=0x34` |
 
+## Schematic Diagram 
+![Schematic](images/Schematic_Diagram.png)
 ## File Structure
 
 ```
