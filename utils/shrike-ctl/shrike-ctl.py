@@ -18,6 +18,8 @@ else:
     FILE_PATH = input("Enter firmware file path : ").strip()
     file_paths = [FILE_PATH]
 
+ser = serial.Serial(PORT, BAUDRATE, timeout=1, rtscts=False, dsrdtr=False)
+
 for FILE_PATH in file_paths:
     if not os.path.exists(FILE_PATH):
         print(f" Error: File not found: {FILE_PATH}")
@@ -28,23 +30,21 @@ for FILE_PATH in file_paths:
     if not os.path.isfile(FILE_PATH):
         print(f" Error: '{FILE_PATH}' is not a file")
         continue
-    
-file_size = os.path.getsize(FILE_PATH)
-print(f" Uploading: {os.path.basename(FILE_PATH)} ({file_size} bytes)")
 
-ser = serial.Serial(PORT, BAUDRATE, timeout=1, rtscts=False, dsrdtr=False)
-file_size = os.path.getsize(FILE_PATH)
-print(f"File size: {file_size} bytes")
-sent = 0
-with open(FILE_PATH, "rb") as file:
-    while sent < file_size:
-        data = file.read(CHUNK_SIZE)
-        if not data:
-              break
-        ser.write(data)
-        sent += len(data)
-        print(f"Sent {sent}/{file_size} bytes", end='\r')
-        time.sleep(0.01)  # 10ms delay
+    file_size = os.path.getsize(FILE_PATH)
+    print(f" Uploading: {os.path.basename(FILE_PATH)} ({file_size} bytes)")
 
-print(f"\nFile transfer complete. Total: {sent} bytes")
+    sent = 0
+    with open(FILE_PATH, "rb") as file:
+        while sent < file_size:
+            data = file.read(CHUNK_SIZE)
+            if not data:
+                break
+            ser.write(data)
+            sent += len(data)
+            print(f"Sent {sent}/{file_size} bytes", end='\r')
+            time.sleep(0.01)  # 10ms delay
+
+    print(f"\nFile transfer complete. Total: {sent} bytes")
+
 ser.close()
