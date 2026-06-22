@@ -294,12 +294,6 @@ Current implementation supports:
 
 ---
 
-## License
-
-MIT License
-
----
-
 ## Author
 
 Shishir Pusalkar
