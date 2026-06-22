@@ -21,7 +21,7 @@ from dspi_bus import DSPI
 # =============================================================================
 print("Flashing FPGA with SPONGENT-88 Mining Rig...")
 # Pushes the synthesized Verilog bitstream onto the FPGA fabric
-shrike.flash("FPGA_bitstream_MCU.bin")
+shrike.flash("crypto_mining.bin")
 
 # Initialize the modular DSPI communication bus
 fpga_bus = DSPI()
