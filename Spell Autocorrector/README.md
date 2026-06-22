@@ -288,12 +288,12 @@ To ensure stable operation:
 Current implementation supports:
 
 
-Edit Distance = 1 
-
+* Edit Distance = 1 
 This means only the words for example 'ahd','teh','wrod','siad' ..etc can be corrected.
-
-
 Words requiring multiple edits may not be corrected successfully.
+
+* One word at a time.
+This means it is build for one word at a time only.
 
 ---
 
