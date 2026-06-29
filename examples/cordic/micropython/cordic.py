@@ -7,7 +7,7 @@ import shrike
 from machine import Pin, SPI
 
 # FPGA bring-up
-shrike.flash("FPGA_bitstream_MCU.bin")
+shrike.flash("cordic.bin")
 reset_pin = Pin(14, Pin.OUT, value=1)
 reset_pin.value(0)
 time.sleep(0.1)
