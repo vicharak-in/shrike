@@ -1,6 +1,4 @@
 #cordic.py
-# Author: Yash Sharda
-# Interactive test runner for the CORDIC math coprocessor on Shrike Lite.
 # Valid angle range: 0 to 45 degrees.
 
 import math

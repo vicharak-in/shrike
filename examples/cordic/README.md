@@ -4,7 +4,7 @@
 **External Hardware:** None
 
 ## Overview
-A 4-mode fixed-point math coprocessor implemented on the shrike lite. The RP2040 sends a single 8-bit SPI command and reads back the result on the next transaction. Three modes use a CORDIC circular rotation engine for sine, cosine, and tangent. The fourth mode is a shift-and-add integer multiplier. All arithmetic runs in Q1.6 fixed-point, valid for angles from 0 to 45 degrees.
+A 4-mode fixed-point cordic implemented on the shrike lite. The RP2040 sends a single 8-bit SPI command and reads back the result on the next transaction. Three modes use a CORDIC circular rotation engine for sine, cosine, and tangent. The fourth mode is a shift-and-add integer multiplier. All arithmetic runs in Q1.6 fixed-point, valid for angles from 0 to 45 degrees.
 
 ## Compatibility
 | Board                | Firmware                | Status        |
