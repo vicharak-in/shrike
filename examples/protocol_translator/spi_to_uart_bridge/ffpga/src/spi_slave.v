@@ -16,16 +16,16 @@
 //------------------------------------------------------------
 
 module spi_slave(
-input wire clk,
-input wire spi_sck,
-input wire spi_cs,
-input wire spi_mosi,
-input wire [7:0] tx_data,
+	input wire clk,
+	input wire spi_sck,
+	input wire spi_cs,
+	input wire spi_mosi,
+	input wire [7:0] tx_data,
 
-output wire spi_miso,
-output reg [7:0] rx_data = 8'h00,
-output reg rx_done = 1'b0,
-output reg tx_request = 1'b0	
+	output wire spi_miso,
+	output reg [7:0] rx_data = 8'h00,
+	output reg rx_done = 1'b0,
+	output reg tx_request = 1'b0	
 );
 
 reg sck_ff1 = 0;
@@ -78,5 +78,5 @@ always @(posedge clk) begin
 			end
 		end
 	end
-	
+
 endmodule
