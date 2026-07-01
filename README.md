@@ -1,6 +1,6 @@
 # Shrike 
 
-![image](./asset/shirke-angle-01.jpg)
+![image](./asset/shrike_cover.svg)
 
 Shrike is a family of low cost affordable FPGA development board along with a host microcontroller. 
 Currently the family features these two members -: 
