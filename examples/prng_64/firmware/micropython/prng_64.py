@@ -18,9 +18,15 @@ spi_fpga = SPI(0, baudrate=5000000, polarity=0, phase=0, sck=Pin(2), mosi=Pin(3)
 
 print("\nFPGA is running and ready.")
 
-# The phrase just adds keystroke timing as extra entropy.
-# The FPGA mixes it into its state as you type.
+# The phrase adds keystroke timing as extra entropy.
 user_seed = input("\nType a phrase and press ENTER: ")
+
+fpga_ss.value(0)
+for char in user_seed:
+    # Any byte that is NOT 0xA1 drops directly into the FPGA's seed trapdoor
+    spi_fpga.write(char.encode('utf-8'))
+    time.sleep_us(10) 
+fpga_ss.value(1)
 
 
 def generate_password(length=16):
@@ -28,14 +34,14 @@ def generate_password(length=16):
     fpga_ss.value(0)
 
     for i in range(length):
-        spi_fpga.write(b'\xA1')          # ask the FPGA for a byte
+        spi_fpga.write(b'\xA1')          # Ask the FPGA for a byte
         raw_byte = spi_fpga.read(1)[0]
-        buf[i] = 33 + (raw_byte % 94)    # map to a printable ASCII char
+        buf[i] = 33 + (raw_byte % 94)    # Map to a printable ASCII char
 
     fpga_ss.value(1)
     return buf.decode()
 
 
-print("\nGenerating password...")
+print("Generating password...")
 time.sleep_ms(200)
 print(f"\nYour password:\n>>  {generate_password(16)}  <<\n")
