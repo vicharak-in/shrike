@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "pico/stdlib.h"
 #include "hardware/spi.h"
+#include "buffer_flush.h"
 
 // -----------------SPI Definaltions-----------------------------
 #define SPI_INSTANCE (spi0) 	// SPI0  
@@ -49,17 +50,14 @@ int main(){
     sleep_us(3);
 
     while (true) {
-    
-         int ch = getchar_timeout_us(1000);
-           if (ch >= 0 && ch <= 255){
-      	        tx_buf[tx_len++] = (uint8_t)ch;
 
-	         if (tx_len == BUF_SIZE){
-                      gpio_put(PIN_SS, 0);
-                      spi_write_blocking(SPI_INSTANCE, tx_buf, tx_len);
-                      gpio_put(PIN_SS, 1);
-                      tx_len = 0;
-                  }
-            }
-      }
-}    
+         int ch = getchar_timeout_us(1000);
+         size_t n = shrike_ctl_process_event(tx_buf, &tx_len, BUF_SIZE, ch);
+         if (n > 0) {
+              gpio_put(PIN_SS, 0);
+              spi_write_blocking(SPI_INSTANCE, tx_buf, n);
+              gpio_put(PIN_SS, 1);
+              tx_len = 0;
+         }
+    }
+}
