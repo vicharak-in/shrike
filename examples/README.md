@@ -42,3 +42,16 @@
 | 🔴 Advanced | 5 | `ask_modulator`, `stack_processor`, `vector4_cpu`, `vector8_cpu`, `shrike_picorv32` |
 
 ---
+
+---
+
+## Looking for the bigger projects?
+
+Application projects built on Shrike (Wi-Fi screen mirror, crypto mining,
+spell autocorrector, seven-segment clock, and more) now live in their own
+repo — moved with their **full commit history and contributor credit**:
+
+**➡️ https://github.com/vicharak-in/shrike_projects**
+
+This folder contains the curated *teaching examples*. Want a guided path
+through them? See the Shrike FPGA Course.
