@@ -69,6 +69,21 @@ However you can solder them yourself in the base version as well read more [here
  3. [FPGA_CPU_Interconnect](https://vicharak-in.github.io/shrike/shrike_pinouts.html#fpga-rp2040-communication-pin-outs)
 
 
+
+## Shrike Projects
+
+Want to see what people have built with Shrike , or show off your own build?
+
+Check out **[shrike_projects](https://github.com/vicharak-in/shrike_projects)**.
+
+The [`examples/`](examples/) folder here is focused on *teaching* , one
+concept per example. Built something cool with your Shrike? Add it to the
+projects repo , creative scope is unlimited.
+
+Not sure which repo your contribution belongs in? See the
+[classification criteria](EXAMPLE_OR_PROJECT.md).
+
+
 ## 📫 Join our communities at :
   
    [<img src="./asset/discord-icon.svg" width="10%"/>](https://discord.com/invite/EhQy97CQ9G)  &nbsp; [<img src="./asset/x_icon.png" width="10%"/>](https://x.com/Vicharak_In)  &nbsp; [<img src="./asset/vicharak_icon.png" width="10%"/>](https://discuss.vicharak.in/)  &nbsp; [<img src="https://img.icons8.com/color/48/000000/linkedin.png" width="10%"/>](https://www.linkedin.com/company/vicharak-in)  &nbsp; [<img src="./asset/reddit_icon.jpeg" width="10%"/>](https://www.reddit.com/r/Vicharak/)  &nbsp;

@@ -20,16 +20,14 @@
 | 14 | UART ALU | `uart_alu` | Communication Protocols | 🟡 Intermediate | UART + datapath, multi-module design |
 | 15 | PLL Oscillator | `pll_oscillator` | Signal & Timing | 🟡 Intermediate | PLL primitive instantiation, clock domain |
 | 16 | PWM 4-Channel | `pwm_4ch` | Signal & Timing | 🟡 Intermediate | Multi-channel counter, duty cycle control |
-| 17 | 7-Segment Display Clock | `seven_seg_clock` | Signal & Timing | 🟡 Intermediate | BCD conversion, multiplexed display drive |
-| 18 | Ultrasonic Sensor | `ultrasonic_sensor` | Sensors & Peripherals | 🟡 Intermediate | Pulse timing, echo measurement FSM |
-| 19 | WS2812 LED | `ws2812_led` | Sensors & Peripherals | 🟡 Intermediate | Precise bit-bang timing, serial protocol |
-| 20 | Quadrature Decoder | `quadrature_decoder` | Sensors & Peripherals | 🟡 Intermediate | Quadrature decoding, direction detection, signed position/speed tracking |
-| 21 | Protocol Translator | `protocol_translator` | Communication Protocols | 🟡 Intermediate | UART, SPI, and I2C protocol conversion through bridge logic |
-| 22 | ASK Modulator | `ask_modulator` | Signal & Timing | 🔴 Advanced | RF modulation concepts, carrier + data mixing |
-| 23 | Stack Processor | `stack_processor` | Processors & CPUs | 🔴 Advanced | Custom ISA, stack-based execution, SPI host |
-| 24 | Vector-4 CPU | `vector4_cpu` | Processors & CPUs | 🔴 Advanced | Full 4-bit SAP CPU: ALU, PC, registers, decode |
-| 25 | Vector-8 CPU | `vector8_cpu` | Processors & CPUs | 🔴 Advanced | Full 8-bit SAP CPU: wider datapath, more opcodes |
-| 26 | PicoRV32 RISC-V | `shrike_picorv32` | Processors & CPUs | 🔴 Advanced | Full RV32I soft CPU, runtime-programmable over SPI; fits the 1K-LUT fabric |
+| 17 | Ultrasonic Sensor | `ultrasonic_sensor` | Sensors & Peripherals | 🟡 Intermediate | Pulse timing, echo measurement FSM |
+| 18 | WS2812 LED | `ws2812_led` | Sensors & Peripherals | 🟡 Intermediate | Precise bit-bang timing, serial protocol |
+| 19 | Quadrature Decoder | `quadrature_decoder` | Sensors & Peripherals | 🟡 Intermediate | Quadrature decoding, direction detection, signed position/speed tracking |
+| 20 | Protocol Translator | `protocol_translator` | Communication Protocols | 🟡 Intermediate | UART, SPI, and I2C protocol conversion through bridge logic |
+| 21 | Stack Processor | `stack_processor` | Processors & CPUs | 🔴 Advanced | Custom ISA, stack-based execution, SPI host |
+| 22 | Vector-4 CPU | `vector4_cpu` | Processors & CPUs | 🔴 Advanced | Full 4-bit SAP CPU: ALU, PC, registers, decode |
+| 23 | Vector-8 CPU | `vector8_cpu` | Processors & CPUs | 🔴 Advanced | Full 8-bit SAP CPU: wider datapath, more opcodes |
+| 24 | PicoRV32 RISC-V | `shrike_picorv32` | Processors & CPUs | 🔴 Advanced | Full RV32I soft CPU, runtime-programmable over SPI; fits the 1K-LUT fabric |
 
 ---
 
@@ -38,8 +36,8 @@
 | Difficulty | Count | Examples |
 |------------|-------|---------|
 | 🟢 Beginner | 6 | `led_blink`, `breathing_led`, `button_debouncer`, `pmod_led_blink`, `logic_gates`, `counter_4bit` |
-| 🟡 Intermediate | 15 | `pmod_patterns`, `gpio_extender_8pin`, `gpio_extender_14pin`, `i2c_led`, `spi_loopback_led`, `uart_led`, `morse_blink`, `uart_alu`, `pll_oscillator`, `pwm_4ch`, `seven_seg_clock`, `ultrasonic_sensor`, `ws2812_led`, `quadrature_decoder`,`protocol_translator` |
-| 🔴 Advanced | 5 | `ask_modulator`, `stack_processor`, `vector4_cpu`, `vector8_cpu`, `shrike_picorv32` |
+| 🟡 Intermediate | 14 | `pmod_patterns`, `gpio_extender_8pin`, `gpio_extender_14pin`, `i2c_led`, `spi_loopback_led`, `uart_led`, `morse_blink`, `uart_alu`, `pll_oscillator`, `pwm_4ch`, `ultrasonic_sensor`, `ws2812_led`, `quadrature_decoder`,`protocol_translator` |
+| 🔴 Advanced | 4 |  `stack_processor`, `vector4_cpu`, `vector8_cpu`, `shrike_picorv32` |
 
 ---
 
