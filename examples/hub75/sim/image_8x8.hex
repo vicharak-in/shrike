@@ -1,0 +1,10 @@
+// 8x8 RGB444 test image for HUB75 sim. One 12-bit hex word per pixel.
+// Word = {R[3:0],G[3:0],B[3:0]}. Address = row*8 + col, row 0 = top.
+F00 F00 F00 F00 F00 F00 F00 F00   // row 0
+F00 0F0 000 000 000 000 00F F00   // row 1
+F00 000 0F0 880 F80 00F 000 F00   // row 2
+F00 000 000 0F0 00F 000 000 F00   // row 3
+F00 000 000 00F 0F0 000 000 F00   // row 4
+F00 000 00F 111 088 0F0 000 F00   // row 5
+F00 00F 000 000 000 000 0F0 F00   // row 6
+F00 F00 F00 F00 F00 F00 F00 F00   // row 7
