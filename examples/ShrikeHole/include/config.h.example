@@ -1,0 +1,78 @@
+#ifndef CONFIG_H
+#define CONFIG_H
+
+// ========================================
+// WiFi Configuration
+// ========================================
+// REQUIRED: Change these to match your network
+#define WIFI_SSID "YourWiFiSSID"
+#define WIFI_PASSWORD "YourWiFiPassword"
+
+// ========================================
+// DNS Server Configuration
+// ========================================
+// Port for DNS server (standard is 53)
+#define DNS_PORT 53
+
+// Upstream DNS server to forward non-blocked queries
+// Popular options:
+//   Google DNS: "8.8.8.8" or "8.8.4.4"
+//   Cloudflare: "1.1.1.1" or "1.0.0.1"
+//   Quad9: "9.9.9.9"
+//   OpenDNS: "208.67.222.222"
+#define UPSTREAM_DNS_IP "8.8.8.8"
+#define UPSTREAM_DNS_PORT 53
+
+// ========================================
+// Web Server Configuration
+// ========================================
+// Port for web interface (standard HTTP is 80)
+#define WEB_SERVER_PORT 80
+
+// Web interface password (future feature)
+#define WEB_PASSWORD "admin"
+
+// ========================================
+// DNS Cache Configuration
+// ========================================
+// Number of DNS responses to cache
+#define DNS_CACHE_SIZE 50
+
+// Time to live for cached responses (seconds)
+#define DNS_CACHE_TTL 300  // 5 minutes
+
+// DNS Forwarding Configuration
+#define DNS_FORWARD_TIMEOUT 2000  // Timeout for upstream DNS queries (milliseconds)
+#define DNS_FORWARD_POLL_INTERVAL 10  // Poll interval while waiting for response (milliseconds)
+
+// ========================================
+// Blocklist Configuration
+// ========================================
+// Maximum number of domains in blocklist
+// Note: Each entry uses ~20-30 bytes of RAM
+// Reduce this if experiencing memory issues
+#define MAX_BLOCKLIST_ENTRIES 1000
+
+// Path to blocklist file in LittleFS
+#define BLOCKLIST_FILE "/blocklist.txt"
+
+// ========================================
+// Statistics Configuration
+// ========================================
+// Hour to reset daily statistics (0-23)
+#define STATS_RESET_HOUR 0  // Midnight
+
+// ========================================
+// Device Configuration
+// ========================================
+// Hostname for the ESP32 device
+#define DEVICE_HOSTNAME "pihole-esp32"
+
+// ========================================
+// Debug Configuration
+// ========================================
+// Enable detailed serial output
+// Set to false for production to save memory
+#define DEBUG_ENABLED true
+
+#endif // CONFIG_H

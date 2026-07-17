@@ -1,0 +1,12 @@
+{
+	"folders": [
+		{
+			"path": "../../../../MinGW/mingw32/include"
+		},
+		{
+			"name": "pi-hole-esp32",
+			"path": ".."
+		}
+	],
+	"settings": {}
+}
