@@ -69,7 +69,7 @@
 
 // =============================================================================
 // SHRIKE PATCHES (all deltas from upstream PicoRV32). Resource/hardware patches
-// are numbered P1..P13; logical-correctness fixes are tagged CF1/CF2.
+// are numbered P1..P17; logical-correctness fixes are tagged CF1/CF2.
 // Grep "SHRIKE PATCH" or "CORRECTNESS FIX" to list them.
 //   P1  carry-split 32-bit adder -- splits the add to fit the 10-CLB carry chain
 //   P2  register file moved to on-die BRAM (4 slices) -- frees ~1024 FFs + the
@@ -85,6 +85,10 @@
 //   P11 serial shifter -- barrel shifter tied off and deleted
 //   P12 structural PC+4 link incrementer for JAL/JALR -- no full 32-bit adder
 //   P13 folded PC-advance and JAL-target into one PC_W-bit adder, muxed addend
+//   P14 narrowed memory address -- only bit 30 and [6:0] are reachable here
+//   P15 narrowed memory write data -- the only store target is 2 bits wide
+//   P17 single-bit memory write strobe -- the design decodes (mem_wstrb != 0)
+//   (P16 is a top-level patch; see shrike_picorv32_top.v)
 // CORRECTNESS FIXES:
 //   CF1 BRAM read-latency wait-state -- the SLG47910 BRAM read is synchronous
 //   CF2 ECALL/EBREAK halts the core via the terminal trap state
@@ -652,11 +656,14 @@ module picorv32 #(
 			prefetched_high_word <= 0;
 		end else begin
 			if (mem_la_read || mem_la_write) begin
-				mem_addr <= mem_la_addr;
-				mem_wstrb <= mem_la_wstrb & {4{mem_la_write}};
+				// P14: only bit 30 (result latch) and [6:0] (instruction RAM) are reachable
+				mem_addr <= {1'b0, mem_la_addr[30], 23'b0, mem_la_addr[6:0]};
+				// P17: stores are decoded as (mem_wstrb != 0); per-lane strobes unused
+				mem_wstrb <= {3'b0, mem_la_write};
 			end
 			if (mem_la_write) begin
-				mem_wdata <= mem_la_wdata;
+				// P15: no data RAM -- the only store target is the 2-bit result latch
+				mem_wdata <= {30'b0, mem_la_wdata[1:0]};
 			end
 			case (mem_state)
 				0: begin

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<GPDProject version="40" oldestCompatibleVersion="32" GPDVersion="6.53.003" lastChange="31 May 2026 14:25:46" projectChecksumState="0" projectChecksum="394212a1">
+<GPDProject version="41" oldestCompatibleVersion="32" GPDVersion="6.54.002" lastChange="20 Jul 2026 15:15:59" projectChecksumState="0" projectChecksum="770af728">
     <Metadata>
         <LegalNotice>This Design was generated using Renesas' proprietary Go Configure Software Hub and is provided for use solely in connection with Renesas GreenPAK integrated circuits. Any unauthorized use, reproduction, distribution, or manufacture of this Design is prohibited. This Design is provided 'AS IS' without warranties of any kind.</LegalNotice>
     </Metadata>
@@ -108,19 +108,19 @@
         <wire output="83" input="85" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="0" wireText="NET0" wireState="0">
             <points>(129.00,344.00); (116.00,344.00); (116.00,392.00); (308.00,392.00); (308.00,383.00); (320.00,383.00)</points>
         </wire>
-        <wire output="84" input="86" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="1" wireText="NET1" wireState="0">
+        <wire output="84" input="86" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="1" wireText="NET1" wireState="0">
             <points>(711.00,669.00); (711.00,756.00)</points>
         </wire>
-        <wire output="85" input="87" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="2" wireText="NET2" wireState="0">
+        <wire output="85" input="87" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="2" wireText="NET2" wireState="0">
             <points>(726.00,669.00); (726.00,756.00)</points>
         </wire>
         <wire output="86" input="88" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="3" wireText="NET3" wireState="0">
             <points>(220.00,70.00); (320.00,70.00)</points>
         </wire>
-        <wire output="79" input="38" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="4" wireText="NET4" wireState="0">
+        <wire output="79" input="38" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="4" wireText="NET4" wireState="0">
             <points>(220.00,80.00); (314.00,80.00); (314.00,87.00); (320.00,87.00)</points>
         </wire>
-        <wire output="39" input="63" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="5" wireText="NET5" wireState="0">
+        <wire output="39" input="63" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="5" wireText="NET5" wireState="0">
             <points>(320.00,54.00); (116.00,54.00); (116.00,75.00); (129.00,75.00)</points>
         </wire>
         <wire output="20" input="62" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="6" wireText="NET6" wireState="0">
@@ -129,34 +129,34 @@
         <wire output="19" input="61" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="7" wireText="NET7" wireState="0">
             <points>(1071.00,366.00); (967.00,366.00); (967.00,367.00); (961.00,367.00)</points>
         </wire>
-        <wire output="82" input="41" autoRouting="1" pen="#0293fdff;3.00;1;32;128" lineType="8" protected="1" CWLid="8" wireText="NET8" wireState="0">
+        <wire output="82" input="41" autoRouting="1" pen="#ff8000ff;3.00;1;32;128" lineType="4" protected="1" CWLid="8" wireText="NET8" wireState="0">
             <points>(642.00,847.00); (642.00,853.00); (308.00,853.00); (308.00,645.00); (320.00,645.00)</points>
         </wire>
-        <wire output="21" input="75" autoRouting="1" pen="#0293fdff;3.00;1;32;128" lineType="8" protected="1" CWLid="9" wireText="NET9" wireState="0">
+        <wire output="21" input="75" autoRouting="1" pen="#ff8000ff;3.00;1;32;128" lineType="4" protected="1" CWLid="9" wireText="NET9" wireState="0">
             <points>(557.00,669.00); (557.00,756.00)</points>
         </wire>
-        <wire output="25" input="76" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="10" wireText="NET10" wireState="0">
+        <wire output="25" input="76" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="10" wireText="NET10" wireState="0">
             <points>(618.00,669.00); (618.00,756.00)</points>
         </wire>
-        <wire output="22" input="77" autoRouting="1" pen="#0293fdff;3.00;1;32;128" lineType="8" protected="1" CWLid="11" wireText="NET11" wireState="0">
+        <wire output="22" input="77" autoRouting="1" pen="#ff8000ff;3.00;1;32;128" lineType="4" protected="1" CWLid="11" wireText="NET11" wireState="0">
             <points>(573.00,669.00); (573.00,756.00)</points>
         </wire>
-        <wire output="23" input="78" autoRouting="1" pen="#0293fdff;3.00;1;32;128" lineType="8" protected="1" CWLid="12" wireText="NET12" wireState="0">
+        <wire output="23" input="78" autoRouting="1" pen="#ff8000ff;3.00;1;32;128" lineType="4" protected="1" CWLid="12" wireText="NET12" wireState="0">
             <points>(588.00,669.00); (588.00,756.00)</points>
         </wire>
-        <wire output="26" input="79" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="13" wireText="NET13" wireState="0">
+        <wire output="26" input="79" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="13" wireText="NET13" wireState="0">
             <points>(634.00,669.00); (634.00,756.00)</points>
         </wire>
         <wire output="27" input="80" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="14" wireText="NET14" wireState="0">
             <points>(649.00,669.00); (649.00,756.00)</points>
         </wire>
-        <wire output="28" input="81" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="15" wireText="NET15" wireState="0">
+        <wire output="28" input="81" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="15" wireText="NET15" wireState="0">
             <points>(664.00,669.00); (664.00,756.00)</points>
         </wire>
-        <wire output="24" input="82" autoRouting="1" pen="#0293fdff;3.00;1;32;128" lineType="8" protected="1" CWLid="16" wireText="NET16" wireState="0">
+        <wire output="24" input="82" autoRouting="1" pen="#ff8000ff;3.00;1;32;128" lineType="4" protected="1" CWLid="16" wireText="NET16" wireState="0">
             <points>(603.00,669.00); (603.00,756.00)</points>
         </wire>
-        <wire output="29" input="83" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="17" wireText="NET17" wireState="0">
+        <wire output="29" input="83" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="17" wireText="NET17" wireState="0">
             <points>(680.00,669.00); (680.00,756.00)</points>
         </wire>
         <wire output="30" input="84" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="18" wireText="NET18" wireState="0">
@@ -165,40 +165,40 @@
         <wire output="80" input="39" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="20" wireText="NET20" wireState="0">
             <points>(129.00,289.00); (116.00,289.00); (116.00,240.00); (308.00,240.00); (308.00,251.00); (320.00,251.00)</points>
         </wire>
-        <wire output="34" input="67" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="21" wireText="NET21" wireState="0">
+        <wire output="34" input="67" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="21" wireText="NET21" wireState="0">
             <points>(320.00,333.00); (220.00,333.00)</points>
         </wire>
-        <wire output="38" input="68" autoRouting="1" pen="#0293fdff;3.00;1;32;128" lineType="8" protected="1" CWLid="22" wireText="NET22" wireState="0">
+        <wire output="38" input="68" autoRouting="1" pen="#ff8000ff;3.00;1;32;128" lineType="4" protected="1" CWLid="22" wireText="NET22" wireState="0">
             <points>(320.00,267.00); (220.00,267.00)</points>
         </wire>
-        <wire output="37" input="69" autoRouting="1" pen="#0293fdff;3.00;1;32;128" lineType="8" protected="1" CWLid="23" wireText="NET23" wireState="0">
+        <wire output="37" input="69" autoRouting="1" pen="#ff8000ff;3.00;1;32;128" lineType="4" protected="1" CWLid="23" wireText="NET23" wireState="0">
             <points>(320.00,284.00); (220.00,284.00)</points>
         </wire>
-        <wire output="36" input="70" autoRouting="1" pen="#0293fdff;3.00;1;32;128" lineType="8" protected="1" CWLid="24" wireText="NET24" wireState="0">
+        <wire output="36" input="70" autoRouting="1" pen="#ff8000ff;3.00;1;32;128" lineType="4" protected="1" CWLid="24" wireText="NET24" wireState="0">
             <points>(320.00,300.00); (220.00,300.00)</points>
         </wire>
-        <wire output="35" input="71" autoRouting="1" pen="#0293fdff;3.00;1;32;128" lineType="8" protected="1" CWLid="25" wireText="NET25" wireState="0">
+        <wire output="35" input="71" autoRouting="1" pen="#ff8000ff;3.00;1;32;128" lineType="4" protected="1" CWLid="25" wireText="NET25" wireState="0">
             <points>(320.00,317.00); (220.00,317.00)</points>
         </wire>
-        <wire output="33" input="72" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="26" wireText="NET26" wireState="0">
+        <wire output="33" input="72" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="26" wireText="NET26" wireState="0">
             <points>(320.00,350.00); (220.00,350.00)</points>
         </wire>
         <wire output="32" input="73" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="27" wireText="NET27" wireState="0">
             <points>(320.00,366.00); (220.00,366.00)</points>
         </wire>
-        <wire output="41" input="0" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="28" wireText="NET28" wireState="0">
+        <wire output="41" input="0" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="28" wireText="NET28" wireState="0">
             <points>(320.00,597.00); (97.00,597.00)</points>
         </wire>
-        <wire output="42" input="1" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="29" wireText="NET29" wireState="0">
+        <wire output="42" input="1" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="29" wireText="NET29" wireState="0">
             <points>(320.00,547.00); (212.00,547.00)</points>
         </wire>
-        <wire output="43" input="2" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="30" wireText="NET30" wireState="0">
+        <wire output="43" input="2" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="30" wireText="NET30" wireState="0">
             <points>(320.00,498.00); (97.00,498.00)</points>
         </wire>
-        <wire output="44" input="3" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="31" wireText="NET31" wireState="0">
+        <wire output="44" input="3" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="31" wireText="NET31" wireState="0">
             <points>(320.00,449.00); (212.00,449.00)</points>
         </wire>
-        <wire output="45" input="4" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="32" wireText="NET32" wireState="0">
+        <wire output="45" input="4" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="32" wireText="NET32" wireState="0">
             <points>(320.00,399.00); (97.00,399.00)</points>
         </wire>
         <wire output="46" input="5" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="33" wireText="NET33" wireState="0">
@@ -207,7 +207,7 @@
         <wire output="47" input="6" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="34" wireText="NET34" wireState="0">
             <points>(320.00,153.00); (212.00,153.00)</points>
         </wire>
-        <wire output="48" input="7" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="35" wireText="NET35" wireState="0">
+        <wire output="48" input="7" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="35" wireText="NET35" wireState="0">
             <points>(320.00,103.00); (97.00,103.00)</points>
         </wire>
         <wire output="49" input="8" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="36" wireText="NET36" wireState="0">
@@ -222,10 +222,10 @@
         <wire output="52" input="11" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="39" wireText="NET39" wireState="0">
             <points>(961.00,211.00); (1177.00,211.00)</points>
         </wire>
-        <wire output="53" input="12" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="40" wireText="NET40" wireState="0">
+        <wire output="53" input="12" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="40" wireText="NET40" wireState="0">
             <points>(961.00,263.00); (1071.00,263.00)</points>
         </wire>
-        <wire output="54" input="13" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="41" wireText="NET41" wireState="0">
+        <wire output="54" input="13" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="41" wireText="NET41" wireState="0">
             <points>(961.00,315.00); (1177.00,315.00)</points>
         </wire>
         <wire output="55" input="14" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="42" wireText="NET42" wireState="0">
@@ -237,25 +237,25 @@
         <wire output="57" input="16" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="44" wireText="NET44" wireState="0">
             <points>(961.00,610.00); (1071.00,610.00)</points>
         </wire>
-        <wire output="58" input="17" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="45" wireText="NET45" wireState="0">
+        <wire output="58" input="17" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="45" wireText="NET45" wireState="0">
             <points>(961.00,558.00); (1177.00,558.00)</points>
         </wire>
         <wire output="59" input="18" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="46" wireText="NET46" wireState="0">
             <points>(961.00,506.00); (1071.00,506.00)</points>
         </wire>
-        <wire output="60" input="19" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="47" wireText="NET47" wireState="0">
+        <wire output="60" input="19" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="47" wireText="NET47" wireState="0">
             <points>(320.00,630.00); (108.00,630.00); (108.00,648.00); (54.00,648.00); (54.00,633.00)</points>
         </wire>
-        <wire output="61" input="20" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="48" wireText="NET48" wireState="0">
+        <wire output="61" input="20" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="48" wireText="NET48" wireState="0">
             <points>(320.00,580.00); (220.00,580.00); (220.00,588.00); (169.00,588.00); (169.00,582.00)</points>
         </wire>
-        <wire output="62" input="21" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="49" wireText="NET49" wireState="0">
+        <wire output="62" input="21" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="49" wireText="NET49" wireState="0">
             <points>(320.00,531.00); (108.00,531.00); (108.00,552.00); (54.00,552.00); (54.00,534.00)</points>
         </wire>
-        <wire output="63" input="22" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="50" wireText="NET50" wireState="0">
+        <wire output="63" input="22" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="50" wireText="NET50" wireState="0">
             <points>(320.00,482.00); (220.00,482.00); (220.00,490.00); (169.00,490.00); (169.00,484.00)</points>
         </wire>
-        <wire output="64" input="23" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="51" wireText="NET51" wireState="0">
+        <wire output="64" input="23" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="51" wireText="NET51" wireState="0">
             <points>(320.00,432.00); (108.00,432.00); (108.00,448.00); (54.00,448.00); (54.00,435.00)</points>
         </wire>
         <wire output="65" input="24" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="52" wireText="NET52" wireState="0">
@@ -264,7 +264,7 @@
         <wire output="66" input="25" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="53" wireText="NET53" wireState="0">
             <points>(320.00,185.00); (220.00,185.00); (220.00,194.00); (169.00,194.00); (169.00,188.00)</points>
         </wire>
-        <wire output="67" input="26" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="54" wireText="NET54" wireState="0">
+        <wire output="67" input="26" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="54" wireText="NET54" wireState="0">
             <points>(320.00,136.00); (108.00,136.00); (108.00,152.00); (54.00,152.00); (54.00,139.00)</points>
         </wire>
         <wire output="68" input="27" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="55" wireText="NET55" wireState="0">
@@ -279,10 +279,10 @@
         <wire output="71" input="30" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="58" wireText="NET58" wireState="0">
             <points>(961.00,246.00); (1172.00,246.00); (1172.00,264.00); (1219.00,264.00); (1219.00,246.00)</points>
         </wire>
-        <wire output="72" input="31" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="59" wireText="NET59" wireState="0">
+        <wire output="72" input="31" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="59" wireText="NET59" wireState="0">
             <points>(961.00,298.00); (1060.00,298.00); (1060.00,304.00); (1113.00,304.00); (1113.00,298.00)</points>
         </wire>
-        <wire output="73" input="32" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="60" wireText="NET60" wireState="0">
+        <wire output="73" input="32" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="60" wireText="NET60" wireState="0">
             <points>(961.00,350.00); (1172.00,350.00); (1172.00,356.00); (1219.00,356.00); (1219.00,350.00)</points>
         </wire>
         <wire output="74" input="33" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="61" wireText="NET61" wireState="0">
@@ -294,7 +294,7 @@
         <wire output="76" input="35" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="63" wireText="NET63" wireState="0">
             <points>(961.00,645.00); (1060.00,645.00); (1060.00,664.00); (1113.00,664.00); (1113.00,645.00)</points>
         </wire>
-        <wire output="77" input="36" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="64" wireText="NET64" wireState="0">
+        <wire output="77" input="36" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="64" wireText="NET64" wireState="0">
             <points>(961.00,593.00); (1172.00,593.00); (1172.00,608.00); (1219.00,608.00); (1219.00,593.00)</points>
         </wire>
         <wire output="78" input="37" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="65" wireText="NET65" wireState="0">
@@ -315,10 +315,10 @@
         <wire output="4" input="46" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="69" wireText="NET69" wireState="0">
             <points>(97.00,411.00); (314.00,411.00); (314.00,416.00); (320.00,416.00)</points>
         </wire>
-        <wire output="5" input="47" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="70" wireText="NET70" wireState="0">
+        <wire output="5" input="47" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="70" wireText="NET70" wireState="0">
             <points>(97.00,213.00); (314.00,213.00); (314.00,218.00); (320.00,218.00)</points>
         </wire>
-        <wire output="6" input="48" autoRouting="1" pen="#0293fdff;1.00;1;32;128" lineType="7" protected="1" CWLid="71" wireText="NET71" wireState="0">
+        <wire output="6" input="48" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="71" wireText="NET71" wireState="0">
             <points>(212.00,164.00); (314.00,164.00); (314.00,169.00); (320.00,169.00)</points>
         </wire>
         <wire output="7" input="49" autoRouting="1" pen="#ff8000ff;1.00;1;32;128" lineType="2" protected="1" CWLid="72" wireText="NET72" wireState="0">
@@ -624,7 +624,7 @@
                 <highDensityIOPacking>false</highDensityIOPacking>
                 <highDensityPackingLogic>true</highDensityPackingLogic>
                 <maximumRoutingIterations>300</maximumRoutingIterations>
-                <placeAndTrialRoute>false</placeAndTrialRoute>
+                <placeAndTrialRoute>true</placeAndTrialRoute>
                 <placeAndTrialRouteIterationCount>20</placeAndTrialRouteIterationCount>
                 <timingAnalysisCorner>0</timingAnalysisCorner>
                 <timingAnalysisLimitPaths>-1</timingAnalysisLimitPaths>
@@ -649,6 +649,7 @@
             <openedTab>I/O Planner</openedTab>
             <openedTab>picorv32.v</openedTab>
             <openedTab>Timing Analysis</openedTab>
+            <openedTab>PLL Configurator</openedTab>
         </openedTabs>
         <pipelineStagesStates>
             <pipelineStageState>
@@ -657,7 +658,7 @@
             </pipelineStageState>
             <pipelineStageState>
                 <pipelineStage>1</pipelineStage>
-                <pipelineState>3</pipelineState>
+                <pipelineState>0</pipelineState>
             </pipelineStageState>
         </pipelineStagesStates>
         <modules>
@@ -676,12 +677,129 @@
             <placement-constraints/>
         </modules>
         <io-spec-tool>
-            <records filter="16">
-                <record id="CLK_t[0:0]_W_in0">
+            <records filter="2">
+                <record id="CLK_t[0:0]_N_out0">
                     <port-name>clk</port-name>
+                </record>
+                <record id="CLK_t[0:0]_N_out1">
+                    <port-name>clk</port-name>
+                </record>
+                <record id="CLK_t[0:0]_S_out0">
+                    <port-name>clk</port-name>
+                </record>
+                <record id="CLK_t[0:0]_S_out1">
+                    <port-name>clk</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:11]_out0">
+                    <port-name>pll_clk_selection</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:11]_out1">
+                    <port-name>pll_bypass</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:18]_out0">
+                    <port-name>pll_en</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:12]_out0">
+                    <port-name>pll_fbdiv[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:12]_out1">
+                    <port-name>pll_fbdiv[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:13]_out0">
+                    <port-name>pll_fbdiv[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:13]_out1">
+                    <port-name>pll_fbdiv[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:14]_out0">
+                    <port-name>pll_fbdiv[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:14]_out1">
+                    <port-name>pll_fbdiv[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:15]_out0">
+                    <port-name>pll_fbdiv[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:15]_out1">
+                    <port-name>pll_fbdiv[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:16]_out0">
+                    <port-name>pll_fbdiv[8]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:16]_out1">
+                    <port-name>pll_fbdiv[9]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:17]_out0">
+                    <port-name>pll_fbdiv[10]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:17]_out1">
+                    <port-name>pll_fbdiv[11]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:19]_out0">
+                    <port-name>pll_postdiv1[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:19]_out1">
+                    <port-name>pll_postdiv1[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:20]_out0">
+                    <port-name>pll_postdiv1[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:20]_out1">
+                    <port-name>pll_postdiv2[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:21]_out0">
+                    <port-name>pll_postdiv2[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:21]_out1">
+                    <port-name>pll_postdiv2[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:19]_out0">
+                    <port-name>pll_refdiv[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:19]_out1">
+                    <port-name>pll_refdiv[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:20]_out0">
+                    <port-name>pll_refdiv[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:20]_out1">
+                    <port-name>pll_refdiv[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:21]_out0">
+                    <port-name>pll_refdiv[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:21]_out1">
+                    <port-name>pll_refdiv[5]</port-name>
+                </record>
+                <record id="CLK_t[0:0]_W_in1">
+                    <port-name>clk</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:0]_in0">
+                    <port-name>BRAM4_DATA_OUT[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:0]_in1">
+                    <port-name>BRAM4_DATA_OUT[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:0]_out0">
+                    <port-name>BRAM4_DATA_IN[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:0]_out1">
+                    <port-name>BRAM4_DATA_IN[4]</port-name>
                 </record>
                 <record id="IOB_t[0:0]_xy[0:10]_in0">
                     <port-name>spi_ss_n</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:1]_in0">
+                    <port-name>BRAM4_DATA_OUT[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:1]_in1">
+                    <port-name>BRAM4_DATA_OUT[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:1]_out0">
+                    <port-name>BRAM4_DATA_IN[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:1]_out1">
+                    <port-name>BRAM4_DATA_IN[6]</port-name>
                 </record>
                 <record id="IOB_t[0:0]_xy[0:22]_in0">
                     <port-name>spi_mosi</port-name>
@@ -689,8 +807,956 @@
                 <record id="IOB_t[0:0]_xy[0:25]_out0">
                     <port-name>clk_en</port-name>
                 </record>
+                <record id="IOB_t[0:0]_xy[0:26]_out0">
+                    <port-name>BRAM0_WEN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:26]_out1">
+                    <port-name>BRAM0_WCLKEN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:27]_out0">
+                    <port-name>BRAM0_REN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:27]_out1">
+                    <port-name>BRAM0_RCLKEN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:28]_out0">
+                    <port-name>BRAM0_RATIO[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:28]_out1">
+                    <port-name>BRAM0_RATIO[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:30]_in0">
+                    <port-name>BRAM0_DATA_OUT[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:30]_in1">
+                    <port-name>BRAM0_DATA_OUT[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:30]_out0">
+                    <port-name>BRAM0_DATA_IN[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:30]_out1">
+                    <port-name>BRAM0_DATA_IN[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:31]_in0">
+                    <port-name>BRAM0_DATA_OUT[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:31]_in1">
+                    <port-name>BRAM0_DATA_OUT[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:31]_out0">
+                    <port-name>BRAM0_DATA_IN[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:31]_out1">
+                    <port-name>BRAM0_DATA_IN[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:3]_out0">
+                    <port-name>BRAM4_RATIO[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:3]_out1">
+                    <port-name>BRAM4_RATIO[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:4]_out0">
+                    <port-name>BRAM4_REN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:4]_out1">
+                    <port-name>BRAM4_RCLKEN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:5]_out0">
+                    <port-name>BRAM4_WEN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[0:5]_out1">
+                    <port-name>BRAM4_WCLKEN</port-name>
+                </record>
                 <record id="IOB_t[0:0]_xy[0:9]_in0">
                     <port-name>spi_sck</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[10:0]_out0">
+                    <port-name>BRAM5_DATA_IN[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[10:0]_out1">
+                    <port-name>BRAM5_DATA_IN[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[10:1]_out0">
+                    <port-name>BRAM5_DATA_IN[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[10:1]_out1">
+                    <port-name>BRAM5_DATA_IN[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[10:30]_out0">
+                    <port-name>BRAM1_DATA_IN[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[10:30]_out1">
+                    <port-name>BRAM1_DATA_IN[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[10:31]_out0">
+                    <port-name>BRAM1_DATA_IN[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[10:31]_out1">
+                    <port-name>BRAM1_DATA_IN[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[11:0]_out0">
+                    <port-name>BRAM5_WRITE_ADDR[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[11:0]_out1">
+                    <port-name>BRAM5_WRITE_ADDR[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[11:1]_out0">
+                    <port-name>BRAM5_WRITE_ADDR[8]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[11:1]_out1">
+                    <port-name>BRAM5_WRITE_ADDR[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[11:30]_out0">
+                    <port-name>BRAM1_WRITE_ADDR[8]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[11:30]_out1">
+                    <port-name>BRAM1_WRITE_ADDR[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[11:31]_out0">
+                    <port-name>BRAM1_WRITE_ADDR[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[11:31]_out1">
+                    <port-name>BRAM1_WRITE_ADDR[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[12:0]_out0">
+                    <port-name>BRAM5_WRITE_ADDR[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[12:0]_out1">
+                    <port-name>BRAM5_WRITE_ADDR[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[12:1]_out0">
+                    <port-name>BRAM5_WRITE_ADDR[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[12:1]_out1">
+                    <port-name>BRAM5_WRITE_ADDR[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[12:30]_out0">
+                    <port-name>BRAM1_WRITE_ADDR[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[12:30]_out1">
+                    <port-name>BRAM1_WRITE_ADDR[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[12:31]_out0">
+                    <port-name>BRAM1_WRITE_ADDR[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[12:31]_out1">
+                    <port-name>BRAM1_WRITE_ADDR[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[13:0]_in0">
+                    <port-name>BRAM6_DATA_OUT[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[13:0]_in1">
+                    <port-name>BRAM6_DATA_OUT[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[13:0]_out0">
+                    <port-name>BRAM5_READ_ADDR[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[13:0]_out1">
+                    <port-name>BRAM5_READ_ADDR[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[13:1]_out0">
+                    <port-name>BRAM5_WRITE_ADDR[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[13:1]_out1">
+                    <port-name>BRAM5_READ_ADDR[8]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[13:30]_out0">
+                    <port-name>BRAM1_WRITE_ADDR[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[13:30]_out1">
+                    <port-name>BRAM1_READ_ADDR[8]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[13:31]_in0">
+                    <port-name>BRAM2_DATA_OUT[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[13:31]_in1">
+                    <port-name>BRAM2_DATA_OUT[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[13:31]_out0">
+                    <port-name>BRAM1_READ_ADDR[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[13:31]_out1">
+                    <port-name>BRAM1_READ_ADDR[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[14:0]_in0">
+                    <port-name>BRAM6_DATA_OUT[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[14:0]_in1">
+                    <port-name>BRAM6_DATA_OUT[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[14:0]_out0">
+                    <port-name>BRAM5_READ_ADDR[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[14:0]_out1">
+                    <port-name>BRAM5_READ_ADDR[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[14:1]_in0">
+                    <port-name>BRAM6_DATA_OUT[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[14:1]_in1">
+                    <port-name>BRAM6_DATA_OUT[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[14:1]_out0">
+                    <port-name>BRAM5_READ_ADDR[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[14:1]_out1">
+                    <port-name>BRAM5_READ_ADDR[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[14:30]_in0">
+                    <port-name>BRAM2_DATA_OUT[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[14:30]_in1">
+                    <port-name>BRAM2_DATA_OUT[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[14:30]_out0">
+                    <port-name>BRAM1_READ_ADDR[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[14:30]_out1">
+                    <port-name>BRAM1_READ_ADDR[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[14:31]_in0">
+                    <port-name>BRAM2_DATA_OUT[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[14:31]_in1">
+                    <port-name>BRAM2_DATA_OUT[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[14:31]_out0">
+                    <port-name>BRAM1_READ_ADDR[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[14:31]_out1">
+                    <port-name>BRAM1_READ_ADDR[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[15:0]_out0">
+                    <port-name>BRAM6_WEN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[15:0]_out1">
+                    <port-name>BRAM6_WCLKEN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[15:1]_in0">
+                    <port-name>BRAM6_DATA_OUT[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[15:1]_in1">
+                    <port-name>BRAM6_DATA_OUT[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[15:1]_out0">
+                    <port-name>BRAM5_READ_ADDR[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[15:1]_out1">
+                    <port-name>BRAM5_READ_ADDR[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[15:30]_in0">
+                    <port-name>BRAM2_DATA_OUT[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[15:30]_in1">
+                    <port-name>BRAM2_DATA_OUT[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[15:30]_out0">
+                    <port-name>BRAM1_READ_ADDR[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[15:30]_out1">
+                    <port-name>BRAM1_READ_ADDR[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[15:31]_out0">
+                    <port-name>BRAM2_WEN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[15:31]_out1">
+                    <port-name>BRAM2_WCLKEN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[16:0]_out0">
+                    <port-name>BRAM6_RATIO[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[16:0]_out1">
+                    <port-name>BRAM6_RATIO[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[16:1]_out0">
+                    <port-name>BRAM6_REN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[16:1]_out1">
+                    <port-name>BRAM6_RCLKEN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[16:30]_out0">
+                    <port-name>BRAM2_REN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[16:30]_out1">
+                    <port-name>BRAM2_RCLKEN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[16:31]_out0">
+                    <port-name>BRAM2_RATIO[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[16:31]_out1">
+                    <port-name>BRAM2_RATIO[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[17:0]_out0">
+                    <port-name>BRAM6_DATA_IN[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[17:0]_out1">
+                    <port-name>BRAM6_DATA_IN[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[17:31]_out0">
+                    <port-name>BRAM2_DATA_IN[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[17:31]_out1">
+                    <port-name>BRAM2_DATA_IN[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[18:0]_out0">
+                    <port-name>BRAM6_DATA_IN[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[18:0]_out1">
+                    <port-name>BRAM6_DATA_IN[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[18:1]_out0">
+                    <port-name>BRAM6_DATA_IN[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[18:1]_out1">
+                    <port-name>BRAM6_DATA_IN[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[18:30]_out0">
+                    <port-name>BRAM2_DATA_IN[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[18:30]_out1">
+                    <port-name>BRAM2_DATA_IN[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[18:31]_out0">
+                    <port-name>BRAM2_DATA_IN[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[18:31]_out1">
+                    <port-name>BRAM2_DATA_IN[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[19:0]_out0">
+                    <port-name>BRAM6_WRITE_ADDR[8]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[19:0]_out1">
+                    <port-name>BRAM6_WRITE_ADDR[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[19:1]_out0">
+                    <port-name>BRAM6_DATA_IN[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[19:1]_out1">
+                    <port-name>BRAM6_DATA_IN[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[19:30]_out0">
+                    <port-name>BRAM2_DATA_IN[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[19:30]_out1">
+                    <port-name>BRAM2_DATA_IN[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[19:31]_out0">
+                    <port-name>BRAM2_WRITE_ADDR[8]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[19:31]_out1">
+                    <port-name>BRAM2_WRITE_ADDR[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[1:0]_in0">
+                    <port-name>BRAM4_DATA_OUT[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[1:0]_in1">
+                    <port-name>BRAM4_DATA_OUT[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[1:0]_out0">
+                    <port-name>BRAM4_DATA_IN[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[1:0]_out1">
+                    <port-name>BRAM4_DATA_IN[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[1:1]_in0">
+                    <port-name>BRAM4_DATA_OUT[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[1:1]_in1">
+                    <port-name>BRAM4_DATA_OUT[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[1:1]_out0">
+                    <port-name>BRAM4_DATA_IN[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[1:1]_out1">
+                    <port-name>BRAM4_DATA_IN[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[1:30]_in0">
+                    <port-name>BRAM0_DATA_OUT[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[1:30]_in1">
+                    <port-name>BRAM0_DATA_OUT[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[1:30]_out0">
+                    <port-name>BRAM0_DATA_IN[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[1:30]_out1">
+                    <port-name>BRAM0_DATA_IN[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[1:31]_in0">
+                    <port-name>BRAM0_DATA_OUT[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[1:31]_in1">
+                    <port-name>BRAM0_DATA_OUT[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[1:31]_out0">
+                    <port-name>BRAM0_DATA_IN[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[1:31]_out1">
+                    <port-name>BRAM0_DATA_IN[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[20:0]_in0">
+                    <port-name>BRAM7_DATA_OUT[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[20:0]_in1">
+                    <port-name>BRAM7_DATA_OUT[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[20:0]_out0">
+                    <port-name>BRAM6_WRITE_ADDR[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[20:0]_out1">
+                    <port-name>BRAM6_WRITE_ADDR[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[20:1]_out0">
+                    <port-name>BRAM6_WRITE_ADDR[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[20:1]_out1">
+                    <port-name>BRAM6_WRITE_ADDR[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[20:30]_out0">
+                    <port-name>BRAM2_WRITE_ADDR[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[20:30]_out1">
+                    <port-name>BRAM2_WRITE_ADDR[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[20:31]_in0">
+                    <port-name>BRAM3_DATA_OUT[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[20:31]_in1">
+                    <port-name>BRAM3_DATA_OUT[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[20:31]_out0">
+                    <port-name>BRAM2_WRITE_ADDR[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[20:31]_out1">
+                    <port-name>BRAM2_WRITE_ADDR[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[21:0]_in0">
+                    <port-name>BRAM7_DATA_OUT[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[21:0]_in1">
+                    <port-name>BRAM7_DATA_OUT[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[21:0]_out0">
+                    <port-name>BRAM6_WRITE_ADDR[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[21:0]_out1">
+                    <port-name>BRAM6_READ_ADDR[8]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[21:1]_in0">
+                    <port-name>BRAM7_DATA_OUT[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[21:1]_in1">
+                    <port-name>BRAM7_DATA_OUT[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[21:1]_out0">
+                    <port-name>BRAM6_WRITE_ADDR[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[21:1]_out1">
+                    <port-name>BRAM6_WRITE_ADDR[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[21:30]_in0">
+                    <port-name>BRAM3_DATA_OUT[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[21:30]_in1">
+                    <port-name>BRAM3_DATA_OUT[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[21:30]_out0">
+                    <port-name>BRAM2_WRITE_ADDR[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[21:30]_out1">
+                    <port-name>BRAM2_WRITE_ADDR[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[21:31]_in0">
+                    <port-name>BRAM3_DATA_OUT[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[21:31]_in1">
+                    <port-name>BRAM3_DATA_OUT[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[21:31]_out0">
+                    <port-name>BRAM2_WRITE_ADDR[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[21:31]_out1">
+                    <port-name>BRAM2_READ_ADDR[8]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[22:0]_out0">
+                    <port-name>BRAM6_READ_ADDR[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[22:0]_out1">
+                    <port-name>BRAM6_READ_ADDR[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[22:1]_in0">
+                    <port-name>BRAM7_DATA_OUT[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[22:1]_in1">
+                    <port-name>BRAM7_DATA_OUT[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[22:1]_out0">
+                    <port-name>BRAM6_READ_ADDR[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[22:1]_out1">
+                    <port-name>BRAM6_READ_ADDR[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[22:30]_in0">
+                    <port-name>BRAM3_DATA_OUT[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[22:30]_in1">
+                    <port-name>BRAM3_DATA_OUT[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[22:30]_out0">
+                    <port-name>BRAM2_READ_ADDR[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[22:30]_out1">
+                    <port-name>BRAM2_READ_ADDR[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[22:31]_out0">
+                    <port-name>BRAM2_READ_ADDR[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[22:31]_out1">
+                    <port-name>BRAM2_READ_ADDR[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[23:0]_out0">
+                    <port-name>BRAM6_READ_ADDR[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[23:0]_out1">
+                    <port-name>BRAM6_READ_ADDR[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[23:1]_out0">
+                    <port-name>BRAM6_READ_ADDR[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[23:1]_out1">
+                    <port-name>BRAM6_READ_ADDR[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[23:30]_out0">
+                    <port-name>BRAM2_READ_ADDR[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[23:30]_out1">
+                    <port-name>BRAM2_READ_ADDR[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[23:31]_out0">
+                    <port-name>BRAM2_READ_ADDR[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[23:31]_out1">
+                    <port-name>BRAM2_READ_ADDR[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[24:0]_out0">
+                    <port-name>BRAM7_WEN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[24:0]_out1">
+                    <port-name>BRAM7_WCLKEN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[24:31]_out0">
+                    <port-name>BRAM3_WEN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[24:31]_out1">
+                    <port-name>BRAM3_WCLKEN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[25:0]_out0">
+                    <port-name>BRAM7_RATIO[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[25:0]_out1">
+                    <port-name>BRAM7_RATIO[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[25:1]_out0">
+                    <port-name>BRAM7_REN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[25:1]_out1">
+                    <port-name>BRAM7_RCLKEN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[25:30]_out0">
+                    <port-name>BRAM3_REN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[25:30]_out1">
+                    <port-name>BRAM3_RCLKEN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[25:31]_out0">
+                    <port-name>BRAM3_RATIO[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[25:31]_out1">
+                    <port-name>BRAM3_RATIO[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[26:0]_out0">
+                    <port-name>BRAM7_DATA_IN[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[26:0]_out1">
+                    <port-name>BRAM7_DATA_IN[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[26:31]_out0">
+                    <port-name>BRAM3_DATA_IN[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[26:31]_out1">
+                    <port-name>BRAM3_DATA_IN[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[27:0]_out0">
+                    <port-name>BRAM7_DATA_IN[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[27:0]_out1">
+                    <port-name>BRAM7_DATA_IN[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[27:1]_out0">
+                    <port-name>BRAM7_DATA_IN[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[27:1]_out1">
+                    <port-name>BRAM7_DATA_IN[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[27:30]_out0">
+                    <port-name>BRAM3_DATA_IN[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[27:30]_out1">
+                    <port-name>BRAM3_DATA_IN[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[27:31]_out0">
+                    <port-name>BRAM3_DATA_IN[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[27:31]_out1">
+                    <port-name>BRAM3_DATA_IN[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[28:0]_out0">
+                    <port-name>BRAM7_WRITE_ADDR[8]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[28:0]_out1">
+                    <port-name>BRAM7_WRITE_ADDR[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[28:1]_out0">
+                    <port-name>BRAM7_DATA_IN[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[28:1]_out1">
+                    <port-name>BRAM7_DATA_IN[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[28:30]_out0">
+                    <port-name>BRAM3_DATA_IN[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[28:30]_out1">
+                    <port-name>BRAM3_DATA_IN[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[28:31]_out0">
+                    <port-name>BRAM3_WRITE_ADDR[8]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[28:31]_out1">
+                    <port-name>BRAM3_WRITE_ADDR[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[29:0]_out0">
+                    <port-name>BRAM7_WRITE_ADDR[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[29:0]_out1">
+                    <port-name>BRAM7_WRITE_ADDR[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[29:1]_out0">
+                    <port-name>BRAM7_WRITE_ADDR[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[29:1]_out1">
+                    <port-name>BRAM7_WRITE_ADDR[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[29:30]_out0">
+                    <port-name>BRAM3_WRITE_ADDR[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[29:30]_out1">
+                    <port-name>BRAM3_WRITE_ADDR[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[29:31]_out0">
+                    <port-name>BRAM3_WRITE_ADDR[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[29:31]_out1">
+                    <port-name>BRAM3_WRITE_ADDR[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[2:0]_out0">
+                    <port-name>BRAM4_WRITE_ADDR[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[2:0]_out1">
+                    <port-name>BRAM4_WRITE_ADDR[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[2:1]_out0">
+                    <port-name>BRAM4_WRITE_ADDR[8]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[2:1]_out1">
+                    <port-name>BRAM4_WRITE_ADDR[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[2:30]_out0">
+                    <port-name>BRAM0_WRITE_ADDR[8]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[2:30]_out1">
+                    <port-name>BRAM0_WRITE_ADDR[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[2:31]_out0">
+                    <port-name>BRAM0_WRITE_ADDR[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[2:31]_out1">
+                    <port-name>BRAM0_WRITE_ADDR[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[30:0]_out0">
+                    <port-name>BRAM7_WRITE_ADDR[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[30:0]_out1">
+                    <port-name>BRAM7_READ_ADDR[8]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[30:1]_out0">
+                    <port-name>BRAM7_WRITE_ADDR[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[30:1]_out1">
+                    <port-name>BRAM7_WRITE_ADDR[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[30:30]_out0">
+                    <port-name>BRAM3_WRITE_ADDR[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[30:30]_out1">
+                    <port-name>BRAM3_WRITE_ADDR[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[30:31]_out0">
+                    <port-name>BRAM3_WRITE_ADDR[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[30:31]_out1">
+                    <port-name>BRAM3_READ_ADDR[8]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:0]_out0">
+                    <port-name>BRAM7_READ_ADDR[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:0]_out1">
+                    <port-name>BRAM7_READ_ADDR[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:1]_out0">
+                    <port-name>BRAM7_READ_ADDR[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:1]_out1">
+                    <port-name>BRAM7_READ_ADDR[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:28]_out0">
+                    <port-name>BRAM3_READ_ADDR[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:28]_out1">
+                    <port-name>BRAM3_READ_ADDR[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:29]_out0">
+                    <port-name>BRAM3_READ_ADDR[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:29]_out1">
+                    <port-name>BRAM3_READ_ADDR[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:2]_out0">
+                    <port-name>BRAM7_READ_ADDR[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:2]_out1">
+                    <port-name>BRAM7_READ_ADDR[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:30]_out0">
+                    <port-name>BRAM3_READ_ADDR[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:30]_out1">
+                    <port-name>BRAM3_READ_ADDR[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:31]_out0">
+                    <port-name>BRAM3_READ_ADDR[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:31]_out1">
+                    <port-name>BRAM3_READ_ADDR[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:3]_out0">
+                    <port-name>BRAM7_READ_ADDR[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:3]_out1">
+                    <port-name>BRAM7_READ_ADDR[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:4]_out0">
+                    <port-name>result_bit1</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:4]_out1">
+                    <port-name>result_bit1_en</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:5]_out0">
+                    <port-name>result_bit0</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[31:5]_out1">
+                    <port-name>result_bit0_en</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[3:0]_out0">
+                    <port-name>BRAM4_WRITE_ADDR[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[3:0]_out1">
+                    <port-name>BRAM4_WRITE_ADDR[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[3:1]_out0">
+                    <port-name>BRAM4_WRITE_ADDR[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[3:1]_out1">
+                    <port-name>BRAM4_WRITE_ADDR[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[3:30]_out0">
+                    <port-name>BRAM0_WRITE_ADDR[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[3:30]_out1">
+                    <port-name>BRAM0_WRITE_ADDR[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[3:31]_out0">
+                    <port-name>BRAM0_WRITE_ADDR[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[3:31]_out1">
+                    <port-name>BRAM0_WRITE_ADDR[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[4:0]_out0">
+                    <port-name>BRAM4_READ_ADDR[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[4:0]_out1">
+                    <port-name>BRAM4_READ_ADDR[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[4:1]_out0">
+                    <port-name>BRAM4_WRITE_ADDR[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[4:1]_out1">
+                    <port-name>BRAM4_READ_ADDR[8]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[4:30]_out0">
+                    <port-name>BRAM0_WRITE_ADDR[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[4:30]_out1">
+                    <port-name>BRAM0_READ_ADDR[8]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[4:31]_out0">
+                    <port-name>BRAM0_READ_ADDR[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[4:31]_out1">
+                    <port-name>BRAM0_READ_ADDR[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[5:0]_out0">
+                    <port-name>BRAM4_READ_ADDR[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[5:0]_out1">
+                    <port-name>BRAM4_READ_ADDR[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[5:1]_out0">
+                    <port-name>BRAM4_READ_ADDR[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[5:1]_out1">
+                    <port-name>BRAM4_READ_ADDR[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[5:30]_out0">
+                    <port-name>BRAM0_READ_ADDR[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[5:30]_out1">
+                    <port-name>BRAM0_READ_ADDR[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[5:31]_out0">
+                    <port-name>BRAM0_READ_ADDR[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[5:31]_out1">
+                    <port-name>BRAM0_READ_ADDR[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[6:0]_in0">
+                    <port-name>BRAM5_DATA_OUT[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[6:0]_in1">
+                    <port-name>BRAM5_DATA_OUT[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[6:1]_out0">
+                    <port-name>BRAM4_READ_ADDR[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[6:1]_out1">
+                    <port-name>BRAM4_READ_ADDR[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[6:30]_out0">
+                    <port-name>BRAM0_READ_ADDR[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[6:30]_out1">
+                    <port-name>BRAM0_READ_ADDR[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[6:31]_in0">
+                    <port-name>BRAM1_DATA_OUT[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[6:31]_in1">
+                    <port-name>BRAM1_DATA_OUT[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[7:0]_in0">
+                    <port-name>BRAM5_DATA_OUT[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[7:0]_in1">
+                    <port-name>BRAM5_DATA_OUT[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[7:0]_out0">
+                    <port-name>BRAM5_REN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[7:0]_out1">
+                    <port-name>BRAM5_RCLKEN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[7:1]_out0">
+                    <port-name>BRAM5_WEN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[7:1]_out1">
+                    <port-name>BRAM5_WCLKEN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[7:30]_out0">
+                    <port-name>BRAM1_WEN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[7:30]_out1">
+                    <port-name>BRAM1_WCLKEN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[7:31]_in0">
+                    <port-name>BRAM1_DATA_OUT[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[7:31]_in1">
+                    <port-name>BRAM1_DATA_OUT[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[7:31]_out0">
+                    <port-name>BRAM1_REN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[7:31]_out1">
+                    <port-name>BRAM1_RCLKEN</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[8:0]_in0">
+                    <port-name>BRAM5_DATA_OUT[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[8:0]_in1">
+                    <port-name>BRAM5_DATA_OUT[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[8:1]_in0">
+                    <port-name>BRAM5_DATA_OUT[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[8:1]_in1">
+                    <port-name>BRAM5_DATA_OUT[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[8:1]_out0">
+                    <port-name>BRAM5_RATIO[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[8:1]_out1">
+                    <port-name>BRAM5_RATIO[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[8:30]_in0">
+                    <port-name>BRAM1_DATA_OUT[3]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[8:30]_in1">
+                    <port-name>BRAM1_DATA_OUT[2]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[8:30]_out0">
+                    <port-name>BRAM1_RATIO[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[8:30]_out1">
+                    <port-name>BRAM1_RATIO[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[8:31]_in0">
+                    <port-name>BRAM1_DATA_OUT[1]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[8:31]_in1">
+                    <port-name>BRAM1_DATA_OUT[0]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[9:0]_out0">
+                    <port-name>BRAM5_DATA_IN[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[9:0]_out1">
+                    <port-name>BRAM5_DATA_IN[4]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[9:1]_out0">
+                    <port-name>BRAM5_DATA_IN[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[9:1]_out1">
+                    <port-name>BRAM5_DATA_IN[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[9:30]_out0">
+                    <port-name>BRAM1_DATA_IN[7]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[9:30]_out1">
+                    <port-name>BRAM1_DATA_IN[6]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[9:31]_out0">
+                    <port-name>BRAM1_DATA_IN[5]</port-name>
+                </record>
+                <record id="IOB_t[0:0]_xy[9:31]_out1">
+                    <port-name>BRAM1_DATA_IN[4]</port-name>
                 </record>
             </records>
         </io-spec-tool>

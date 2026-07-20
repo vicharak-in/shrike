@@ -124,10 +124,10 @@ module picorv32_regs_bram (
     // --- Read data: assemble the 32-bit word from the four byte lanes ---
     wire [31:0] rd = {BRAM3_DATA_OUT, BRAM2_DATA_OUT, BRAM1_DATA_OUT, BRAM0_DATA_OUT};
 
-    // x0 hardwired to zero per RISC-V spec.
-    assign rdata1 = (raddr1[4:0] == 5'd0) ? 32'd0 : rd;
+    // x0 reads the stored zero: BRAM powers up zero, entry 0 is never written
+    assign rdata1 = rd;
     // rdata2 is unused with ENABLE_REGS_DUALPORT=0 (picorv32 takes rs2 from the
     // sequenced rs1 read). Driven here only for interface completeness.
-    assign rdata2 = (raddr2[4:0] == 5'd0) ? 32'd0 : rd;
+    assign rdata2 = rd;
 
 endmodule

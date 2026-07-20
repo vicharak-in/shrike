@@ -308,9 +308,10 @@ def flash_bitstream():
 def read_result(settle=0.3):
     """Sample the 2-bit CPU result latch (FPGA GPIO17/18 -> RP2040 GPIO15/14).
 
-    Returns 0..3. A program stores 3 for PASS; 0 means the CPU never reached its
-    result store (trap / illegal insn / hang), since the latch clears on reload."""
-    time.sleep(settle)                         # CPU finishes in microseconds
+    Returns 0..3. A program stores 3 for PASS; 1 means it ran but computed a
+    wrong value; 0 means the CPU never reached its result store (trap / hang) --
+    the latch clears on every reload."""
+    time.sleep(settle)                         # the CPU finishes in microseconds
     bit0 = Pin(CONFIG['bit0_pin'], Pin.IN).value()
     bit1 = Pin(CONFIG['bit1_pin'], Pin.IN).value()
     return (bit1 << 1) | bit0

@@ -216,25 +216,36 @@ ffpga/src/shrike_picorv32_top.v
 
 The register file uses BRAM0-3 and the instruction RAM uses BRAM4-7, so enable
 **both** BRAM banks (North = BRAM0-3, South = BRAM4-7) in the project's BRAM
-configuration.
+configuration. Enabling the banks is necessary but **not sufficient** — the
+BRAM ports and bank clock feeds must also be pinned (Step 3).
 
-### Step 3 — IO Planner
+### Step 3 — Pin assignment
 
-Assign:
+Opening the included `shrike_picorv32.ffpga` gives the complete, correct pinout;
+this step describes it for a from-scratch build.
+
+The user-facing pins:
 
 | Signal | Resource |
 |---|---|
-| `clk`      | `OSC_CLK` |
+| `clk`      | `PLL_CLK` |
 | `clk_en`   | `OSC_EN`  |
 | `spi_sck`  | `GPIO3`   |
 | `spi_ss_n` | `GPIO4`   |
 | `spi_mosi` | `GPIO5`   |
+| `result_bit0` / `result_bit1` (+`_en`) | `GPIO17` / `GPIO18` |
 
-Leave `result_bit0/1`, `result_bit0/1_en`, and all `BRAMx_*` ports
-**unassigned**. Yosys auto-routes the result bits to FPGA GPIO17/18 (the only
-pins hardwired to RP2040 GPIO14/15 via PCB 0-ohm resistors) and the `BRAMx_*`
-ports to the on-die BRAM. Manually assigning those conflicts with the
-auto-routing and silently breaks the connection.
+Also pin every `BRAMx_*` port and both bank clock feeds
+(`REF_BRAM(0..3)/(4..7)_WRITE_CLK` and `_READ_CLK` → `clk`) so the block RAM is
+wired and clocked, and the `pll_*` control pins (27) that program the PLL. The
+committed `.ffpga` holds all of these; use it as the reference.
+
+### Step 3b — Clock the fabric at 25 MHz
+
+The fabric runs from the PLL at 25 MHz. The PLL is enabled and programmed from
+fabric logic (`pll_en`, `pll_refdiv`, `pll_fbdiv`, `pll_postdiv1`,
+`pll_postdiv2` — see `shrike_picorv32_top.v` and Renesas AN-003); the dividers
+give `50 MHz × 21 / (1×7×6) = 25 MHz`.
 
 ### Step 4 — Synthesize and generate bitstream
 
@@ -337,8 +348,9 @@ Locked parameters in `shrike_picorv32_top.v`:
 | `ENABLE_TRACE`         | 0 | no trace port |
 
 In addition to these stock parameters, the core in `ffpga/src/picorv32.v`
-carries the `SHRIKE PATCH` modifications (numbered P1–P13) — the BRAM register
-file, the carry-split / shared adder datapath, and the 7-bit PC — plus two
+carries the `SHRIKE PATCH` modifications (numbered P1–P17) — the BRAM register
+file, the carry-split / shared adder datapath, the 7-bit PC, and the narrowed
+memory interface — plus two
 correctness fixes (CF1 read-latency wait-state, CF2 ECALL/EBREAK halt). A
 legend at the top of the file lists them; `grep "SHRIKE PATCH"` or
 `grep "CORRECTNESS FIX"` in `ffpga/src/picorv32.v` finds every site. The SPI
