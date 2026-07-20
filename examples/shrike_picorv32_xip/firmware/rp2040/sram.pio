@@ -1,0 +1,132 @@
+; Copyright 2023 (c) Michael Bell
+; The BSD 3 clause license applies
+; SPI slave
+;
+; Transfers to/from the CPU are a byte at a time
+;
+; Every clock a bit is read and a bit is written
+; If no bytes are available to transmit, zeros are written
+; 
+; Read pins:
+; IN:  0: MOSI
+;      1: SCK
+;      2: CS (JMP pin)
+; OUT: 0: MISO  (write SM only)
+.program sram_read
+top:
+    wait 0 pin 2
+    set x, 7
+read_cmd_loop:
+    wait 0 pin 1
+    wait 1 pin 1
+    in pins, 1
+    jmp x--, read_cmd_loop
+    wait 0 pin 1
+    push
+    in y, 16
+    wait 1 pin 1
+    in pins, 1
+    set x, 12
+read_addr_loop:
+    wait 0 pin 1
+    wait 1 pin 1
+    in pins, 1
+    jmp x--, read_addr_loop
+    in null, 2
+    set x, 1
+read_addr_low_loop:
+    wait 0 pin 1
+    wait 1 pin 1
+    in pins, 1
+    jmp x--, read_addr_low_loop
+    push
+.wrap_target
+    set x, 7
+read_data_loop:
+    wait 0 pin 1
+    wait 1 pin 1
+    in pins, 1
+    jmp x--, read_data_loop
+    push
+
+; Crazy plan for unaligned read handling:
+; - Data is DMA'd 32-bits at a time
+; - On read side send first 30 bits of address (right justified), and then 2 bits end of address
+; - Write side program also counts the cycles from the CS going low and then starts branching on the last 2 bits
+; - The branch determines how many bits (24, 16, 8 or none) it throws away before outputting to pins
+
+.program sram_write
+    wait 0 pin 2
+    set x, 22
+cmd_addr_loop:
+    wait 0 pin 1
+    wait 1 pin 1
+    jmp x--, cmd_addr_loop
+PUBLIC addr_loop_end:
+    jmp pin, addr_two
+    wait 0 pin 1
+    wait 1 pin 1
+    jmp pin, addr_one
+write_loop:
+.wrap_target
+    out pins, 1
+    wait 0 pin 1
+    wait 1 pin 1
+    jmp write_loop
+PUBLIC addr_two:
+    wait 0 pin 1
+    wait 1 pin 1
+    jmp pin, addr_three
+    out null, 16
+    jmp write_loop
+addr_one:
+    out null, 8
+    jmp write_loop
+addr_three:
+    out null, 24
+    jmp write_loop
+PUBLIC fast_read:
+    set x, 8
+fast_read_loop:
+    wait 0 pin 1
+    wait 1 pin 1
+    jmp x--, fast_read_loop
+.wrap
+
+% c-sdk {
+void sram_read_program_init(PIO pio, uint sm, uint offset, uint mosi) {
+    pio_gpio_init(pio, mosi);
+    pio_gpio_init(pio, mosi + 1);
+    pio_gpio_init(pio, mosi + 2);
+    gpio_set_pulls(mosi, false, false);
+    gpio_set_pulls(mosi + 1, false, false);
+    gpio_set_pulls(mosi + 2, true, false);   // Shrike-XIP: CS pull-UP (deselected) -- the FPGA pads are Hi-Z until run rises
+    pio_sm_set_consecutive_pindirs(pio, sm, mosi, 3, false);
+
+    pio_sm_config c = sram_read_program_get_default_config(offset);
+    sm_config_set_in_pins(&c, mosi);
+    sm_config_set_in_shift(&c, false, true, 32);
+
+    pio_sm_put(pio, sm, 0x2003);
+    pio_sm_exec(pio, sm, pio_encode_pull(false, true));
+    pio_sm_exec(pio, sm, pio_encode_mov(pio_y, pio_osr));
+
+    pio_sm_init(pio, sm, offset, &c);
+    pio_sm_set_enabled(pio, sm, true);
+}
+
+void sram_write_program_init(PIO pio, uint sm, uint offset, uint mosi, uint miso) {
+    pio_gpio_init(pio, miso);
+    pio_sm_set_consecutive_pindirs(pio, sm, miso, 1, true);
+
+    pio_sm_config c = sram_write_program_get_default_config(offset);
+    sm_config_set_in_pins(&c, mosi);
+    sm_config_set_out_pins(&c, miso, 1);
+    sm_config_set_out_shift(&c, false, true, 32);
+    sm_config_set_fifo_join(&c, PIO_FIFO_JOIN_TX);
+    sm_config_set_jmp_pin(&c, mosi);
+
+    pio_sm_init(pio, sm, offset, &c);
+    pio_sm_set_enabled(pio, sm, true);
+}
+%}
