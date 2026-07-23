@@ -19,6 +19,10 @@
 from machine import Pin, UART, I2C, mem32
 import time
 import random
+import shrike
+
+shrike.flash("uart_to_i2c_bridge.bin")
+time.sleep(1)
 
 I2C1_BASE = 0x40048000          # RP2040 I2C1 (RP2350 differs: 0x40098000)
 FPGA_MASTER_TARGET = 0x50       # address the FPGA master talks to (matches top.v)
