@@ -17,15 +17,34 @@
 //   0xA2          run: release the CPU
 //   0xA3          halt: hold the CPU in reset (re-arm before a new 0xA0)
 //
-// IO PLANNER: assign clk->OSC_CLK, clk_en->OSC_EN, and spi_sck/spi_ss_n/
-//   spi_mosi to the GPIOs wired to the MCU SPI (same pins as the stack_processor
-//   example). Leave result_bit0/1 (+_en) and all BRAMx_* unassigned -- Yosys
-//   auto-routes the result bits to GPIO17/18 and the BRAM ports to on-die BRAM.
+// CLOCKING: the fabric runs from the PLL at 25 MHz, NOT the raw 50 MHz OSC.
+//   This design's timing closes at ~42 MHz, so 50 MHz silently corrupts the
+//   branch datapath (it passes in simulation and computes wrong answers on
+//   silicon). clk is assigned to PLL_CLK; clk_en keeps the OSC alive as the
+//   PLL's reference; the pll_* control pins below enable and program the PLL
+//   from fabric logic (Renesas AN-003) -- the Clock Configurator alone does
+//   NOT enable it.
+//
+// IO PLANNER: every BRAM0-7 port and both bank clock feeds MUST be pinned in
+//   the project file. Un-pinned BRAM is placed but never wired to the macro:
+//   writes are lost and reads return power-up junk, with no tool warning.
+//   result_bit0/1 must also be pinned -- auto-placement can land them on
+//   interior IOBs that reach no package pin, in which case the MCU reads
+//   floating inputs (which happen to read 0b11 = the PASS value).
 // =============================================================================
 
 (* top *) module shrike_picorv32_top (
-    (* iopad_external_pin, clkbuf_inhibit *) input  wire clk,
-    (* iopad_external_pin *) output wire clk_en,
+    (* iopad_external_pin, clkbuf_inhibit *) input  wire clk,   // PLL_CLK, 25 MHz
+    (* iopad_external_pin *) output wire clk_en,                // OSC enable (PLL reference)
+
+    // PLL: 50 MHz overclocks this design (Fmax 42); run the fabric at 25 MHz
+    (* iopad_external_pin *) output wire        pll_en,
+    (* iopad_external_pin *) output wire        pll_bypass,
+    (* iopad_external_pin *) output wire        pll_clk_selection,
+    (* iopad_external_pin *) output wire [5:0]  pll_refdiv,
+    (* iopad_external_pin *) output wire [11:0] pll_fbdiv,
+    (* iopad_external_pin *) output wire [2:0]  pll_postdiv1,
+    (* iopad_external_pin *) output wire [2:0]  pll_postdiv2,
 
     // SPI program-load interface (MCU is the controller)
     (* iopad_external_pin *) input  wire spi_sck,
@@ -114,6 +133,14 @@
 );
 
     assign clk_en         = 1'b1;
+    // Fout = 50 * FBDIV / (REFDIV * POSTDIV1 * POSTDIV2) = 50*21/(1*7*6) = 25 MHz
+    assign pll_en            = 1'b1;
+    assign pll_bypass        = 1'b0;
+    assign pll_clk_selection = 1'b0;   // reference = internal OSC
+    assign pll_refdiv        = 6'd1;
+    assign pll_fbdiv         = 12'd21;
+    assign pll_postdiv1      = 3'd7;
+    assign pll_postdiv2      = 3'd6;
     assign result_bit0_en = 1'b1;
     assign result_bit1_en = 1'b1;
 
@@ -200,7 +227,8 @@
     wire [31:0] mem_addr;
     wire [31:0] mem_wdata;
     wire [ 3:0] mem_wstrb;
-    reg  [31:0] mem_rdata;
+    // P16: the core latches mem_rdata itself; the staging register is redundant
+    wire [31:0] mem_rdata = insn;
 
     picorv32 #(
         .ENABLE_COUNTERS      (0),
@@ -287,7 +315,6 @@
         mem_ready <= 1'b0;
         if (!cpu_resetn) begin
             mem_ready   <= 1'b0;
-            mem_rdata   <= 32'd0;
             fetch_pend  <= 1'b0;
             gpio_result <= 2'b00;          // clear stale result on (re)load
         end else if (mem_valid && !mem_ready) begin
@@ -298,7 +325,7 @@
             end else if (!fetch_pend) begin
                 fetch_pend  <= 1'b1;       // wait one cycle for the synchronous BRAM read
             end else begin
-                mem_rdata   <= insn;       // imem DATA_OUT now valid
+                                           // P16: mem_rdata is combinational
                 mem_ready   <= 1'b1;
                 fetch_pend  <= 1'b0;
             end
