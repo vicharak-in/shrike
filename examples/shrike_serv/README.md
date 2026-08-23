@@ -15,47 +15,22 @@ the SLG47910 ForgeFPGA of a Shrike-lite board, and makes it
 over SPI and starts the CPU — **no re-synthesis, no new bitstream**. Flash the
 bitstream once, then load and run any number of programs.
 
-SERV processes **one bit per clock cycle**, so it is slow (roughly 40–80 cycles
-per instruction) but tiny: the whole SoC fits in **109 of the 140 CLBs** (78%),
-leaving comfortable headroom on a 1K-LUT-class fabric. The bit-serial datapath is
-entirely internal, so from the outside SERV looks like an ordinary word-level CPU
-with a Wishbone memory bus.
+SERV runs one bit per clock, so it is slow (~40–80 cycles per instruction) but
+tiny. Its register file sits in fabric distributed RAM, which leaves all 8 BRAM
+slices free for one unified **4 KB** memory — enough to run real programs, not
+just hand-written snippets. The whole example — CPU, memory, and a UART monitor —
+fits in **138 of the 140 CLBs**.
 
-Two design choices make the core both fit and stay useful:
+**One bitstream, three things to do** — the same bitstream runs whatever you load:
 
-1. **Register file in distributed RAM.** SERV's 32 registers (plus the CSRs) live
-   in fabric distributed RAM (`serv_rf_ram.v`), not in block RAM. That frees
-   **all eight** BRAM slices for program memory.
-2. **A unified 4 KB memory.** All 8 BRAM slices form one flat 4 KB space
-   (`serv_mem_bram.v`) holding code, data, and stack together. 4 KB is large
-   enough to run the **actual upstream [`riscv-tests`](https://github.com/riscv-software-src/riscv-tests)
-   `rv32ui` binaries** — the official per-instruction conformance suite — not
-   hand-written stand-ins.
-
-The firmware ships that suite: **41 self-checking programs, one per RV32I
-instruction** (`add`, `xor`, `beq`, `lw`, …), which together cover the complete
-RV32I base ISA. Each test writes its verdict to a memory-mapped GPIO latch
-driving two FPGA pins hardwired to RP2040 GPIO14/15; the MCU reads those two bits
-and prints PASS/FAIL over USB.
-
-**A passing test latches exactly 3** (both bits high). `1` means it ran but a
-tested instruction computed the wrong value; `0` means the CPU never reached its
-store (trap / hang — the latch clears on every reload). The tests are the
-standard RISC-V conformance vectors, so a full `PASS=41` is direct evidence that
-the complete RV32I base ISA executes correctly on hardware.
-
-**One bitstream, three things to do.** Because the design is runtime-programmable,
-the same bitstream runs whatever program you load:
-
-1. **The rv32ui conformance suite** — proof the full RV32I ISA runs on silicon.
-2. **Your own compiled C** — write C, `programs/run.py` builds it, loads it, and
-   reports the pass/fail result (see `demo.c`).
-3. **An interactive `serv>` monitor** — a shell you talk to from a laptop
-   terminal over the board's UART: `fib 20`, `primes 100`, `calc 6 * 7`,
-   `peek`/`poke` memory, `led on`, a guessing game, and more. The bitstream adds
-   a small memory-mapped UART + LED so the CPU can talk back. See
-   **[COMMANDS.md](COMMANDS.md)** for every command, and the *Interactive
-   Monitor* section below.
+1. **The rv32ui conformance suite** — the official RISC-V per-instruction tests,
+   run on silicon (**41/41**), proving the complete RV32I base ISA works.
+   → [Quick Start](#quick-start-pre-built-bitstream)
+2. **Your own compiled C** — write C, `programs/run.py` builds it and runs it on
+   the CPU. → [Writing Your Own Programs (C)](#writing-your-own-programs-c)
+3. **An interactive `serv>` monitor** — a shell you drive from your terminal over
+   the board's UART: `fib`, `primes`, `calc`, `peek`/`poke` memory, `led`, a
+   guessing game, and more. → [Interactive Monitor](#interactive-monitor)
 
 ## Expected Output
 
@@ -113,117 +88,59 @@ UART; the monitor never uses the result pins.
 
 ---
 
-## System Architecture
+## How It Works
 
 ```
-MCU --SPI--> spi_target --> bootloader FSM --writes--> memory (BRAM0..7, 4 KB)
-SERV --wb_mem bus--> memory (BRAM0..7)        (fetch + load/store, 1-cycle ack)
-SERV --wb_ext bus--> MMIO decode {result latch, UART, LED, cycle counter}
-SERV <--distributed RAM--> register file       (32 regs + CSRs, off BRAM)
-result latch --> GPIO17 / GPIO18 -> RP2040 GPIO15 / GPIO14   (suite / C flow)
-uart_tx/rx <---> GPIO4 / GPIO6 <---> RP2040 UART0 <--USB--> laptop   (monitor)
+MCU --SPI--> bootloader --> 4 KB memory (all 8 BRAM slices)
+SERV <--wb_mem--> memory            (fetch + load/store)
+SERV <--wb_ext--> MMIO              (result latch, UART, LED)  -> GPIO / RP2040
+SERV <--dist RAM--> register file
 ```
 
-- **Bootloader / SPI** (`spi_target.v` + the FSM in `shrike_serv_top.v`):
-  receives bytes (Mode 0, MSB-first, 8-bit) and either dispatches a command or
-  streams a program byte into the unified memory. The CPU is held in reset during
-  loading and released to run on command.
-- **Unified memory** (`serv_mem_bram.v`): 1024 words across all 8 BRAM slices as
-  two byte-laned banks. Written by the loader and by CPU stores; read by fetch
-  and loads (synchronous, 1-cycle — `wb_mem` ack is asserted the cycle the data
-  is valid).
-- **Register file** (`serv_rf_ram.v`): all 32 registers plus the CSRs in fabric
-  distributed RAM, off the BRAM budget entirely.
-- **MMIO** (`wb_ext`, decoded on `adr[4:2]` in `shrike_serv_top.v`): a small set
-  of memory-mapped registers in the `0x4000_0000` region — the result latch, the
-  UART, the LED, and a cycle counter (map below). The result latch clears
-  whenever the CPU is (re)loaded, so a stale result is never read back.
-- **UART** (`uart_tx.v` / `uart_rx.v`, reused from the `uart_sum` example):
-  115200 8N1 at the 25 MHz fabric clock, used by the interactive monitor.
+The MCU streams a program into the unified 4 KB BRAM over SPI while the CPU is held
+in reset, then releases the core to run it. SERV keeps its register file in
+distributed RAM, which frees all 8 BRAM slices for that one memory. A small block
+of memory-mapped registers at `0x4000_0000` carries the pass/fail result latch (the
+suite and C flow report through it, read back on GPIO), a UART (the monitor), and
+the LED.
 
-### Memory-mapped I/O (`0x4000_0000` region)
-
-| Address | Access | Meaning |
-|---|---|---|
-| `0x4000_0000` | write | result latch — low 2 bits → GPIO17/18 (bit1 = PASS if value==1, bit0 = done) |
-| `0x4000_0010` | write / read | UART: write transmits the low byte; read returns the last received byte |
-| `0x4000_0014` | read | UART status — bit0 = RX byte valid, bit1 = TX busy |
-| `0x4000_0018` | write | LED — bit0 → on-board FPGA LED (GPIO16) |
-| `0x4000_001C` | read | free-running 24-bit cycle counter |
-
-The result latch and the UART sit at different addresses, so a conformance test's
-pass/fail store never collides with the monitor's UART traffic.
-
-### SPI load protocol
-
-| Byte | Meaning |
-|---|---|
-| `0xA0` | Enter load: halt CPU, reset the write pointer |
-| 4096 bytes | Program image — 1024 words × 4 bytes, **little-endian**, zero-padded to the fixed length |
-| `0xA2` | Run: release the CPU |
-| `0xA3` | Halt: hold the CPU in reset (re-arm before a new `0xA0`) |
-
-The control bytes are sent as their own chip-select frames; the 4 KB payload is
-streamed in one frame.
+Sources: `shrike_serv_top.v` (top + SPI bootloader + MMIO), `serv_mem_bram.v`
+(the 4 KB memory), `serv_rf_ram.v` (register file), `uart_tx.v` / `uart_rx.v`, and
+the vendored SERV core (`serv_*.v`, `servile*.v`).
 
 ---
 
 ## Quick Start (Pre-Built Bitstream)
 
-1. Connect the Shrike-lite board via USB.
-2. Copy `bitstream/shrike_serv.bin`, `firmware/micropython/shrike_serv.py`, and
-   the `firmware/micropython/serv_tests/` directory to the board filesystem
-   (e.g. via the Thonny file panel).
-3. Run `shrike_serv.py`.
-4. Observe `SERV rv32ui on hardware: PASS=41 FAIL=0 DEAD=0 / 41` over USB serial.
+Copy the bitstream and tests to the board, then run the driver — with Thonny or
+`mpremote`, whichever you prefer (the driver flashes the bitstream into the FPGA
+itself, so the `.bin` just needs to be on the board).
 
-To run a single test instead of the whole sweep, `import shrike_serv` and call
-`run_test("serv_tests/add.bin")` — it returns `3` for PASS. The same bitstream
-executes whatever you load; nothing is re-synthesized.
+**Thonny (GUI):** use the file panel to copy `bitstream/shrike_serv.bin`,
+`firmware/micropython/shrike_serv.py`, and the `firmware/micropython/serv_tests/`
+folder to the board, then open `shrike_serv.py` and Run it.
+
+**mpremote (CLI):** `pip install mpremote` (auto-detects the board):
+```bash
+mpremote fs cp bitstream/shrike_serv.bin :shrike_serv.bin
+mpremote fs cp -r firmware/micropython/serv_tests :
+mpremote run firmware/micropython/shrike_serv.py
+```
+
+Either way, observe `SERV rv32ui on hardware: PASS=41 FAIL=0 DEAD=0 / 41`. For a
+single test, `import shrike_serv` and call `run_test("serv_tests/add.bin")`
+(returns `3` for PASS).
 
 ---
 
 ## Running & Editing the Suite
 
-### File locations
-
-| File | Location | Purpose |
-|---|---|---|
-| `shrike_serv.bin` | board filesystem | The bitstream. `shrike.flash()` opens it by filename on the board, so it must be copied to the board once. It does not change when programs change. |
-| `shrike_serv.py` | board filesystem | The host driver: flashes the bitstream, streams each test, reads the result latch. |
-| `serv_tests/*.bin` | board filesystem | The 41 conformance test images, streamed into the CPU one at a time. |
-
-At run time the CPU fetches and executes from on-die BRAM, streamed in over SPI.
-The host only flashes the bitstream and loads each program image.
-
-### Development workflow
-
-Copy the three items to the board once:
-
-```bash
-uvx mpremote connect <PORT> fs cp bitstream/shrike_serv.bin :shrike_serv.bin
-uvx mpremote connect <PORT> fs cp firmware/micropython/shrike_serv.py :shrike_serv.py
-uvx mpremote connect <PORT> fs cp -r firmware/micropython/serv_tests :
-```
-
-Then run the suite:
-
-```bash
-uvx mpremote connect <PORT> exec "import shrike_serv"
-```
-
-`<PORT>` is `/dev/cu.usbmodem*` on macOS/Linux or `COMx` on Windows;
-`uvx mpremote connect list` reports it. The name may change between connections.
-
-### Standalone operation
-
-To run without a host attached, copy the driver to the board as `main.py`;
-MicroPython executes `main.py` at boot and `flash_bitstream()` re-flashes the
-(volatile) bitstream each time:
-
-```bash
-uvx mpremote connect <PORT> fs cp firmware/micropython/shrike_serv.py :main.py
-```
+`shrike_serv.bin`, `shrike_serv.py`, and the `serv_tests/` folder live on the board
+filesystem — copy them there once (Thonny's file panel, or `mpremote fs cp`).
+Running `shrike_serv.py` flashes the bitstream and sweeps all 41 tests. For a
+single test, `import shrike_serv` and call `run_test("serv_tests/add.bin")` (it
+returns `3` for PASS). To run at boot with no host attached, copy `shrike_serv.py`
+to the board as `main.py`.
 
 ---
 
@@ -278,39 +195,38 @@ flow, the 4 KB budget, and toolchain requirements.
 
 ## Interactive Monitor
 
-The headline demo: a `serv>` shell running **on the CPU** that you drive from a
-laptop terminal. The RP2040 bridges your USB serial to the FPGA's UART, so typing
-in your terminal talks straight to the bit-serial core.
+A `serv>` shell on the CPU that you drive from your terminal. From this example's
+directory (`examples/shrike_serv`):
 
 ```bash
-cd programs
-./run.py monitor.c --shell        # compile the monitor, load it, open the terminal
+python3 programs/serv_shell.py
 ```
 
-or, from a board already carrying `shrike_serv.bin` + `monitor.bin`:
-
-```bash
-mpremote connect <PORT> run firmware/micropython/shrike_serv_monitor.py
-```
-
-Then type at the prompt (`Ctrl-]` exits the bridge):
+Type commands, the CPU answers:
 
 ```
 serv> fib 20
 6765
-serv> calc 6 * 7
-42
 serv> primes 100
 25
+serv> calc 6*7
+42
 serv> led on
 led on
+serv> guess
+1..100, blank to give up
+? 50
+lower
+? 42
+correct!
 ```
 
-The monitor understands `help`, `echo`, `fib`, `primes`, `fact`, `calc`, `add`,
-`sort`, `peek`, `poke`, `dump`, `guess`, `led`, and `cycles` — see
-**[COMMANDS.md](COMMANDS.md)** for what each does. It is just a C program
-(`programs/monitor.c`, ~3.8 KB): add a case to its `run()` dispatcher, rerun
-`./run.py monitor.c --shell`, and your command is live — no re-synthesis.
+UP/DOWN recall recent commands. Exit with `quit`, Ctrl-D, or Ctrl-C. Full command
+list: **[programs/COMMANDS.md](programs/COMMANDS.md)**.
+
+Needs Python 3 + `pyserial` (`pip install pyserial`), and a riscv gcc the first
+run. To add your own command, edit `programs/monitor.c` and rerun
+`programs/run.py monitor.c --shell`.
 
 ---
 
@@ -394,16 +310,6 @@ the memory-mapped UART/LED/cycle-counter (`shrike_serv_top.v`) are this example'
 additions. The UART is a pair of minimal fixed-8N1 cores (`uart_tx.v` /
 `uart_rx.v`) kept small to fit alongside the CPU. The SERV core files are the
 unmodified upstream sources with their ISC headers preserved.
-
----
-
-## References
-
-- [SERV](https://github.com/olofk/serv) by Olof Kindgren (ISC licence)
-- [riscv-tests](https://github.com/riscv-software-src/riscv-tests) — the `rv32ui` conformance suite
-- [SLG47910 Datasheet](https://www.renesas.com/en/products/slg47910)
-- [Shrike documentation](https://vicharak-in.github.io/shrike/)
-- [Go Configure Software Hub](https://www.renesas.com/en/software-tool/go-configure-software-hub)
 
 ---
 

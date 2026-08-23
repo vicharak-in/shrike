@@ -22,7 +22,7 @@ mpremote and assumes the board already has shrike_serv.bin + the firmware on it
 import argparse, glob, os, shutil, subprocess, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-MONITOR_FW = os.path.join(HERE, "..", "firmware", "micropython", "shrike_serv_monitor.py")
+SERV_SHELL = os.path.join(HERE, "serv_shell.py")
 MEM_BYTES = 4096
 
 def find_gcc():
@@ -37,10 +37,13 @@ def compile_program(src, rv, keep):
     outdir = HERE if keep else "/tmp"
     elf = os.path.join(outdir, base + ".elf")
     binf = os.path.join(outdir, base + ".bin")
+    # --gc-sections drops what the program never calls -- nolibc.c is compiled
+    # into every program but most use none of it (~200 bytes of 4096).
     cmd = [rv + "gcc", "-Os", "-march=rv32i", "-mabi=ilp32",
-           "-ffreestanding", "-nostdlib",
+           "-ffreestanding", "-nostdlib", "-ffunction-sections", "-fdata-sections",
            "-o", elf,
-           "-Wl,-Bstatic,-T," + os.path.join(HERE, "link.ld") + ",--strip-debug",
+           "-Wl,-Bstatic,-T," + os.path.join(HERE, "link.ld") +
+           ",--strip-debug,--gc-sections",
            os.path.join(HERE, "crt0.S"), os.path.join(HERE, "nolibc.c"), src, "-lgcc"]
     print("compiling:", os.path.basename(src))
     r = subprocess.run(cmd, capture_output=True, text=True)
@@ -76,14 +79,17 @@ def run_on_board(binf, port, do_flash):
     return r.returncode
 
 def run_shell(binf, port):
-    """Load a UART program and hand off to the interactive bridge firmware."""
+    """Build a UART program, put it on the board as monitor.bin, and open the
+    robust interactive terminal (serv_shell.py)."""
     if not shutil.which("mpremote"):
-        sys.exit("mpremote required:  uv tool install mpremote  (or pip install mpremote)")
+        sys.exit("mpremote required to stage the program:  pip install mpremote\n"
+                 "(or copy the built .bin to the board as monitor.bin yourself)")
     if not port:
         sys.exit("no board found; connect the Shrike-Lite or pass --port")
     subprocess.run(["mpremote", "connect", port, "cp", binf, ":monitor.bin"], check=True)
-    print(f"starting interactive session on {port} (Ctrl-] to exit)\n" + "-" * 40)
-    os.execvp("mpremote", ["mpremote", "connect", port, "run", MONITOR_FW])
+    argv = [sys.executable, SERV_SHELL, "--port", port]
+    print("opening interactive terminal (serv_shell.py)...\n" + "-" * 40)
+    os.execvp(sys.executable, argv)
 
 def main():
     ap = argparse.ArgumentParser()

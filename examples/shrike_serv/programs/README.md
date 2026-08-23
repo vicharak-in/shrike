@@ -16,14 +16,16 @@ compile it, and run it on the bit-serial RV32I core — no re-synthesis.
 
 Two program styles run on the same bitstream: a **self-check** that returns
 `0`/non-`0` (crt0 reports it on the result latch, read back as PASS/FAIL — see
-`demo.c`), or a **UART program** run with `--shell` to drop into an interactive
-terminal (see `monitor.c` and the top-level README's *Interactive Monitor*).
+`demo.c`), or a **UART program** — the `serv>` monitor. For the monitor, the
+simplest path is `python3 serv_shell.py` (auto-detects the board, flashes + loads
+on first run); `run.py monitor.c --shell` rebuilds the monitor and reopens that
+same terminal. See the top-level README's *Interactive Monitor*.
 
 - **Compile** needs a RISC-V GCC (`riscv64-elf-gcc`, `riscv32-unknown-elf-gcc`,
   or similar — auto-detected).
-- **Board run** needs `mpremote` on your PATH (`uv tool install mpremote`, or
-  `pip install mpremote`) and assumes the board already has `shrike_serv.py` +
-  `shrike_serv.bin` on it (see the top-level README's Quick Start).
+- **Board run** needs `mpremote` (`pip install mpremote`) and assumes the board
+  already has `shrike_serv.py` + `shrike_serv.bin` on it (see the top-level
+  README's Quick Start).
 
 ## Writing a program
 
@@ -57,6 +59,7 @@ bit-serial, so heavy arithmetic is slow. That is expected.
 
 | File | Purpose |
 |---|---|
+| `serv_shell.py` | Robust, turnkey interactive `serv>` terminal (auto-detect port, auto-provision, auto-reconnect) — the way to run the monitor |
 | `run.py` | Compile a C/asm program and (optionally) load + run it on the board |
 | `crt0.S` | C runtime: set stack, zero `.bss`, call `main()`, report result, halt |
 | `link.ld` | 4 KB memory map; `_start` first at address 0 |
