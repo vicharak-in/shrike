@@ -135,16 +135,6 @@ The demo (`programs/demo.c`) exercises recursion (a real call stack), arrays and
 structs in RAM, insertion sort, and software multiply/divide — GCC-compiled code,
 not hand-written vectors — in ~2 KB of the 64 KB space.
 
-## References
-
-- [PicoRV32](https://github.com/YosysHQ/picorv32) by Claire Wolf (ISC licence)
-- [spi-ram-emu](https://github.com/MichaelBell/spi-ram-emu) by Michael Bell (BSD-3) — the RP2040 RAM emulator
-- [SLG47910 Datasheet](https://www.renesas.com/en/products/slg47910)
-- [Shrike documentation](https://vicharak-in.github.io/shrike/)
-- [Go Configure Software Hub](https://www.renesas.com/en/software-tool/go-configure-software-hub)
-
----
-
 ## Licence
 
 PicoRV32 retains its original ISC licence and the RAM emulator (`sram.c` /
