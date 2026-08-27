@@ -4,46 +4,19 @@
 **Uses MCU:** Yes
 **External Hardware:** None
 
----
-
 ## Overview
 
 This example runs Claire Wolf's [PicoRV32](https://github.com/YosysHQ/picorv32)
-**RV32I** soft CPU on the SLG47910 ForgeFPGA of a Shrike-lite board, and makes it
-**runtime-programmable**: the host MCU streams an RV32I program into the FPGA
-over SPI and starts the CPU — **no re-synthesis, no new bitstream**. Flash the
-bitstream once, then load and run any number of programs.
+**RV32I** CPU on the SLG47910 ForgeFPGA of a Shrike-lite board, and makes it
+**runtime-programmable**: the host MCU streams a program into the FPGA over SPI
+and starts the CPU — no re-synthesis, no new bitstream. Flash the bitstream once,
+then load and run any number of programs.
 
-The example demonstrates two results: that a *general-purpose, full 32-register
-RV32I CPU* fits inside a 1K-LUT-class ForgeFPGA, and that its program memory
-lives in on-die BRAM that can be rewritten at runtime over SPI.
-
-The firmware ships an **RV32I conformance suite**: several themed, self-checking
-≤32-word programs (`TESTS` in `shrike_picorv32.py`) that *together cover the
-complete RV32I base ISA — all 37 instructions*. Each program writes its verdict
-to a memory-mapped GPIO latch driving two FPGA pins hardwired to RP2040
-GPIO14/15; the MCU reads those two bits and prints PASS/FAIL over USB. You pick
-which program runs by uncommenting one `ACTIVE = ...` line.
-
-**A passing program latches exactly 3** (both bits high). `1` means it ran but a
-tested instruction computed the wrong value; `0` means the CPU never reached its
-store (trap / illegal / hang — the latch clears on every reload). Each program
-was validated so that injecting a fault into any instruction it tests makes it
-stop returning 3; a passing result therefore confirms those instructions are
-correct.
-
-Three design choices make the core fit and stay programmable:
-
-1. **Register file in BRAM.** All 32 registers live in **4** BRAM slices
-   (`picorv32_regs_bram.v`) instead of ~1024 fabric flip-flops, 5-bit addressed.
-2. **Instruction RAM in BRAM.** The other 4 BRAM slices form a 32-word writable
-   instruction memory (`picorv32_imem_bram.v`), filled over SPI by the bootloader
-   so the program can be changed at runtime.
-3. **A correctness fix (`CF1`).** The SLG47910 BRAM read is *synchronous* (data
-   valid one cycle after the address), but PicoRV32's register-file interface
-   assumes a combinational read. `CF1` adds a read-latency wait-state
-   (`RS_READ_LATENCY = 2`) so register reads return valid data. The instruction
-   fetch path takes the matching 1-cycle wait-state in the top module.
+The full 32-register RV32I core fits the 1K-LUT-class fabric with both its
+register file and a 32-word instruction memory in on-die BRAM, rewritten at
+runtime over SPI. It ships a conformance suite — themed, self-checking programs
+that together cover the complete RV32I base ISA — each reporting PASS/FAIL on two
+GPIO pins the MCU reads back.
 
 ## Expected Output
 
@@ -53,8 +26,6 @@ Flashing PicoRV32 bitstream to FPGA...
 regalu: testing add sub sll srl sra and or xor slt sltu
 result = 3 -> PASS  (verified: add sub sll srl sra and or xor slt sltu)
 ```
-
----
 
 ## Compatibility
 
@@ -66,8 +37,6 @@ result = 3 -> PASS  (verified: add sub sll srl sra and or xor slt sltu)
 
 > The FPGA bitstream is the same across all boards; only the MCU firmware pin
 > map differs.
-
----
 
 ## Hardware Setup
 
@@ -82,295 +51,125 @@ between the FPGA and the RP2040 on the Shrike-lite PCB:
 | GPIO17 | `result_bit0` | GPIO15 | FPGA → MCU |
 | GPIO18 | `result_bit1` | GPIO14 | FPGA → MCU |
 
-(These are the same SPI pins as the `stack_processor` example. The FPGA never
-drives MISO — the result comes back on the two GPIO result pins — so no reset or
-MISO pin is needed; the CPU is reset/run entirely via SPI commands.)
+The FPGA never drives MISO — results come back on the two GPIO result pins — so
+the CPU is reset and run entirely via SPI commands.
 
----
-
-## System Architecture
+## How It Works
 
 ```
-MCU --SPI--> spi_target --> bootloader FSM --writes--> imem (BRAM4..7)
-picorv32 --mem bus--> imem (BRAM4..7)        (instruction fetch, 1-cycle wait)
-picorv32 --mem bus--> GPIO decode            (store to 0x40000000 -> latch)
-picorv32 <--BRAM0..3--> register file         (32 regs, 5-bit addressed)
-gpio_latch ----------> GPIO17 / GPIO18 -> RP2040 GPIO15 / GPIO14
+MCU --SPI--> spi_target --> bootloader --> instruction RAM (BRAM4..7, 32 words)
+picorv32 <--mem bus--> instruction RAM      (fetch, 1-cycle wait)
+picorv32 <--mem bus--> register file (BRAM0..3, 32 regs)
+picorv32 --store 0x4xxxxxxx--> result latch --> GPIO17/18 --> RP2040
 ```
 
-- **Bootloader / SPI** (`spi_target.v` + the FSM in `shrike_picorv32_top.v`):
-  receives bytes (Mode 0, MSB-first, 8-bit) and either dispatches a command or
-  streams a program byte into the instruction RAM. The CPU is held in reset
-  during loading and released to run on command.
-- **Instruction RAM** (`picorv32_imem_bram.v`): 32 words across BRAM4-7, one
-  byte lane per slice. Written by the loader, read by the CPU (synchronous,
-  1-cycle latency — the top inserts a fetch wait-state).
-- **Register file** (`picorv32_regs_bram.v`): all 32 registers in BRAM0-3, one
-  byte lane per slice, 5-bit addressed.
-- **GPIO result latch**: a store to any `0x4xxxxxxx` address latches the low 2
-  bits of the stored word onto `result_bit0/1`. It clears whenever the CPU is
-  (re)loaded, so a stale result is never read back.
+The MCU streams a program into the 32-word instruction RAM over SPI while the CPU
+is held in reset, then releases it to run. Both the register file (BRAM0-3) and
+the instruction RAM (BRAM4-7) live in on-die BRAM instead of fabric flip-flops,
+which is what lets the full 32-register core fit. A store to any `0x4xxxxxxx`
+address latches the low 2 bits onto the result pins (it clears on every reload).
+Because the SLG47910 BRAM read is synchronous, the core carries a 1-cycle
+read-latency fix (`CF1`) so register and instruction reads return valid data.
 
-### SPI load protocol
-
-| Byte | Meaning |
-|---|---|
-| `0xA0` | Enter load: halt CPU, reset the write pointer |
-| 128 bytes | Program image — 32 words × 4 bytes, **little-endian** |
-| `0xA2` | Run: release the CPU |
-| `0xA3` | Halt: hold the CPU in reset (re-arm before a new `0xA0`) |
-
-Each byte is sent as its own chip-select frame.
-
----
+Sources: `picorv32.v` (core + `SHRIKE PATCH` size optimisations),
+`shrike_picorv32_top.v` (top + SPI bootloader + result latch),
+`picorv32_imem_bram.v` (instruction RAM), `picorv32_regs_bram.v` (register file).
 
 ## Quick Start (Pre-Built Bitstream)
 
-1. Connect the Shrike-lite board via USB.
-2. Copy `bitstream/shrike_picorv32.bin` to the board filesystem (e.g. via the
-   Thonny file panel).
-3. Run `firmware/micropython/shrike_picorv32.py`.
-4. Observe `result = 3 -> PASS` over USB serial.
+Copy the bitstream to the board's filesystem and run the driver — with Thonny or
+`mpremote`, whichever you prefer (the driver flashes the bitstream into the FPGA
+itself at runtime, so the `.bin` just needs to be on the board).
 
-To run a different part of the suite, uncomment a different `ACTIVE = ...` line
-near the top of the firmware and re-run — the same bitstream executes whatever
-you load. To run your own program, add it to `TESTS` (see below).
+**Thonny (GUI):** use the file panel to copy `bitstream/shrike_picorv32.bin` to
+the board, then open `firmware/micropython/shrike_picorv32.py` and Run it.
 
----
+**mpremote (CLI):** `pip install mpremote` (auto-detects the board):
+```bash
+mpremote fs cp bitstream/shrike_picorv32.bin :shrike_picorv32.bin
+mpremote run firmware/micropython/shrike_picorv32.py
+```
+
+Either way, observe `result = 3 -> PASS` over USB serial. To run another part of
+the suite, uncomment a different `ACTIVE = ...` line and re-run.
 
 ## Running & Editing Programs
 
-### File locations
-
-| File | Location | Purpose |
-|---|---|---|
-| `shrike_picorv32.bin` | board filesystem | The bitstream. `shrike.flash()` opens it by filename on the board, so it must be copied to the board once. It does not change when programs are edited. |
-| `shrike_picorv32.py` | your computer | The programs and driver. Edit this file here; it is the source of truth. |
-
-At run time the CPU fetches instructions from on-die BRAM, streamed in over SPI.
-The host computer only flashes the bitstream and loads the selected program.
-
-### Which copy of `shrike_picorv32.py` runs
-
-| Command | Copy executed |
-|---|---|
-| `mpremote ... run shrike_picorv32.py` | The file on your computer. mpremote streams it to the board's RAM and runs it; the board's stored copy is not used. |
-| `mpremote ... exec "import shrike_picorv32"`, or running the board's copy in Thonny, or saving it as `main.py` | The copy stored on the board. |
-
-### Development workflow
-
-Copy the bitstream once:
-
-```bash
-uvx mpremote connect <PORT> fs cp bitstream/shrike_picorv32.bin :shrike_picorv32.bin
-```
-
-Then edit `firmware/micropython/shrike_picorv32.py` on your computer and run it:
-
-```bash
-uvx mpremote connect <PORT> run firmware/micropython/shrike_picorv32.py
-```
-
-Because `run` executes the local file, no copy step is needed when editing
-programs. To change what runs, edit the file and re-run:
-
-- to switch tests, uncomment a different `ACTIVE = ...` line;
-- to run your own program, add an entry to `TESTS` and set `ACTIVE` to it (see
-  *How to Change the Computation*).
-
-`<PORT>` is `/dev/cu.usbmodem*` on macOS/Linux or `COMx` on Windows;
-`uvx mpremote connect list` reports it. The name may change between connections.
-
-### Standalone operation
-
-To run without a host attached, copy the file to the board as `main.py`;
-MicroPython executes `main.py` at boot:
-
-```bash
-uvx mpremote connect <PORT> fs cp firmware/micropython/shrike_picorv32.py :main.py
-```
-
-The board's stored copy is then what runs, so re-copy it after each edit. The
-bitstream is volatile and must be re-flashed after every power cycle; `main.py`
-does this on boot via `flash_bitstream()`.
-
----
+Edit `shrike_picorv32.py` and re-run it (in Thonny, or `mpremote run` — which
+executes your local copy, so no re-copy needed). Uncomment a different
+`ACTIVE = ...` line to switch tests, or add your own program to `TESTS` (below).
+To run standalone at boot (no host attached), save the file on the board as
+`main.py`.
 
 ## Build From Source
 
 ### Step 1 — Open in Go Configure
 
-Launch Go Configure Software Hub, **New Project**, target chip **SLG47910 (BB)**
-— or open the included `shrike_picorv32.ffpga` directly to skip manual setup.
-
-If rebuilding from scratch, add the Verilog files (top module last):
-```
-ffpga/src/picorv32_regs_bram.v
-ffpga/src/picorv32.v
-ffpga/src/picorv32_imem_bram.v
-ffpga/src/spi_target.v
-ffpga/src/shrike_picorv32_top.v
-```
+Launch Go Configure Software Hub and open the included `shrike_picorv32.ffpga`
+(target chip **SLG47910 (BB)**). It lists every source in order and holds the
+complete pinout. From scratch, add the sources with the top module last:
+`picorv32_regs_bram.v`, `picorv32.v`, `picorv32_imem_bram.v`, `spi_target.v`,
+`shrike_picorv32_top.v`.
 
 ### Step 2 — Enable BRAM
 
 The register file uses BRAM0-3 and the instruction RAM uses BRAM4-7, so enable
-**both** BRAM banks (North = BRAM0-3, South = BRAM4-7) in the project's BRAM
-configuration. Enabling the banks is necessary but **not sufficient** — the
-BRAM ports and bank clock feeds must also be pinned (Step 3).
+**both** BRAM banks (North = BRAM0-3, South = BRAM4-7). The BRAM ports and bank
+clock feeds must also be pinned — the committed `.ffpga` holds all of these.
 
-### Step 3 — Pin assignment
+### Step 3 — Clock + generate
 
-Opening the included `shrike_picorv32.ffpga` gives the complete, correct pinout;
-this step describes it for a from-scratch build.
-
-The user-facing pins:
-
-| Signal | Resource |
-|---|---|
-| `clk`      | `PLL_CLK` |
-| `clk_en`   | `OSC_EN`  |
-| `spi_sck`  | `GPIO3`   |
-| `spi_ss_n` | `GPIO4`   |
-| `spi_mosi` | `GPIO5`   |
-| `result_bit0` / `result_bit1` (+`_en`) | `GPIO17` / `GPIO18` |
-
-Also pin every `BRAMx_*` port and both bank clock feeds
-(`REF_BRAM(0..3)/(4..7)_WRITE_CLK` and `_READ_CLK` → `clk`) so the block RAM is
-wired and clocked, and the `pll_*` control pins (27) that program the PLL. The
-committed `.ffpga` holds all of these; use it as the reference.
-
-### Step 3b — Clock the fabric at 25 MHz
-
-The fabric runs from the PLL at 25 MHz. The PLL is enabled and programmed from
-fabric logic (`pll_en`, `pll_refdiv`, `pll_fbdiv`, `pll_postdiv1`,
-`pll_postdiv2` — see `shrike_picorv32_top.v` and Renesas AN-003); the dividers
-give `50 MHz × 21 / (1×7×6) = 25 MHz`.
-
-### Step 4 — Synthesize and generate bitstream
-
-Click **Synthesize** then **Generate Bitstream**. Copy the produced
+The fabric runs from the PLL at 25 MHz (the `pll_*` pins program it from fabric
+logic, per Renesas AN-003; dividers give `50 MHz × 21 / (1×7×6) = 25 MHz`). Click
+**Synthesize** then **Generate Bitstream**, and copy the produced
 `FPGA_bitstream_MCU.bin` to `bitstream/shrike_picorv32.bin`.
-
----
 
 ## The RV32I Conformance Suite
 
 `firmware/micropython/shrike_picorv32.py` holds several themed, self-checking
-≤32-word programs in a `TESTS` dictionary. **Together they cover the complete
-RV32I base ISA — all 37 instructions:**
+≤32-word programs in a `TESTS` dictionary. Together they cover the complete RV32I
+base ISA — all 37 instructions:
 
 | Program (`ACTIVE`) | Instructions tested |
 |---|---|
-| `regalu`   | add sub sll srl sra and or xor slt sltu |
-| `immalu`   | addi slli srli srai andi ori xori slti sltiu lui auipc |
-| `branch`   | beq bne blt bge bltu bgeu (each checked **both** taken and not-taken) |
-| `jumps`    | jal jalr (control transfer **and** link register) |
-| `loads`    | lw lh lhu lb lbu (with sign/zero-extension) |
+| `regalu` | add sub sll srl sra and or xor slt sltu |
+| `immalu` | addi slli srli srai andi ori xori slti sltiu lui auipc |
+| `branch` | beq bne blt bge bltu bgeu (taken **and** not-taken) |
+| `jumps`  | jal jalr (transfer **and** link register) |
+| `loads`  | lw lh lhu lb lbu (sign/zero-extension) |
 | `store_sw` / `store_sh` / `store_sb` | sw / sh / sb |
 
-Pick one by uncommenting a single `ACTIVE = ...` line and running the file. The
-arithmetic programs **sum every operation's result and compare the 32-bit total**
-to a precomputed checksum, so a wrong answer in any one instruction shifts the
-sum and fails (no masking). The branch/jump programs use **poison instructions**:
-a missed or wrong transfer lands on a fail marker rather than passing silently.
+Pick one with an `ACTIVE = ...` line and run. A pass latches **3** (both bits);
+`1` = ran but wrong value, `0` = never reached the store (trap/hang). Each program
+was validated so injecting a fault into any instruction it tests makes it stop
+returning 3, so a pass confirms those instructions are correct.
 
-Each program was machine-validated so that injecting a fault into any instruction
-it tests makes it stop returning 3, so a passing result confirms those
-instructions are implemented correctly.
-
-> **Why these encodings:** the SoC has no general data RAM (see *System
-> Architecture*). Stores are observable only through the GPIO result latch, so
-> each store width is tested as the sole store of a known value; loads read back
-> known words planted in the instruction RAM. The result encoding (3 = PASS,
-> 1 = FAIL, 0 = DEAD) fits the 2-bit latch.
-
----
-
-## How to Change the Computation
-
-Add your own entry to the `TESTS` dictionary in
-`firmware/micropython/shrike_picorv32.py` (a name → `(description, [words])`
-pair), point `ACTIVE` at it, and re-run. **No re-synthesis or new bitstream is
-needed.** A trivial program that drives result = 1:
-
-```python
-"demo": ("addi sw", [
-    0x00100513,   # addi x10, x0, 1   -> x10 = 1
-    0x400004B7,   # lui  x9, 0x40000  (GPIO base)
-    0x00A4A023,   # sw   x10, 0(x9)   -> latch bits = 1
-    0x0000006F,   # jal  x0, 0        (halt)
-]),
-```
-
-For larger programs, write RV32I assembly, assemble it with a `riscv*-elf`
-toolchain (`-march=rv32i -mabi=ilp32`), and paste the resulting word encodings
-in. The firmware pads the rest of the 32-word memory with `NOP`.
-
-### Program size limit
-
-The program counter is narrowed to **7 bits** (`localparam PC_W = 7` in
-`picorv32.v`) — an area optimisation that caps the program at **128 bytes = 32
-instruction words**, exactly the depth of the BRAM instruction RAM as wired.
-Programs longer than 32 words wrap and must be kept within this limit. Raising it
-requires increasing `PC_W` and widening the shared adder, a fabric-area
-trade-off.
-
-### Result output width
-
-The design exposes 2 result bits (`result_bit0`, `result_bit1`), so the readable
-range is 0-3. For wider results, add more `result_bit*` pins to
-`shrike_picorv32_top.v`, widen the GPIO latch, and update the firmware to read
-the extra RP2040 GPIOs. See the Shrike pinout doc for available pins.
-
----
+To run your own program, add a `name: (description, [words])` entry to `TESTS`,
+point `ACTIVE` at it, and re-run — no re-synthesis. Programs are capped at **32
+words** (`PC_W = 7` in `picorv32.v`, an area optimisation matching the instruction
+RAM depth). The 2 result bits give a readable range of 0-3.
 
 ## PicoRV32 Configuration
 
-Locked parameters in `shrike_picorv32_top.v`:
+Locked parameters in `shrike_picorv32_top.v` for a minimal full-RV32I build:
 
 | Parameter | Value | Reason |
 |---|---|---|
-| `ENABLE_REGS_16_31`    | 1 | **Full RV32I** — all 32 registers (`x0..x31`) |
-| `ENABLE_REGS_DUALPORT` | 0 | single read port — matches the BRAM regfile, saves a mux |
-| `LATCHED_MEM_RDATA`    | 1 | saves an internal capture flop |
-| `TWO_CYCLE_ALU`        | 0 | single-cycle ALU collapses 1-CLB carry clusters |
-| `TWO_CYCLE_COMPARE`    | 0 | single-cycle compare path |
+| `ENABLE_REGS_16_31`    | 1 | full RV32I — all 32 registers |
+| `ENABLE_REGS_DUALPORT` | 0 | single read port — matches the BRAM regfile |
 | `BARREL_SHIFTER`       | 0 | serial shift — avoids a 32-bit mux tree |
-| `TWO_STAGE_SHIFT`      | 0 | further shrink |
 | `COMPRESSED_ISA`       | 0 | no RVC decoder |
-| `CATCH_MISALIGN`       | 0 | no trap logic |
-| `CATCH_ILLINSN`        | 0 | no trap logic |
-| `ENABLE_MUL`/`DIV`     | 0 | no M extension |
-| `ENABLE_IRQ`           | 0 | no interrupt logic |
-| `ENABLE_COUNTERS`      | 0 | no CSR counters |
-| `ENABLE_PCPI`          | 0 | no coprocessor interface |
-| `ENABLE_TRACE`         | 0 | no trace port |
+| `CATCH_MISALIGN` / `CATCH_ILLINSN` | 0 | no trap logic |
+| `ENABLE_MUL` / `DIV` / `IRQ` / `COUNTERS` | 0 | no M-ext / IRQ / CSR counters |
 
-In addition to these stock parameters, the core in `ffpga/src/picorv32.v`
-carries the `SHRIKE PATCH` modifications (numbered P1–P17) — the BRAM register
-file, the carry-split / shared adder datapath, the 7-bit PC, and the narrowed
-memory interface — plus two
-correctness fixes (CF1 read-latency wait-state, CF2 ECALL/EBREAK halt). A
-legend at the top of the file lists them; `grep "SHRIKE PATCH"` or
-`grep "CORRECTNESS FIX"` in `ffpga/src/picorv32.v` finds every site. The SPI
-bootloader and instruction RAM live in `shrike_picorv32_top.v` and
-`picorv32_imem_bram.v`.
-
----
-
-## References
-
-- [PicoRV32](https://github.com/YosysHQ/picorv32) by Claire Wolf (ISC licence)
-- [SLG47910 Datasheet](https://www.renesas.com/en/products/slg47910)
-- [Shrike documentation](https://vicharak-in.github.io/shrike/)
-- [Go Configure Software Hub](https://www.renesas.com/en/software-tool/go-configure-software-hub)
-
----
+The core in `picorv32.v` also carries the `SHRIKE PATCH` size optimisations (BRAM
+register file, shared-adder datapath, 7-bit PC, narrowed memory interface) plus
+two correctness fixes (`CF1` read-latency wait-state, `CF2` ECALL/EBREAK halt);
+`grep "SHRIKE PATCH"` / `grep "CORRECTNESS FIX"` finds every site.
 
 ## Licence
 
-PicoRV32 retains its original ISC licence (header preserved at the top of
-`picorv32.v`). All Shrike-specific additions (the `SHRIKE PATCH` optimisations,
-BRAM register file, instruction RAM, SPI bootloader, top wrapper, firmware,
-docs) are GPL-2.0 to match the rest of this repo.
+PicoRV32 retains its original ISC licence (header preserved in `picorv32.v`). All
+Shrike-specific additions (the `SHRIKE PATCH` optimisations, BRAM register file,
+instruction RAM, SPI bootloader, top wrapper, firmware, docs) are GPL-2.0 to match
+the rest of this repo.
