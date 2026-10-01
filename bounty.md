@@ -1,5 +1,5 @@
 ## Live Bounty:
-1. Create a WiFi Jammer with Shrike-fi (Use FPGA options).
+1. Make a PID based Line Follower using the FPGA + MCU co-design of Shrike.
 
 ## Archived
 1. Run a SLM on Shrike fi ( 12M models )                                                      -- Completed by [ Riddhi Raj Ghosh](https://github.com/RiddhiRaj) 
