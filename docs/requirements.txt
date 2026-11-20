@@ -1,0 +1,4 @@
+sphinx>=7.0
+sphinx-design>=0.5
+sphinxawesome-theme>=5.0
+myst-parser>=3.0
