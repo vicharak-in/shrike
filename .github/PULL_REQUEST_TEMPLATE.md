@@ -30,7 +30,7 @@
 - [ ] Follows the [standard folder structure](CONTRIBUTING.md#folder-structure) (`ffpga/`, `firmware/`, `bitstream/`, `README.md`)
 - [ ] Includes pre-built bitstream in `bitstream/`
 - [ ] Includes README with difficulty level, compatibility table, and expected output
-- [ ] Firmware is platform-agnostic (`#ifdef` / `sys.platform`) — see [guide](docs/platform_agnostic_guide.md)
+- [ ] Firmware is platform-agnostic (`#ifdef` / `sys.platform`) — see [guide](../docs/PLATFORM_AGNOSTIC_FIRMWARE_GUIDE.md)
 - [ ] Tested with ShrikeFlash
 
 ### For firmware changes:
