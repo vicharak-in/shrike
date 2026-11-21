@@ -9,7 +9,7 @@ Hello its great to see that you have got shrike dev Board . Now that you have th
 For a bit clarification and to insure there is no confusion please follow this Index (Read from 1 to 10).
 
 
- 1. [Hardware Overview](./hardware_overview.rst)
+ 1. [Hardware Overview](./hardware_overview.md)
  2. [Getting Started](./getting_started.md) 
  3. [Tools Setup](./tools_setup_guide.md)
  4. [Generating Bitstream](./generating_your_first_bitstream.md)

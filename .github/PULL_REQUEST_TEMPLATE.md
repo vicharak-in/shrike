@@ -27,7 +27,7 @@
 - [ ] I have updated relevant documentation (if applicable)
 
 ### For new examples:
-- [ ] Follows the [standard folder structure](CONTRIBUTING.md#folder-structure) (`ffpga/`, `firmware/`, `bitstream/`, `README.md`)
+- [ ] Follows the [standard folder structure](../CONTRIBUTING.md#folder-structure) (`ffpga/`, `firmware/`, `bitstream/`, `README.md`)
 - [ ] Includes pre-built bitstream in `bitstream/`
 - [ ] Includes README with difficulty level, compatibility table, and expected output
 - [ ] Firmware is platform-agnostic (`#ifdef` / `sys.platform`) — see [guide](../docs/PLATFORM_AGNOSTIC_FIRMWARE_GUIDE.md)
