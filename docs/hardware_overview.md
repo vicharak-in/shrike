@@ -164,7 +164,7 @@ The Shrike-fi Dev also has two optional add on's hardware features.
 Shrike-fi can be equipped with an optional 8 MB PSRAM. Depending on the variant purchased, the PSRAM may come pre-soldered or left unpopulated. If you choose to buy without it soldered, you can add it later. The part number is **LY68L6400SLIT**, and the designator is **U10**.
 
 
-### 2. Batter Management System  
+### 2. Battery Management System  
 
 Shrike-fi features an onboard battery management and charging circuit. However, in the base version, these parts are designated as do not place (DNP). A future version with these components pre-soldered will be available soon.
 
