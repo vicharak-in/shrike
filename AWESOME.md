@@ -107,7 +107,7 @@ Useful references for getting into FPGA development with Shrike:
 | [Renesas SLG47910 Datasheet](https://www.renesas.com/en/products/slg47910#overview) | ForgeFPGA datasheet — LUT architecture, GPIO, PLL, timing |
 | [Go Configure Software Hub](https://www.renesas.com/en/software-tool/go-configure-software-hub) | FPGA synthesis tool from Renesas (free) |
 | [RP2040 Getting Started](https://www.raspberrypi.com/documentation/microcontrollers/pico-series.html) | Raspberry Pi Pico / RP2040 documentation |
-| [Platform-Agnostic Firmware Guide](docs/platform_agnostic_guide.md) | How to write firmware that runs on all Shrike boards |
+| [Platform-Agnostic Firmware Guide](docs/PLATFORM_AGNOSTIC_FIRMWARE_GUIDE.md) | How to write firmware that runs on all Shrike boards |
 
 ---
 
